@@ -1,4 +1,8 @@
+import 'package:connec_project/components/LoginIconButton.dart';
+import 'package:connec_project/components/customEditTextForm.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -8,7 +12,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
+  final logger = Logger();
+  String email = "";
+  String password = "";
 
   @override
   Widget build(BuildContext context) {
@@ -44,18 +51,52 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Form(
-              key: _formkey,
+              key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  customEditTextForm("이메일", "example@connec.co.kr", false),
-                  customEditTextForm("비밀번호", "비밀번호를 입력해주세요", true),
+                  customEditTextForm(
+                    label: "이메일",
+                    hint: "example@connec.co.kr",
+                    isSecret: false,
+                    onSaved: (newValue) {
+                      email = newValue;
+                      print(email);
+                    },
+                  ),
+                  customEditTextForm(
+                    label: "비밀번호",
+                    hint: "비밀번호를 입력해주세요",
+                    isSecret: true,
+                    onSaved: (newValue) {
+                      password = newValue;
+                      print(password);
+                    },
+                  ),
                   Container(
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     width: double.infinity,
                     height: 70,
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            try {
+                              final credential = await FirebaseAuth.instance
+                                  .signInWithEmailAndPassword(
+                                      email: email, password: password);
+                            } on FirebaseAuthException catch (e) {
+                              if (e.code == 'user-not-found') {
+                                logger.w('No user found for that email.');
+                              } else if (e.code == 'wrong-password') {
+                                logger.w(
+                                    'Wrong password provided for that user.');
+                              } else {
+                                logger.w(e);
+                              }
+                            }
+                          }
+                        },
                         child: Text(
                           "이메일 로그인",
                           style: TextStyle(
@@ -117,15 +158,24 @@ class _LoginPageState extends State<LoginPage> {
                 fontWeight: FontWeight.w500,
               ),
             )),
-            SizedBox(height: size.height*0.02),
+            SizedBox(height: size.height * 0.02),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 SizedBox(width: size.width * 0.01),
-                customImageButton(AssetImage("assets/images/kakao_btn.png")),
-                customImageButton(AssetImage("assets/images/naver_btn.png")),
-                customImageButton(AssetImage("assets/images/facebook_btn.png")),
+                customImageButton(AssetImage("assets/images/kakao_btn.png"),
+                    () {
+                  print("clicked!!");
+                }),
+                customImageButton(AssetImage("assets/images/naver_btn.png"),
+                    () {
+                  print("clicked!!");
+                }),
+                customImageButton(AssetImage("assets/images/facebook_btn.png"),
+                    () {
+                  print("clicked!!");
+                }),
                 SizedBox(width: size.width * 0.01),
               ],
             )
@@ -133,55 +183,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  Widget customEditTextForm(String label, String hint, bool isSecret) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("${label}",
-              style: TextStyle(
-                fontFamily: "EchoDream",
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-              )),
-          SizedBox(height: 10),
-          TextFormField(
-            obscureText: isSecret,
-            decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff5f66f2), width: 2),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff5f66f2), width: 2),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                hintText: "${hint}",
-                hintStyle: TextStyle(
-                    color: Color(0xffbdbdbd),
-                    fontSize: 15,
-                    fontFamily: "EchoDream",
-                    fontWeight: FontWeight.w400)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget customImageButton(AssetImage img) {
-    return GestureDetector(
-        child: Container(
-          width: 70,
-          height: 70,
-          decoration: BoxDecoration(
-            image: DecorationImage(image: img, fit: BoxFit.cover),
-          ),
-        ),
-        onTap: () {
-          print("you clicked me");
-        });
   }
 }
