@@ -63,16 +63,29 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+
+  assets:
+     - assets/images/facebook_btn.png
+     - assets/images/naver_btn.png
+     - assets/images/kakao_btn.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
+  fonts:
+    - family: EchoDream
+      fonts:
+        - asset: assets/fonts/SCDream1.otf
+        - asset: assets/fonts/SCDream2.otf
+        - asset: assets/fonts/SCDream3.otf
+        - asset: assets/fonts/SCDream4.otf
+        - asset: assets/fonts/SCDream5.otf
+        - asset: assets/fonts/SCDream6.otf
+        - asset: assets/fonts/SCDream7.otf
+        - asset: assets/fonts/SCDream8.otf
+        - asset: assets/fonts/SCDream9.otf
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
