@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 Widget customEditTextForm(
     {required String label,
       required String hint,
-      required bool isSecret,
+      bool isSecret = false,
       required FormFieldSetter onSaved}) {
   return Container(
     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
