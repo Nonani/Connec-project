@@ -1,8 +1,10 @@
-import 'package:connec_project/components/LoginIconButton.dart';
-import 'package:connec_project/components/customEditTextForm.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+
+import '../components/LoginIconButton.dart';
+import '../components/customEditTextForm.dart';
+import 'SignUpPage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -55,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  customEditTextForm(
+                  CustomEditTextForm(
                     label: "이메일",
                     hint: "example@connec.co.kr",
                     isSecret: false,
@@ -64,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                       print(email);
                     },
                   ),
-                  customEditTextForm(
+                  CustomEditTextForm(
                     label: "비밀번호",
                     hint: "비밀번호를 입력해주세요",
                     isSecret: true,
@@ -140,7 +142,13 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUpPage(),
+                          ));
+                    },
                     child: Text(
                       "회원가입",
                       style: TextStyle(color: Color(0xffbdbdbd)),
