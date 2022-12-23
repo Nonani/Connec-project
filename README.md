@@ -1,4 +1,4 @@
-# connec_project
+# connec
 
 A new Flutter project.
 

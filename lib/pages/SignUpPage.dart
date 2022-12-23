@@ -1,5 +1,5 @@
-import 'package:connec_project/components/CustomEditTextForm.dart';
-import 'package:connec_project/models/SignUpBody.dart';
+import 'package:connec/components/CustomEditTextForm.dart';
+import 'package:connec/models/SignUpBody.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
