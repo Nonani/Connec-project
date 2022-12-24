@@ -17,7 +17,6 @@ class ServiceClass extends ChangeNotifier{
   Future<void> postData(SignUpBody body) async {
     loading = true;
     notifyListeners();
-    sleep(Duration(seconds: 5));
     isComplete = await register(body);
     loading = false;
     notifyListeners();

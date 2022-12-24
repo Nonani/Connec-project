@@ -35,7 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
         builder: (context, data, child) {
           return data.loading
               ? Container(
-                  child: Text("test"),
+                  child: Text("회원가입"),
                 )
               : SafeArea(
                   child: Form(
@@ -121,7 +121,7 @@ class _SignUpPageState extends State<SignUpPage> {
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
             _formKey.currentState!.save();
-            provider.postData(SignUpBody(
+            await provider.postData(SignUpBody(
               name: _name,
               age: _age,
               capability: _capability,
