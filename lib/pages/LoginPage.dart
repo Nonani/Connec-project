@@ -1,5 +1,7 @@
+import 'package:connec/services/KakaoLogin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as kakao;
 import 'package:logger/logger.dart';
 
 import '../components/LoginIconButton.dart';
@@ -173,8 +175,9 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 SizedBox(width: size.width * 0.01),
                 customImageButton(AssetImage("assets/images/kakao_btn.png"),
-                    () {
-                  print("clicked!!");
+                    () async{
+                  await KakaoLogin().login();
+
                 }),
                 customImageButton(AssetImage("assets/images/naver_btn.png"),
                     () {
