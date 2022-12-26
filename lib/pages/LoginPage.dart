@@ -11,7 +11,7 @@ import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 
 import '../components/LoginIconButton.dart';
-import '../components/customEditTextForm.dart';
+import '../components/CustomEditTextForm.dart';
 import 'SearchPasswordPage.dart';
 import 'SignUpPage.dart';
 
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CustomEditTextForm(
+                  LoginEditTextForm(
                     label: "이메일",
                     hint: "example@connec.co.kr",
                     isSecret: false,
@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                       print(email);
                     },
                   ),
-                  CustomEditTextForm(
+                  LoginEditTextForm(
                     label: "비밀번호",
                     hint: "비밀번호를 입력해주세요",
                     isSecret: true,
@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ExpandNetworkPage(),
+                            builder: (context) => SearchPasswordPage(),
                           ));
                     },
                     child: Text(

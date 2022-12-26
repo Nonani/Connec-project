@@ -2,7 +2,7 @@ import '../models/SignUpBody.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../components/customEditTextForm.dart';
+import '../components/CustomEditTextForm.dart';
 import '../services/service_class.dart';
 
 class SocialSignUpPage extends StatefulWidget {
