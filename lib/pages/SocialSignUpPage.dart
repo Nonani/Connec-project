@@ -6,15 +6,16 @@ import '../components/CustomEditTextForm.dart';
 import '../services/service_class.dart';
 
 class SocialSignUpPage extends StatefulWidget {
-  const SocialSignUpPage({Key? key, this.uid, this.serviceName}) : super(key: key);
+  const SocialSignUpPage({Key? key, this.uid, this.serviceName})
+      : super(key: key);
   final uid;
   final serviceName;
+
   @override
   State<SocialSignUpPage> createState() => _SocialSignUpPageState();
 }
 
 class _SocialSignUpPageState extends State<SocialSignUpPage> {
-
   String? _name;
   String? _work;
   String? _career;
@@ -31,6 +32,12 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
   Widget build(BuildContext context) {
     var provider = Provider.of<ServiceClass>(context, listen: false);
     return Scaffold(
+      appBar: AppBar(
+          shape:
+              Border(bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
+          backgroundColor: Color(0xfffafafa),
+          elevation: 0,
+          leading: BackButton(color: Color(0xff5f66f2))),
       body: Consumer<ServiceClass>(
         builder: (context, data, child) {
           return data.loading
@@ -103,12 +110,12 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                                         checkboxValue1 = value!;
                                       });
                                     }),
-                                Text('(필수) 이용약관, 개인정보 수집 및 이용 동의',
+                                Text(
+                                  '(필수) 이용약관, 개인정보 수집 및 이용 동의',
                                   style: TextStyle(
                                       color: Color(0xff333333),
                                       fontFamily: 'EchoDream',
-                                      fontWeight: FontWeight.w400
-                                  ),
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ],
                             ),
@@ -125,12 +132,12 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                                         checkboxValue1 = value!;
                                       });
                                     }),
-                                Text('(필수) 이용약관, 개인정보 수집 및 이용 동의',
+                                Text(
+                                  '(필수) 이용약관, 개인정보 수집 및 이용 동의',
                                   style: TextStyle(
                                       color: Color(0xff333333),
                                       fontFamily: 'EchoDream',
-                                      fontWeight: FontWeight.w400
-                                  ),
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ],
                             ),
@@ -147,12 +154,12 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                                         checkboxValue2 = value!;
                                       });
                                     }),
-                                Text('(필수) 만 14세 이상',
+                                Text(
+                                  '(필수) 만 14세 이상',
                                   style: TextStyle(
                                       color: Color(0xff333333),
                                       fontFamily: 'EchoDream',
-                                      fontWeight: FontWeight.w400
-                                  ),
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ],
                             ),

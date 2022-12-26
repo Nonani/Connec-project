@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connec/pages/ExpandNetworkPage.dart';
 import 'package:connec/pages/SocialSignUpPage.dart';
 import 'package:connec/services/KakaoLogin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
