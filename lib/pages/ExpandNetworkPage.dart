@@ -62,7 +62,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage>{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [ Padding(
                     padding: EdgeInsets.only(top: 47.1),
-                    child: CustomEditTextForm(
+                    child: LoginEditTextForm(
                       label: "확장할 지인 코드",
                       hint: "지인의 코드를 입력해 주세요",
                       isSecret: false,
