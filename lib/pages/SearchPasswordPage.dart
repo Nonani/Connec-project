@@ -40,7 +40,7 @@ class _SearchPasswordPageState extends State<SearchPasswordPage>{
           style: TextStyle(
             color: Color(0xff333333),
             fontSize: 20,
-            fontFamily: 'S-CoreDream-5Medium',
+            fontFamily: "EchoDream",
             fontWeight: FontWeight.w500,
           ),
         ),

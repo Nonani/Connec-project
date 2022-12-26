@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ExpandNetworkPage(),
+                            builder: (context) => SearchPasswordPage(),
                           ));
                     },
                     child: Text(
