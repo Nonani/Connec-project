@@ -73,6 +73,11 @@ flutter:
     - assets/images/facebook_btn.png
     - assets/images/naver_btn.png
     - assets/images/kakao_btn.png
+    - assets/images/navigation_icon_1.png
+    - assets/images/navigation_icon_2.png
+    - assets/images/navigation_icon_3.png
+    - assets/images/navigation_icon_4.png
+    - assets/images/navigation_icon_5.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
