@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/pages/ExpandNetworkPage.dart';
 import 'package:connec/pages/SocialSignUpPage.dart';
 import 'package:connec/services/KakaoLogin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +12,7 @@ import 'package:http/http.dart' as http;
 
 import '../components/LoginIconButton.dart';
 import '../components/customEditTextForm.dart';
+import 'SearchPasswordPage.dart';
 import 'SignUpPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -129,7 +131,13 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ExpandNetworkPage(),
+                          ));
+                    },
                     child: Text(
                       "비밀번호 찾기",
                       style: TextStyle(color: Color(0xffbdbdbd)),
