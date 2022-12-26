@@ -45,67 +45,67 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          SignUpTextFormField(
+                          SignUpEditTextForm(
                             label: "이메일",
                             hint: "example@connec.co.kr",
                             isSecret: false,
                             onSaved: (newValue) => _email = newValue,
                           ),
-                          SignUpTextFormField(
+                          SignUpEditTextForm(
                             label: "비밀번호",
                             hint: "기호/영문/숫자 포함 8자 이상",
                             isSecret: true,
                             onSaved: (newValue) => _password = newValue,
                           ),
-                          SignUpTextFormField(
+                          SignUpEditTextForm(
                             label: "비밀번호 확인",
                             hint: "비밀번호를 입력해주세요",
                             isSecret: true,
                             onSaved: (newValue) => _password = newValue,
                           ),
-                          SignUpTextFormField(
+                          SignUpEditTextForm(
                             label: "이름",
                             hint: "이름(실명)을 입력해주세요",
                             isSecret: false,
                             onSaved: (newValue) => _name = newValue,
                           ),
-                          SignUpTextFormField(
+                          SignUpEditTextForm(
                             label: "직군/직무",
                             hint: "이름(실명)을 입력해주세요",
                             isSecret: false,
                             onSaved: (newValue) => _work = newValue,
                           ),
-                          SignUpTextFormField(
+                          SignUpEditTextForm(
                             label: "경력",
                             hint: "이름(실명)을 입력해주세요",
                             isSecret: false,
                             onSaved: (newValue) => _career = newValue,
                           ),
-                          SignUpTextFormField(
+                          SignUpEditTextForm(
                             label: "활동지",
                             hint: "이름(실명)을 입력해주세요",
                             isSecret: false,
                             onSaved: (newValue) => _location = newValue,
                           ),
-                          SignUpTextFormField(
+                          SignUpEditTextForm(
                             label: "성별",
                             hint: "이름(실명)을 입력해주세요",
                             isSecret: false,
                             onSaved: (newValue) => _gender = newValue,
                           ),
-                          SignUpTextFormField(
+                          SignUpEditTextForm(
                             label: "나이",
                             hint: "이름(실명)을 입력해주세요",
                             isSecret: false,
                             onSaved: (newValue) => _age = newValue,
                           ),
-                          SignUpTextFormField(
+                          SignUpEditTextForm(
                             label: "능력",
                             hint: "이름(실명)을 입력해주세요",
                             isSecret: false,
                             onSaved: (newValue) => _capability = newValue,
                           ),
-                          SignUpTextFormField(
+                          SignUpEditTextForm(
                             label: "소개",
                             hint: "이름(실명)을 입력해주세요",
                             isSecret: false,
