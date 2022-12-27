@@ -7,17 +7,10 @@ import 'package:flutter/material.dart';
 class ExpansionTileSample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('ExpansionTile'),
-        ),
-        body: ListView.builder(
-          itemBuilder: (BuildContext context, int index) =>
-              EntryItem(data[index]),
-          itemCount: data.length,
-        ),
-      ),
+    return ListView.builder(
+      itemBuilder: (BuildContext context, int index) =>
+          EntryItem(data[index], 0),
+      itemCount: data.length,
     );
   }
 }
@@ -39,7 +32,7 @@ List<Entry> jsonToEntry(dynamic json){
 // The entire multilevel list displayed by this app.
 final List<Entry> data = <Entry>[
   Entry(
-    'Chapter A',
+    '레슨',
     <Entry>[
       Entry(
         'Section A0',
@@ -76,39 +69,102 @@ final List<Entry> data = <Entry>[
       ),
     ],
   ),
+  Entry(
+    'Chapter C',
+    <Entry>[
+      Entry('Section C0'),
+      Entry('Section C1'),
+      Entry(
+        'Section C2',
+        <Entry>[
+          Entry('Item C2.0'),
+          Entry('Item C2.1'),
+          Entry('Item C2.2'),
+          Entry('Item C2.3'),
+        ],
+      ),
+    ],
+  ),
 ];
 
 // Displays one Entry. If the entry has children then it's displayed
 // with an ExpansionTile.
 class EntryItem extends StatelessWidget {
-  const EntryItem(this.entry);
-
+  const EntryItem(this.entry, this.num);
+  final double num;
   final Entry entry;
 
-  Widget _buildTiles(Entry root) {
+  Widget _buildTiles1(Entry root) {
     if (root.children.isEmpty)
       return ListTile(
-        title: Text(root.title),
+        title: Text(root.title,
+          style: TextStyle(
+            color: Color(0xff666666),
+            fontFamily: 'EchoDream',
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         onTap: () {
           // 이 부분을 go_router 패키지 써서
           // context.go('/${root.title}'), 이런 식으로 할 예정
           print(root.title);
-
+          print(1);
         },
       );
-    return ExpansionTile(
-      key: PageStorageKey<Entry>(root),
-      title: Text(root.title),
-      children: root.children.map(_buildTiles).toList(),
+    return Container(
+      decoration: UnderlineTabIndicator(
+        borderSide: BorderSide(width: 1, color: Color(0xff5f66f2))
+      ),
+      child: ExpansionTile(
+        childrenPadding: EdgeInsets.only(left: 10),
+        key: PageStorageKey<Entry>(root),
+        title: Text(root.title,
+          style: TextStyle(
+            color: Color(0xff666666),
+            fontSize: 16,
+            fontFamily: 'EchoDream',
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        children: root.children.map(_buildTiles2).toList(),
+      ),
     );
   }
-
+  Widget _buildTiles2(Entry root) {
+    if (root.children.isEmpty)
+      return ListTile(
+        title: Text(root.title,
+          style: TextStyle(
+            color: Color(0xff666666),
+            fontFamily: 'EchoDream',
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        onTap: () {
+          // 이 부분을 go_router 패키지 써서
+          // context.go('/${root.title}'), 이런 식으로 할 예정
+          print(root.title);
+          print(2);
+        },
+      );
+    return Container(
+      child: ExpansionTile(
+        childrenPadding: EdgeInsets.only(left: 10),
+        key: PageStorageKey<Entry>(root),
+        title: Text(root.title,
+          style: TextStyle(
+            color: Color(0xff666666),
+            fontFamily: 'EchoDream',
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        children: root.children.map(_buildTiles1).toList(),
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
-    return _buildTiles(entry);
+    return _buildTiles1(entry);
   }
 }
 
-void main() {
-  runApp(ExpansionTileSample());
-}

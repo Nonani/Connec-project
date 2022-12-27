@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'TileBuilder.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -37,51 +39,7 @@ class _MainPageState extends State<MainPage> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          ExpansionTile(
-            title: Text(
-              '디자인/개발',
-              style: TextStyle(
-                color: Color(0xff666666),
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            children: [
-              ExpansionTile(
-                tilePadding: EdgeInsets.only(left:25),
-                title: Text('디자인 외주',
-                  style: TextStyle(
-                    color: Color(0xff666666),
-                    fontFamily: 'S-CoreDream-5',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                children: [],
-              ),
-              ExpansionTile(
-                tilePadding: EdgeInsets.only(left:25),
-                title: Text("개발 외주"),
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      print("clicked!");
-                    },
-                    child: Text("게임 개발"),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      print("clicked!");
-                    },
-                    child: Text("게임 개발"),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
+      body:ExpansionTileSample(),
       bottomNavigationBar: Container(
         height: 70,
         child: BottomNavigationBar(

@@ -54,10 +54,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return ExpansionTileSample();
-    // return StreamBuilder<User?>(
-    //     stream: FirebaseAuth.instance.authStateChanges(),
-    //     builder: (context, snapshot) =>
-    //         (!snapshot.hasData) ? LoginPage() : MainPage());
+    return StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) =>
+            (!snapshot.hasData) ? LoginPage() : MainPage());
   }
 }
