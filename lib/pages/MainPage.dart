@@ -37,7 +37,51 @@ class _MainPageState extends State<MainPage> {
         ),
         centerTitle: true,
       ),
-      body: Container(),
+      body: Column(
+        children: [
+          ExpansionTile(
+            title: Text(
+              '디자인/개발',
+              style: TextStyle(
+                color: Color(0xff666666),
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            children: [
+              ExpansionTile(
+                tilePadding: EdgeInsets.only(left:25),
+                title: Text('디자인 외주',
+                  style: TextStyle(
+                    color: Color(0xff666666),
+                    fontFamily: 'S-CoreDream-5',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                children: [],
+              ),
+              ExpansionTile(
+                tilePadding: EdgeInsets.only(left:25),
+                title: Text("개발 외주"),
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      print("clicked!");
+                    },
+                    child: Text("게임 개발"),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      print("clicked!");
+                    },
+                    child: Text("게임 개발"),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
       bottomNavigationBar: Container(
         height: 70,
         child: BottomNavigationBar(
@@ -62,7 +106,6 @@ class _MainPageState extends State<MainPage> {
                   height: 30,
                   width: 30,
                 ),
-
                 label: "네트워크"),
             BottomNavigationBarItem(
                 icon: Image.asset(

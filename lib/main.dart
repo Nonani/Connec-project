@@ -1,5 +1,6 @@
 import 'package:connec/pages/LoginPage.dart';
 import 'package:connec/pages/MainPage.dart';
+import 'package:connec/pages/TileBuilder.dart';
 import 'package:connec/services/service_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -53,9 +54,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) =>
-            (!snapshot.hasData) ? LoginPage() : MainPage());
+    return ExpansionTileSample();
+    // return StreamBuilder<User?>(
+    //     stream: FirebaseAuth.instance.authStateChanges(),
+    //     builder: (context, snapshot) =>
+    //         (!snapshot.hasData) ? LoginPage() : MainPage());
   }
 }
