@@ -35,7 +35,7 @@ class ServiceClass extends ChangeNotifier {
               'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: <String, String> {
-              'uid': 'kakao${data.uid}',
+              'uid': 'kakao:${data.uid}',
             },
           );
           logger.w(response.body);
@@ -44,7 +44,7 @@ class ServiceClass extends ChangeNotifier {
           return false;
         }
         try{
-          db.collection("users").doc("${data.serviceName}${data.uid}").set(data.toJson());
+          db.collection("users").doc("${data.serviceName}:${data.uid}").set(data.toJson());
         }catch(e){
           logger.w(e);
           return false;
