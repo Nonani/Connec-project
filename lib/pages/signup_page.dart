@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../components/custom_edit_textform.dart';
 import '../services/service_class.dart';
-
+import 'package:uuid/uuid.dart';
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
@@ -18,6 +18,9 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   // String? _uid;
   // String? _serviceName;
+
+
+  var uuid = Uuid();
   String? _email;
   String? _password;
   String? _name;
@@ -188,6 +191,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 _formKey.currentState!.save();
                 showCustomDialog(context);
                 await provider.postData(SignUpBody(
+                  uuid: uuid.v4(),
                   name: _name,
                   age: _age,
                   capability: _capability,

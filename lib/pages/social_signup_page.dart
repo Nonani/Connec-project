@@ -1,4 +1,5 @@
 import 'package:connec/components/custom_dialog.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/SignUpBody.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class SocialSignUpPage extends StatefulWidget {
 }
 
 class _SocialSignUpPageState extends State<SocialSignUpPage> {
+  var uuid = Uuid();
   String? _name;
   String? _work;
   String? _career;
@@ -153,6 +155,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
               showCustomDialog(context);
               await provider.postData(SignUpBody(
                 uid: widget.uid.toString(),
+                uuid: uuid.v4(),
                 name: _name,
                 age: _age,
                 capability: _capability,

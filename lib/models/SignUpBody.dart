@@ -1,5 +1,6 @@
 class SignUpBody {
   String? uid;
+  String? uuid;
   String? serviceName;
   String? email;
   String? password;
@@ -14,6 +15,7 @@ class SignUpBody {
 
   SignUpBody(
       {this.uid,
+        this.uuid,
         this.serviceName,
         this.email,
         this.password,
@@ -28,6 +30,7 @@ class SignUpBody {
 
   SignUpBody.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
+    uuid = json['uuid'];
     serviceName = json['serviceName'];
     email = json['email'];
     password = json['password'];
@@ -44,6 +47,7 @@ class SignUpBody {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['uid'] = this.uid;
+    data['uuid'] = this.uuid;
     data['serviceName'] = this.serviceName;
     data['email'] = this.email;
     data['password'] = this.password;
@@ -57,4 +61,5 @@ class SignUpBody {
     data['introduction'] = this.introduction;
     return data;
   }
+
 }
