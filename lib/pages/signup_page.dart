@@ -1,11 +1,11 @@
 import 'dart:ffi';
 
-import '../components/CustomDialog.dart';
+import '../components/custom_dialog.dart';
 import '../models/SignUpBody.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../components/CustomEditTextForm.dart';
+import '../components/custom_edit_textform.dart';
 import '../services/service_class.dart';
 
 class SignUpPage extends StatefulWidget {

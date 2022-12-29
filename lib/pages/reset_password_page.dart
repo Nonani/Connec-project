@@ -1,19 +1,23 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import '../components/CustomEditTextForm.dart';
+import '../components/custom_edit_textform.dart';
 import '../services/service_class.dart';
 
-class ExpandNetworkPage extends StatefulWidget {
+class ResetPasswordPage extends StatefulWidget {
 
-  const ExpandNetworkPage({Key? key}) : super(key: key);
+  const ResetPasswordPage({Key? key}) : super(key: key);
 
   @override
-  State<ExpandNetworkPage> createState() => _ExpandNetworkPageState();
+  State<ResetPasswordPage> createState() => _ResetPasswordPageState();
 
 }
-class _ExpandNetworkPageState extends State<ExpandNetworkPage>{
-  String? _userCode;
+class _ResetPasswordPageState extends State<ResetPasswordPage>{
+  String email = "";
+  final _formKey = GlobalKey<FormState>();
+  final logger = Logger();
 
   @override
   Widget build(BuildContext context){
@@ -36,42 +40,38 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage>{
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text("네트워크 확장",
+        title: const Text("비밀번호 찾기",
           style: TextStyle(
             color: Color(0xff333333),
             fontSize: 20,
-            fontFamily: 'EchoDream',
+            fontFamily: 'S-CoreDream-5Medium',
             fontWeight: FontWeight.w500,
           ),
         ),
-        actions: const [IconButton(
-            icon: Icon(Icons.link_sharp),
-            color: Color(0xff5f66f2),
-            onPressed: null),
-        ],
       ),
 
       body : Consumer<ServiceClass>(
         builder: (context, data, child){
           return data.loading ?
           Container(
-              child: const Text("네트워크 확장")
+              child: const Text("비밀번호 찾기")
           ): SafeArea(
               child: Form (
+                key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [ Padding(
                     padding: EdgeInsets.only(top: 47.1),
-                    child: LoginEditTextForm(
-                      label: "확장할 지인 코드",
-                      hint: "지인의 코드를 입력해 주세요",
+                    child: SignUpEditTextForm(
+                      label: "가입한 이메일 주소를 입력해 주세요.",
+                      hint: "example@connec.co.kr",
                       isSecret: false,
-                      onSaved: (newValue) => _userCode = newValue,
+                      onSaved: (newValue) => email = newValue,
                     ),
                   ),
                     const Padding(
                         padding: EdgeInsets.only(left: 22.5, top: 8.1),
-                        child: Text("서로가 모두 네트워크 확장을 신청하면 2~3일 이내\n네트워크가 업데이트 됩니다.",
+                        child: Text("가입하신 이메일 주소를 입력해주시면\n새로운 비밀번호를 설정 가능한 링크를 보내드립니다.",
                           style: TextStyle(
                             color: Color(0xffafafaf),
                             fontSize: 11.5,
@@ -86,12 +86,22 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage>{
         },
       ),
       bottomNavigationBar: ElevatedButton(
-        onPressed: () {  },
+        onPressed: () async {
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
+        try {
+          await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+        } on FirebaseAuthException catch (e) {
+          logger.w(e);
+          return;
+        }
+      }
+      },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xff5f66f2),
           minimumSize: const Size(100, 56),
         ),
-        child: const Text('확장하기',
+        child: const Text('전송하기',
           style: TextStyle(
             color: Color(0xfffafafa),
             fontSize: 20,

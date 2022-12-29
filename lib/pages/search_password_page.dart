@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../components/CustomEditTextForm.dart';
+import '../components/custom_edit_textform.dart';
 import '../services/service_class.dart';
 
 class SearchPasswordPage extends StatefulWidget {

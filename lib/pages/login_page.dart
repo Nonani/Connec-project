@@ -1,18 +1,18 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connec/components/CustomDialog.dart';
-import 'package:connec/pages/SocialSignUpPage.dart';
-import 'package:connec/services/KakaoLogin.dart';
+import 'package:connec/components/custom_dialog.dart';
+import 'package:connec/pages/social_signup_page.dart';
+import 'package:connec/services/kakao_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as kakao;
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 
-import '../components/LoginIconButton.dart';
-import '../components/CustomEditTextForm.dart';
-import 'SearchPasswordPage.dart';
-import 'SignUpPage.dart';
+import '../components/login_icon_button.dart';
+import '../components/custom_edit_textform.dart';
+import 'search_password_page.dart';
+import 'signup_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

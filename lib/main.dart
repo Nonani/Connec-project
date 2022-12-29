@@ -1,6 +1,6 @@
-import 'package:connec/pages/LoginPage.dart';
-import 'package:connec/pages/MainPage.dart';
-import 'package:connec/pages/TileBuilder.dart';
+import 'package:connec/pages/login_page.dart';
+import 'package:connec/pages/main_page.dart';
+import 'package:connec/components/custom_expansion_tile.dart';
 import 'package:connec/services/service_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
