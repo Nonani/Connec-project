@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'TileBuilder.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -37,7 +39,7 @@ class _MainPageState extends State<MainPage> {
         ),
         centerTitle: true,
       ),
-      body: Container(),
+      body:ExpansionTileSample(),
       bottomNavigationBar: Container(
         height: 70,
         child: BottomNavigationBar(
@@ -62,7 +64,6 @@ class _MainPageState extends State<MainPage> {
                   height: 30,
                   width: 30,
                 ),
-
                 label: "네트워크"),
             BottomNavigationBarItem(
                 icon: Image.asset(
