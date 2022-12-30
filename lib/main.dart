@@ -1,3 +1,4 @@
+import 'package:connec/pages/add_member_page.dart';
 import 'package:connec/pages/login_page.dart';
 import 'package:connec/pages/main_page.dart';
 import 'package:connec/components/custom_expansion_tile.dart';
@@ -57,6 +58,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) =>
-            (!snapshot.hasData) ? LoginPage() : MainPage());
+            (!snapshot.hasData) ? LoginPage() : AddMemberPage());
   }
 }
