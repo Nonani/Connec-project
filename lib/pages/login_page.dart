@@ -239,7 +239,7 @@ class _LoginPageState extends State<LoginPage> {
               'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: <String, String>{
-              'uid': "kakao${user.id}",
+              'uid': "kakao:${user.id}",
             },
           );
           if (response.statusCode == 200) {
