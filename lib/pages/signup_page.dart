@@ -190,7 +190,7 @@ class _SignUpPageState extends State<SignUpPage> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 showCustomDialog(context);
-                await provider.postData(SignUpBody(
+                await provider.postSignUpBody(SignUpBody(
                   uuid: uuid.v4(),
                   name: _name,
                   age: _age,

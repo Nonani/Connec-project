@@ -153,7 +153,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
               showCustomDialog(context);
-              await provider.postData(SignUpBody(
+              await provider.postSignUpBody(SignUpBody(
                 uid: widget.uid.toString(),
                 uuid: uuid.v4(),
                 name: _name,

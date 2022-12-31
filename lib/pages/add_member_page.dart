@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/expand_network_page.dart';
-import 'package:connec/pages/test_page.dart';
+import 'package:connec/pages/member_body_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -45,6 +45,24 @@ class _AddMemberPageState extends State<AddMemberPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      Container(
+                        height: 112,
+                        width: 112,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Color(0xff5f66f2),
+                          shape: BoxShape.circle,
+                          // image: DecorationImage(
+                          //   image: AssetImage(
+                          //       'assets/images/navigation_icon_2.png'),
+                          // )
+                        ),
+                        child: ImageIcon(
+                          AssetImage('assets/images/navigation_icon_2.png'),
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 17),
                       Text(
                         '지인 등록 후 이용해주세요',
                         style: TextStyle(
@@ -53,14 +71,22 @@ class _AddMemberPageState extends State<AddMemberPage> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
+                      SizedBox(height: 7),
                       Text(
+                        '현재 ( ${snapshot.data.size} ) 명의 지인이 등록되었습니다.\n5명의 지인이 등록될 경우,\n해당 서비스를 이용할 수 있습니다.',
                         textAlign: TextAlign.center,
-                        '컨넥 서비스를 이용하기 위해\n로그인이 필요합니다',
+                        style: TextStyle(
+                          color: Color(0xff999999),
+                          fontSize: 13,
+                        ),
+                      ),
+                      SizedBox(height: 85),
+                      Text(
+                        '현재 등록 지인 ( ${snapshot.data.size} / 5 )',
                         style: TextStyle(
                           color: Color(0xff999999),
                         ),
                       ),
-                      SizedBox(height: 85),
                       Container(
                         width: 180,
                         height: 40,
@@ -73,11 +99,10 @@ class _AddMemberPageState extends State<AddMemberPage> {
                           onPressed: () {
                             Navigator.push(
                                 context,
-                                DialogRoute(
-                                  context: context,
-                                  builder: (context) => TestPage(),
+                                MaterialPageRoute(
+                                  builder: (context) => MemberBodyPage(),
                                 )).then((_) => setState(() {}));
-                            ;
+
                           },
                           child: Text(
                             '지인 등록',

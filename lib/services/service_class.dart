@@ -1,10 +1,13 @@
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
+import '../models/MemberBody.dart';
 import '../models/SignUpBody.dart';
 
 class ServiceClass extends ChangeNotifier {
@@ -14,8 +17,9 @@ class ServiceClass extends ChangeNotifier {
   bool isBack = false;
   bool isComplete = false;
 
-  Future<void> postData(SignUpBody body) async {
+  Future<void> postSignUpBody(SignUpBody body) async {
     loading = true;
+    isComplete = false;
     notifyListeners();
     isComplete = await register(body);
     loading = false;
@@ -80,5 +84,23 @@ class ServiceClass extends ChangeNotifier {
         }
         return true;
     }
+  }
+
+  Future<void> postMemberBody(MemberBody body) async {
+    loading = true;
+    isComplete = false;
+    notifyListeners();
+    isComplete = await addMember(body);
+    sleep(const Duration(seconds:1));
+    loading = false;
+    notifyListeners();
+  }
+  Future<bool> addMember(MemberBody data) async {
+    try{
+      db.collection("member").add(data.toJson());
+    }catch(e){
+      logger.w(e);
+    }
+    return true;
   }
 }
