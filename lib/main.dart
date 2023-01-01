@@ -58,7 +58,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final logger = Logger();
-  String? device_token = "";
 
   final database = FirebaseFirestore.instance;
   final messaging = FirebaseMessaging.instance;
@@ -66,7 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState(){
     super.initState();
     requestPermission();
-    getToken();
     initInfo();
   }
   initInfo() {
@@ -76,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
     FlutterLocalNotificationsPlugin().initialize(initializationSettings, onDidReceiveNotificationResponse: (NotificationResponse response) async{
       try {
         if (response.payload != null && (response.payload!).isNotEmpty){
-
+          logger.w("payload exist");
         } else{
 
         }
@@ -129,19 +127,5 @@ class _MyHomePageState extends State<MyHomePage> {
       logger.w('user declined permission grant');
     }
   }
-  void getToken() async{
-    await FirebaseMessaging.instance.getToken().then(
-      (token) => {
-        setState(() {
-          device_token = token;
-          logger.w(device_token);
-        })
-      }
-    );
-    saveToken(device_token!);
-  }
-  void saveToken(String token) async{
-    var uid = FirebaseAuth.instance.currentUser?.uid;
-    await database.collection('deviceTokenTable').doc(uid).set({'token' : token});
-  }
+
 }

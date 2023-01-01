@@ -4,6 +4,7 @@ import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/social_signup_page.dart';
 import 'package:connec/services/kakao_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as kakao;
 import 'package:logger/logger.dart';
@@ -26,9 +27,11 @@ class _LoginPageState extends State<LoginPage> {
   final logger = Logger();
   String email = "";
   String password = "";
+  String device_token = "";
 
   @override
   Widget build(BuildContext context) {
+
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -95,6 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                               final credential = await FirebaseAuth.instance
                                   .signInWithEmailAndPassword(
                                       email: email, password: password);
+                              getToken();
                             } on FirebaseAuthException catch (e) {
                               if (e.code == 'user-not-found') {
                                 logger.w('No user found for that email.');
@@ -245,7 +249,8 @@ class _LoginPageState extends State<LoginPage> {
           if (response.statusCode == 200) {
             Map<String, dynamic> jsonData = jsonDecode(response.body);
             try {
-              FirebaseAuth.instance.signInWithCustomToken(jsonData["token"]);
+              await FirebaseAuth.instance.signInWithCustomToken(jsonData["token"]);
+              getToken();
             } catch (e) {
               logger.w(e);
             }
@@ -257,6 +262,21 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
   }
-
+  void getToken() async{
+    await FirebaseMessaging.instance.getToken().then(
+            (token) => {setState(() {
+            device_token = token!;
+            logger.w(device_token);
+          })
+        }
+    );
+    saveToken(device_token);
+  }
+  void saveToken(String token) async{
+    var database = FirebaseFirestore.instance;
+    var uid = FirebaseAuth.instance.currentUser?.uid;
+    await database.collection('deviceToken').doc(uid).set({'token' : token});
+    logger.w(uid);
+  }
   
 }
