@@ -1,24 +1,28 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/add_member_page.dart';
 import 'package:connec/pages/login_page.dart';
-import 'package:connec/pages/main_page.dart';
-import 'package:connec/components/custom_expansion_tile.dart';
 import 'package:connec/services/service_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as kakao;
 import 'package:flutter/cupertino.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 
-void main() async {
+Future<void> main() async {
   // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseMessaging.instance.getInitialMessage();
   kakao.KakaoSdk.init(nativeAppKey: 'd148d9781b59a5bbd68bf9d38a8195c7');
+
   runApp(
     /// Providers are above [MyApp] instead of inside it, so that tests
     /// can use [MyApp] while mocking the providers
@@ -53,11 +57,91 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final logger = Logger();
+  String? device_token = "";
+
+  final database = FirebaseFirestore.instance;
+  final messaging = FirebaseMessaging.instance;
+  @override
+  void initState(){
+    super.initState();
+    requestPermission();
+    getToken();
+    initInfo();
+  }
+  initInfo() {
+    var androidInitialize = const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var iOSInitialize = const DarwinInitializationSettings();
+    var initializationSettings = InitializationSettings(android:  androidInitialize, iOS: iOSInitialize);
+    FlutterLocalNotificationsPlugin().initialize(initializationSettings, onDidReceiveNotificationResponse: (NotificationResponse response) async{
+      try {
+        if (response.payload != null && (response.payload!).isNotEmpty){
+
+        } else{
+
+        }
+      }catch(e) {
+
+      }
+      return;
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
+      AndroidNotificationDetails androidChannelSpecifics = AndroidNotificationDetails(
+          'request',
+          'request arrived',
+          importance: Importance.high,
+          priority: Priority.high,
+          playSound: true
+      );
+      NotificationDetails channelSpecifics = NotificationDetails(
+          android: androidChannelSpecifics,
+      );
+      await FlutterLocalNotificationsPlugin().show(0, message.notification?.title, message.notification?.body,
+      channelSpecifics);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) =>
             (!snapshot.hasData) ? LoginPage() : AddMemberPage());
+  }
+
+  void requestPermission() async{
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true
+    );
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      logger.w("user granted permission");
+    } else if(settings.authorizationStatus == AuthorizationStatus.provisional) {
+      logger.w('user granted provisional permissions');
+    } else {
+      logger.w('user declined permission grant');
+    }
+  }
+  void getToken() async{
+    await FirebaseMessaging.instance.getToken().then(
+      (token) => {
+        setState(() {
+          device_token = token;
+          logger.w(device_token);
+        })
+      }
+    );
+    saveToken(device_token!);
+  }
+  void saveToken(String token) async{
+    var uid = FirebaseAuth.instance.currentUser?.uid;
+    await database.collection('deviceTokenTable').doc(uid).set({'token' : token});
   }
 }
