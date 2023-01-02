@@ -23,7 +23,11 @@ class _AddMemberPageState extends State<AddMemberPage> {
         future: _future(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return CircularProgressIndicator();
+            return SafeArea(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
           }
           if (snapshot.data.size < 5) {
             return SafeArea(
