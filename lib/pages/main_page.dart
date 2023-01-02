@@ -13,13 +13,14 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 2;
-  List<Widget> list  = [
+  List<Widget> list = [
     ExpandNetworkPage(),
     ExpandNetworkPage(),
     ExpansionTileSample(),
     ExpandNetworkPage(),
     ExpandNetworkPage(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +47,136 @@ class _MainPageState extends State<MainPage> {
         ),
         centerTitle: true,
       ),
-      body: ExpansionTileSample(),
+      body: Column(
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(left: 23, top: 54),
+            child: Text(
+              '어떤 사람을 찾으시나요?',
+              style: TextStyle(
+                color: Color(0xff333333),
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 11,
+          ),
+          Container(
+              margin: EdgeInsets.only(left: 17, right: 17),
+              width: double.infinity,
+              height: 41,
+              child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    foregroundColor: Colors.black,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(21)),
+                      side: BorderSide(
+                        width: 1.0,
+                        color: Color(0xff5f66f2),
+                      ),
+                    ),
+                  ),
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.search,
+                        size: 30,
+                        color: Color(0xff5f66f2),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        '키워드로 검색해 보세요.',
+                        style: TextStyle(
+                          color: Color(0xff999999),
+                          fontSize: 15,
+                          fontFamily: 'S-CoreDream-4Regular',
+                          fontWeight: FontWeight.w200,
+                        ),
+                      ),
+                    ],
+                  ))),
+          Padding(
+            padding: const EdgeInsets.only(top: 45, left: 23),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  '알림',
+                  style: TextStyle(
+                    color: Color(0xff333333),
+                    fontSize: 20,
+                    fontFamily: 'S-CoreDream-6',
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  height: 20,
+                  alignment: Alignment.center,
+                  width: 32,
+                  decoration: BoxDecoration(
+                    color: Color(0xff5f66f2),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Text(
+                    '00',
+                    style: TextStyle(
+                      color: Color(0xfffafafa),
+                      fontSize: 13,
+                      fontFamily: 'S-CoreDream-6',
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            height: 143,
+            width: double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text("test"),
+                  Text("test"),
+                  Text("test"),Text("test"),
+                  Text("test"),
+                  Text("test"),
+                  Text("test"),
+                  Text("test"),
+                  Text("test"),
+
+
+
+                ],
+              ),
+            ),
+            margin: EdgeInsets.only(
+              top: 10,
+              left: 26,
+              right: 26,
+            ),
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(color: Color(0xff5f66f2), width: 1.5),
+                bottom: BorderSide(color: Color(0xff5f66f2), width: 1.5),
+              ),
+              color: Color(0xffeeeeee),
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: Container(
         height: 70,
         child: BottomNavigationBar(
@@ -56,7 +186,11 @@ class _MainPageState extends State<MainPage> {
             setState(() {
               _currentIndex = index;
             });
-            Navigator.push(context, MaterialPageRoute(builder: (context) => list[_currentIndex],));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => list[_currentIndex],
+                ));
           },
           type: BottomNavigationBarType.fixed,
           backgroundColor: Color(0xff5f66f2),
