@@ -229,7 +229,7 @@ class _LoginPageState extends State<LoginPage> {
             MaterialPageRoute(
                 builder: ((context) => SocialSignUpPage(
                       serviceName: "kakao",
-                      uid: user!.id,
+                      uid: "kakao:${user!.id}",
                     ))));
       } else {
         //이전에 로그인을 하여 회원가입 정보를 넣은 경우

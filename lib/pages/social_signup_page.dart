@@ -164,7 +164,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 introduction: _introduction,
                 location: _location,
                 work: _work,
-                serviceName: "kakao",
+                serviceName: widget.serviceName.toString(),
               ));
               if(provider.isComplete){
                 Navigator.pop(context);
