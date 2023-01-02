@@ -1,7 +1,10 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../components/custom_edit_textform.dart';
+import 'package:http/http.dart' as http;
 import '../services/service_class.dart';
 
 class ExpandNetworkPage extends StatefulWidget {
@@ -14,7 +17,8 @@ class ExpandNetworkPage extends StatefulWidget {
 }
 class _ExpandNetworkPageState extends State<ExpandNetworkPage>{
   String? _userCode;
-
+  final _formKey = GlobalKey<FormState>();
+  final logger = Logger();
   @override
   Widget build(BuildContext context){
     var provider = Provider.of<ServiceClass>(context, listen: false);
@@ -58,6 +62,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage>{
               child: const Text("네트워크 확장")
           ): SafeArea(
               child: Form (
+                key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [ Padding(
@@ -75,7 +80,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage>{
                           style: TextStyle(
                             color: Color(0xffafafaf),
                             fontSize: 11.5,
-                            fontFamily: 'S-CoreDream-4',
+                            fontFamily: 'EchoDream',
                           ),
                         )
                     ),
@@ -86,7 +91,29 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage>{
         },
       ),
       bottomNavigationBar: ElevatedButton(
-        onPressed: () {  },
+        onPressed: () async {
+          if (_formKey.currentState!.validate()) {
+            _formKey.currentState!.save();
+            var info = await FirebaseFirestore.instance.collection('member').doc(_userCode).get();
+            var data = info.data();
+            final url = Uri.parse('https://foggy-boundless-avenue.glitch.me/sendReq');
+            try {
+              http.Response response = await http.post(
+                url,
+                headers: <String, String> {
+                  'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: <String, String> {
+                  'to': data!['uid'],
+                  'from': 'kakao:2593652809'
+                },
+              );
+              logger.w(response.body);
+            }catch(e){
+              //logger.w(e);
+            }
+          }
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xff5f66f2),
           minimumSize: const Size(100, 56),
