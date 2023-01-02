@@ -1,3 +1,4 @@
+import 'package:connec/pages/expand_network_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +12,14 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int _currentIndex = 0;
-
+  int _currentIndex = 2;
+  List<Widget> list  = [
+    ExpandNetworkPage(),
+    ExpandNetworkPage(),
+    ExpansionTileSample(),
+    ExpandNetworkPage(),
+    ExpandNetworkPage(),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +46,7 @@ class _MainPageState extends State<MainPage> {
         ),
         centerTitle: true,
       ),
-      body:ExpansionTileSample(),
+      body: ExpansionTileSample(),
       bottomNavigationBar: Container(
         height: 70,
         child: BottomNavigationBar(
@@ -49,6 +56,7 @@ class _MainPageState extends State<MainPage> {
             setState(() {
               _currentIndex = index;
             });
+            Navigator.push(context, MaterialPageRoute(builder: (context) => list[_currentIndex],));
           },
           type: BottomNavigationBarType.fixed,
           backgroundColor: Color(0xff5f66f2),

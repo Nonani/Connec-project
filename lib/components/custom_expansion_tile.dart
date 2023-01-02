@@ -47,14 +47,14 @@ final List<Entry> data = <Entry>[
     ],
   ),
   Entry(
-    'Chapter B',
+    '홈/리빙',
     <Entry>[
       Entry('Section B0'),
       Entry('Section B1'),
     ],
   ),
   Entry(
-    'Chapter C',
+    '이벤트',
     <Entry>[
       Entry('Section C0'),
       Entry('Section C1'),
@@ -70,7 +70,7 @@ final List<Entry> data = <Entry>[
     ],
   ),
   Entry(
-    'Chapter C',
+    '비즈니스',
     <Entry>[
       Entry('Section C0'),
       Entry('Section C1'),
