@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/add_member_page.dart';
 import 'package:connec/pages/login_page.dart';
+import 'package:connec/pages/main_page.dart';
 import 'package:connec/services/service_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -76,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
         if (response.payload != null && (response.payload!).isNotEmpty){
           logger.w("payload exist");
         } else{
-
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainPage(),),(route) => false);
         }
       }catch(e) {
 
