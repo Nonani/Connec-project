@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/expand_network_page.dart';
+import 'package:connec/pages/network_manage_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -17,7 +18,7 @@ class _MainPageState extends State<MainPage> {
   int _currentIndex = 2;
   Logger logger = Logger();
   List<Widget> list = [
-    ExpandNetworkPage(),
+    NetworkManagePage(),
     ExpandNetworkPage(),
     ExpansionTileSample(),
     ExpandNetworkPage(),
@@ -73,9 +74,6 @@ class _MainPageState extends State<MainPage> {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 11,
                 ),
                 Container(
                     margin: EdgeInsets.only(left: 17, right: 17),
