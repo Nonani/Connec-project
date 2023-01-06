@@ -143,7 +143,7 @@ class _MainPageState extends State<MainPage> {
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Text(
-                          '${snapshot.data.data}',
+                          '${snapshot.data['list'].length}',
                           style: TextStyle(
                             color: Color(0xfffafafa),
                             fontSize: 13,
