@@ -47,6 +47,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
             fontWeight: FontWeight.w500,
           ),
         ),
+        centerTitle: true,
         actions: const [
           IconButton(
               icon: Icon(Icons.link_sharp),
