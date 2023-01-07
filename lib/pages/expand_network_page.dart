@@ -112,6 +112,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
                   'from': "${data!['uuid']}",
                 },
               );
+              Navigator.pop(context);
               logger.w(response.body);
             } catch (e) {
               logger.w(info.data());
