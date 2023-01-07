@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-Widget ReceiveNetworkRequest(Map<String, String> notice) {
+Widget ReceiveNetworkRequest(Map<String, dynamic> notice) {
   Logger logger = Logger();
   try {
     switch (notice["case"]) {
       case "waiting":
-        return Container(
-          child: Text("${notice["from"]}님이 요청을 보냈습니다."),
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(width: 4),
+            Expanded(child: Text("${notice["from"]}님이 요청을 보냈습니다.")),
+            Row(
+              children: [
+                IconButton(iconSize: 10, onPressed: (){}, icon: Image.asset("assets/images/accept_btn.png")),
+                IconButton(iconSize: 10,onPressed: (){}, icon: Image.asset("assets/images/reject_btn.png")),
+              ],
+            ),
+          ]
         );
       case "rejected":
         return Container();
@@ -21,7 +31,7 @@ Widget ReceiveNetworkRequest(Map<String, String> notice) {
     return Container();
   }
 }
-Widget SentNetworkRequest(Map<String, String> notice) {
+Widget SentNetworkRequest(Map<String, dynamic> notice) {
   Logger logger = Logger();
   try {
     switch (notice["case"]) {

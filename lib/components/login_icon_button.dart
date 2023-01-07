@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-Widget customImageButton(AssetImage img, GestureTapCallback onTap) {
+Widget customImageButton(AssetImage img, GestureTapCallback onTap, double size) {
   return GestureDetector(
       child: Container(
-        width: 70,
-        height: 70,
+        width: size,
+        height: size,
         decoration: BoxDecoration(
           image: DecorationImage(image: img, fit: BoxFit.cover),
         ),

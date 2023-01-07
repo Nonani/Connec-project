@@ -81,6 +81,8 @@ flutter:
     - assets/images/navigation_icon_3.png
     - assets/images/navigation_icon_4.png
     - assets/images/navigation_icon_5.png
+    - assets/images/accept_btn.png
+    - assets/images/reject_btn.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -5,9 +5,11 @@ import 'package:connec/pages/expand_network_page.dart';
 import 'package:connec/pages/network_manage_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 
 import '../components/custom_expansion_tile.dart';
+import '../components/custom_notice_item.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -43,12 +45,13 @@ class _MainPageState extends State<MainPage> {
             appBar: AppBar(
               actions: [
                 IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back_ios,
+                    icon: Icon(Icons.link_sharp),
                     color: Color(0xff5f66f2),
-                  ),
-                  onPressed: () async => await FirebaseAuth.instance.signOut(),
-                ),
+                    onPressed: () async{
+                      final db = FirebaseFirestore.instance;
+                      final result = await db.collection("users").doc("${FirebaseAuth.instance.currentUser!.uid}").get();
+                      Clipboard.setData(ClipboardData(text: result["uuid"]));
+                    }),
               ],
               shape: Border(bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
               backgroundColor: Color(0xfffafafa),
@@ -171,13 +174,10 @@ class _MainPageState extends State<MainPage> {
                             final from_name = db.collection("users").doc("${notice["from"]}").get();
                             if(notice["from"] == FirebaseAuth.instance.currentUser!.uid) {
                               //  내가 보낸 요청에 대한 응답 결과 출력
-                              return Text('${index}대기중');
+                              return SentNetworkRequest(notice);
                             }else{
                               //  상대방이 내게 보낸 요청에 대한 응답결과 출력
-                              if(notice["case"] == "waiting"){
-                                return Text('${index} ${notice["from"]}님이 네트워크 확장 요청을 보냈습니다.');
-                              }
-                              return Text("${index}test");
+                              return ReceiveNetworkRequest(notice);
                             }
                           },
                         ),

@@ -31,7 +31,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -195,16 +194,15 @@ class _LoginPageState extends State<LoginPage> {
                   // _showDialog();
                   await loginWithKakao(context);
                   // Navigator.pop(context);
-
-                }),
+                }, 70),
                 customImageButton(AssetImage("assets/images/naver_btn.png"),
                     () {
                   print("clicked!!");
-                }),
+                }, 70),
                 customImageButton(AssetImage("assets/images/facebook_btn.png"),
                     () {
                   print("clicked!!");
-                }),
+                }, 70),
                 SizedBox(width: size.width * 0.01),
               ],
             )
@@ -249,7 +247,8 @@ class _LoginPageState extends State<LoginPage> {
           if (response.statusCode == 200) {
             Map<String, dynamic> jsonData = jsonDecode(response.body);
             try {
-              await FirebaseAuth.instance.signInWithCustomToken(jsonData["token"]);
+              await FirebaseAuth.instance
+                  .signInWithCustomToken(jsonData["token"]);
               getToken();
             } catch (e) {
               logger.w(e);
@@ -262,21 +261,21 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
   }
-  void getToken() async{
-    await FirebaseMessaging.instance.getToken().then(
-            (token) => {setState(() {
+
+  void getToken() async {
+    await FirebaseMessaging.instance.getToken().then((token) => {
+          setState(() {
             device_token = token!;
             logger.w(device_token);
           })
-        }
-    );
+        });
     saveToken(device_token);
   }
-  void saveToken(String token) async{
+
+  void saveToken(String token) async {
     var database = FirebaseFirestore.instance;
     var uid = FirebaseAuth.instance.currentUser?.uid;
-    await database.collection('deviceToken').doc(uid).set({'token' : token});
+    await database.collection('deviceToken').doc(uid).set({'token': token});
     logger.w(uid);
   }
-  
 }
