@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/expand_network_page.dart';
 import 'package:connec/pages/network_manage_page.dart';
@@ -18,7 +20,7 @@ class _MainPageState extends State<MainPage> {
   int _currentIndex = 2;
   Logger logger = Logger();
   List<Widget> list = [
-    NetworkManagePage(),
+    ExpandNetworkPage(),
     ExpandNetworkPage(),
     ExpansionTileSample(),
     ExpandNetworkPage(),
@@ -164,7 +166,19 @@ class _MainPageState extends State<MainPage> {
                           physics: const NeverScrollableScrollPhysics(), // 스크롤 안되도록 설정하는 옵션 값
                           itemCount: snapshot.data['list'].length,
                           itemBuilder: (BuildContext context, int index) {
-                            return Text('${snapshot.data['list'][index]}');
+                            final notice = snapshot.data['list'][index];
+                            final db = FirebaseFirestore.instance;
+                            final from_name = db.collection("users").doc("${notice["from"]}").get();
+                            if(notice["from"] == FirebaseAuth.instance.currentUser!.uid) {
+                              //  내가 보낸 요청에 대한 응답 결과 출력
+                              return Text('${index}대기중');
+                            }else{
+                              //  상대방이 내게 보낸 요청에 대한 응답결과 출력
+                              if(notice["case"] == "waiting"){
+                                return Text('${index} ${notice["from"]}님이 네트워크 확장 요청을 보냈습니다.');
+                              }
+                              return Text("${index}test");
+                            }
                           },
                         ),
                       ]
@@ -198,7 +212,7 @@ class _MainPageState extends State<MainPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => list[_currentIndex],
-                      ));
+                      )).then((value) => setState((){}));
                 },
                 type: BottomNavigationBarType.fixed,
                 backgroundColor: Color(0xff5f66f2),
@@ -254,11 +268,11 @@ class _MainPageState extends State<MainPage> {
   }
   Future _future() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
-    print(FirebaseAuth.instance.currentUser!.uid.toString());
     final result = await db
         .collection("notification").doc(FirebaseAuth.instance.currentUser!.uid.toString())
         .get();
-    // logger.w(result.data());
+    if(result.data() == null)
+      return {"list":[]};
     result.data()?.forEach((key, value) {
       print("${key}\t${value}");
     });
