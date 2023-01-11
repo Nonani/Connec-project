@@ -1,23 +1,24 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connec/pages/network_information_page.dart';
+import 'package:connec/components/custom_item_widget.dart';
+import 'package:connec/pages/network_reduction_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import '../components/custom_edit_textform.dart';
-import 'package:http/http.dart' as http;
 import '../components/custom_expansion_tile.dart';
 import '../services/service_class.dart';
 import 'expand_network_page.dart';
 
-class NetworkManagePage extends StatefulWidget {
-  const NetworkManagePage({Key? key}) : super(key: key);
+class NetworkListPage extends StatefulWidget {
+  const NetworkListPage({Key? key}) : super(key: key);
 
   @override
-  State<NetworkManagePage> createState() => _NetworkManagePageState();
+  State<NetworkListPage> createState() => _NetworkListPageState();
 }
 
-class _NetworkManagePageState extends State<NetworkManagePage> {
+class _NetworkListPageState extends State<NetworkListPage> {
   final logger = Logger();
   final TextStyle _nameStyle = const TextStyle(
     color: Color(0xff333333),
@@ -35,7 +36,7 @@ class _NetworkManagePageState extends State<NetworkManagePage> {
   int _currentIndex = 0;
 
   List<Widget> list = [
-    NetworkManagePage(),
+    NetworkListPage(),
     ExpandNetworkPage(),
     ExpansionTileSample(),
     ExpandNetworkPage(),
@@ -94,14 +95,15 @@ class _NetworkManagePageState extends State<NetworkManagePage> {
                           child: Column(children: [
                         ListView.builder(
                           shrinkWrap: true,
-                          itemCount: snapshot.data['list'].length,
+                          itemCount: snapshot.data['length'],
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => NetworkInformationPage(),
+                                      builder: (context) =>
+                                          NetworkReductionPage(),
                                     ));
                               },
                               child: Padding(
@@ -109,78 +111,13 @@ class _NetworkManagePageState extends State<NetworkManagePage> {
                                 child: SizedBox(
                                   width: 360,
                                   height: 120,
-                                  child: Card(
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 120,
-                                          height: 120,
-                                          child: Image.network(
-                                              "",
-                                              width: 120,
-                                              height: 120,
-                                              fit: BoxFit.fitHeight),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 6, left: 8),
-                                          child: SizedBox(
-                                            width: 240,
-                                            height: 103,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text("Name", style: _nameStyle),
-                                                Container(
-                                                  height: 0,
-                                                  margin: const EdgeInsets.only(
-                                                      top: 7.5, bottom: 10.5),
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: Color(0xff5f66f2),
-                                                      width: 1,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text("지인 평점",
-                                                            style: _contextStyle),
-                                                        Text("지인 수",
-                                                            style: _contextStyle),
-                                                        Text("지인 대표 분야",
-                                                            style: _contextStyle)
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment.end,
-                                                      children: [
-                                                        Text("/5.0",
-                                                            style: _contextStyle),
-                                                        Text("",
-                                                            style: _contextStyle),
-                                                        Text("",
-                                                            style: _contextStyle)
-                                                      ],
-                                                    )
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                  child: CustomItemWidget(
+                                    nameStyle: _nameStyle,
+                                    contextStyle: _contextStyle,
+                                    name: snapshot.data['users'][index]['name'],
+                                    rate: snapshot.data['users'][index]['rate'].toString(),
+                                    number: snapshot.data['users'][index]['acquitances'].toString(),
+                                    representative: snapshot.data['users'][index]['capability'],
                                   ),
                                 ),
                               ),
@@ -197,7 +134,7 @@ class _NetworkManagePageState extends State<NetworkManagePage> {
                           ));
                     },
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(247.3, 55.9),
+                      minimumSize: Size(247.3, 55.9),
                       backgroundColor: Color(0xfffafafa),
                       side: BorderSide(
                         color: Color(0xff5f66f2),
@@ -285,14 +222,23 @@ class _NetworkManagePageState extends State<NetworkManagePage> {
   Future _future() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     print(FirebaseAuth.instance.currentUser!.uid.toString());
-    final result = await db
-        .collection("notification")
+    final list = await db
+        .collection("networks")
         .doc(FirebaseAuth.instance.currentUser!.uid.toString())
         .get();
-    // logger.w(result.data());
-    result.data()?.forEach((key, value) {
-      print("${key}\t${value}");
-    });
+    Map<String, dynamic> result = {};
+    result['length'] = list.data()?['list'].length;
+    result['users'] = [];
+    for (String uid in list.data()?['list']) {
+      var tmp = await db.collection('users').doc(uid).get();
+      var data = tmp.data();
+      var acquitances =  await db.collection('members').where('uid', isEqualTo: tmp.data()?['uid']).get();
+      logger.w(acquitances.docs.length);
+      data!['acquitances'] = acquitances.docs.length;
+      result['users'].add(data);
+    }
+    logger.w(result);
+
     return result;
   }
 }

@@ -9,14 +9,14 @@ import '../components/custom_expansion_tile.dart';
 import '../services/service_class.dart';
 import 'expand_network_page.dart';
 
-class NetworkInformationPage extends StatefulWidget {
-  const NetworkInformationPage({Key? key}) : super(key: key);
+class NetworkReductionPage extends StatefulWidget {
+  const NetworkReductionPage({Key? key}) : super(key: key);
 
   @override
-  State<NetworkInformationPage> createState() => _NetworkInformationPageState();
+  State<NetworkReductionPage> createState() => _NetworkReductionPageState();
 }
 
-class _NetworkInformationPageState extends State<NetworkInformationPage> {
+class _NetworkReductionPageState extends State<NetworkReductionPage> {
   final logger = Logger();
   final TextStyle _nameStyle = const TextStyle(
     color: Color(0xff333333),
@@ -24,22 +24,18 @@ class _NetworkInformationPageState extends State<NetworkInformationPage> {
     fontFamily: 'S-CoreDream-6Bold',
     fontWeight: FontWeight.w500,
   );
-  final TextStyle _contextStyle = const TextStyle(
+  final TextStyle _contextStyleKey = const TextStyle(
     color: Color(0xffafafaf),
     fontSize: 13,
     fontFamily: 'EchoDream',
     fontWeight: FontWeight.w200,
   );
-
-  int _currentIndex = 0;
-
-  List<Widget> list = [
-    NetworkInformationPage(),
-    ExpandNetworkPage(),
-    ExpansionTileSample(),
-    ExpandNetworkPage(),
-    ExpandNetworkPage(),
-  ];
+  final TextStyle _contextStyleValue = const TextStyle(
+    color: Color(0x33333333),
+    fontSize: 13,
+    fontFamily: 'EchoDream',
+    fontWeight: FontWeight.w200,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -128,17 +124,17 @@ class _NetworkInformationPageState extends State<NetworkInformationPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text("지인 평점", style: _contextStyle),
-                                      Text("지인 수", style: _contextStyle),
-                                      Text("지인 대표 분야", style: _contextStyle)
+                                      Text("지인 평점", style: _contextStyleKey),
+                                      Text("지인 수", style: _contextStyleKey),
+                                      Text("지인 대표 분야", style: _contextStyleKey)
                                     ],
                                   ),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Text("/5.0", style: _contextStyle),
-                                      Text("", style: _contextStyle),
-                                      Text("", style: _contextStyle)
+                                      Text("/5.0", style: _contextStyleValue),
+                                      Text("", style: _contextStyleValue),
+                                      Text("", style: _contextStyleValue)
                                     ],
                                   )
                                 ],
@@ -175,25 +171,25 @@ class _NetworkInformationPageState extends State<NetworkInformationPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text("이름", style: _contextStyle),
-                                      Text("직군/직무", style: _contextStyle),
-                                      Text("경력", style: _contextStyle),
-                                      Text("활동지", style: _contextStyle),
-                                      Text("성별", style: _contextStyle),
-                                      Text("나이", style: _contextStyle),
-                                      Text("능력", style: _contextStyle),
+                                      Text("이름", style: _contextStyleKey),
+                                      Text("직군/직무", style: _contextStyleKey),
+                                      Text("경력", style: _contextStyleKey),
+                                      Text("활동지", style: _contextStyleKey),
+                                      Text("성별", style: _contextStyleKey),
+                                      Text("나이", style: _contextStyleKey),
+                                      Text("능력", style: _contextStyleKey),
                                     ],
                                   ),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Text("", style: _contextStyle),
-                                      Text("", style: _contextStyle),
-                                      Text("", style: _contextStyle),
-                                      Text("", style: _contextStyle),
-                                      Text("", style: _contextStyle),
-                                      Text("", style: _contextStyle),
-                                      Text("", style: _contextStyle),
+                                      Text("", style: _contextStyleValue),
+                                      Text("", style: _contextStyleValue),
+                                      Text("", style: _contextStyleValue),
+                                      Text("", style: _contextStyleValue),
+                                      Text("", style: _contextStyleValue),
+                                      Text("", style: _contextStyleValue),
+                                      Text("", style: _contextStyleValue),
                                     ],
                                   )
                                 ],
