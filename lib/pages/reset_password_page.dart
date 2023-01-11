@@ -21,7 +21,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>{
 
   @override
   Widget build(BuildContext context){
-    var provider = Provider.of<ServiceClass>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

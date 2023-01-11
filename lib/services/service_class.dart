@@ -104,3 +104,9 @@ class ServiceClass extends ChangeNotifier {
     return true;
   }
 }
+class NetworkProvider extends ChangeNotifier{
+  String targetUid = "";
+  void updateTarget(String uid){
+    targetUid = uid;
+  }
+}

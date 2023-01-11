@@ -45,7 +45,6 @@ class _NetworkListPageState extends State<NetworkListPage> {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<ServiceClass>(context, listen: false);
     return FutureBuilder(
         future: _future(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -103,7 +102,7 @@ class _NetworkListPageState extends State<NetworkListPage> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          NetworkReductionPage(),
+                                          NetworkReductionPage(snapshot.data['users'][index]['uid'], snapshot.data['users'][index]['acquitances']),
                                     ));
                               },
                               child: Padding(

@@ -9,14 +9,12 @@ import '../components/custom_expansion_tile.dart';
 import '../services/service_class.dart';
 import 'expand_network_page.dart';
 
-class NetworkReductionPage extends StatefulWidget {
-  const NetworkReductionPage({Key? key}) : super(key: key);
+class NetworkReductionPage extends StatelessWidget {
+  String uid = "";
+  int acquitances = 0;
+  NetworkReductionPage(this.uid, this.acquitances, {Key? key}) : super(key: key);
 
-  @override
-  State<NetworkReductionPage> createState() => _NetworkReductionPageState();
-}
 
-class _NetworkReductionPageState extends State<NetworkReductionPage> {
   final logger = Logger();
   final TextStyle _nameStyle = const TextStyle(
     color: Color(0xff333333),
@@ -39,7 +37,6 @@ class _NetworkReductionPageState extends State<NetworkReductionPage> {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<ServiceClass>(context, listen: false);
     return FutureBuilder(
         future: _future(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -78,9 +75,9 @@ class _NetworkReductionPageState extends State<NetworkReductionPage> {
                           child: Column(children: [
                         Container(
                           padding: EdgeInsets.only(top: 13, bottom: 13),
-                          child: const Text(
-                            '김컨넥',
-                            style: TextStyle(
+                          child: Text(
+                            snapshot.data['name'],
+                            style: const TextStyle(
                               color: Color(0xff333333),
                               fontSize: 21,
                               fontFamily: 'EchoDream',
@@ -132,9 +129,9 @@ class _NetworkReductionPageState extends State<NetworkReductionPage> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Text("/5.0", style: _contextStyleValue),
-                                      Text("", style: _contextStyleValue),
-                                      Text("", style: _contextStyleValue)
+                                      Text("${snapshot.data['rate']}/5.0", style: _contextStyleValue),
+                                      Text(acquitances.toString(), style: _contextStyleValue),
+                                      Text(snapshot.data['capability'], style: _contextStyleValue)
                                     ],
                                   )
                                 ],
@@ -183,13 +180,13 @@ class _NetworkReductionPageState extends State<NetworkReductionPage> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Text("", style: _contextStyleValue),
-                                      Text("", style: _contextStyleValue),
-                                      Text("", style: _contextStyleValue),
-                                      Text("", style: _contextStyleValue),
-                                      Text("", style: _contextStyleValue),
-                                      Text("", style: _contextStyleValue),
-                                      Text("", style: _contextStyleValue),
+                                      Text(snapshot.data['name'], style: _contextStyleValue),
+                                      Text(snapshot.data['capability'], style: _contextStyleValue),
+                                      Text(snapshot.data['work'], style: _contextStyleValue),
+                                      Text(snapshot.data['location'], style: _contextStyleValue),
+                                      Text(snapshot.data['gender'], style: _contextStyleValue),
+                                      Text(snapshot.data['age'], style: _contextStyleValue),
+                                      Text(snapshot.data['introduction'], style: _contextStyleValue),
                                     ],
                                   )
                                 ],
@@ -221,16 +218,10 @@ class _NetworkReductionPageState extends State<NetworkReductionPage> {
   }
 
   Future _future() async {
+    logger.w(uid);
     FirebaseFirestore db = FirebaseFirestore.instance;
-    print(FirebaseAuth.instance.currentUser!.uid.toString());
-    final result = await db
-        .collection("notification")
-        .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-        .get();
-    // logger.w(result.data());
-    result.data()?.forEach((key, value) {
-      print("${key}\t${value}");
-    });
+    var user = await db.collection('users').doc(uid).get();
+    var result = user.data();
     return result;
   }
 }
