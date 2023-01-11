@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/expand_network_page.dart';
-import 'package:connec/pages/network_manage_page.dart';
+import 'package:connec/pages/network_list_page.dart';
+import 'package:connec/pages/network_management_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,7 +21,7 @@ class _MainPageState extends State<MainPage> {
   int _currentIndex = 2;
   Logger logger = Logger();
   List<Widget> list = [
-    ExpandNetworkPage(),
+    NetworkManagementPage(),
     ExpandNetworkPage(),
     ExpansionTileSample(),
     ExpandNetworkPage(),
@@ -161,6 +160,18 @@ class _MainPageState extends State<MainPage> {
                 Container(
                   height: 143,
                   width: double.infinity,
+                  margin: const EdgeInsets.only(
+                    top: 10,
+                    left: 26,
+                    right: 26,
+                  ),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(color: Color(0xff5f66f2), width: 1.5),
+                      bottom: BorderSide(color: Color(0xff5f66f2), width: 1.5),
+                    ),
+                    color: Color(0xffeeeeee),
+                  ),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -183,18 +194,6 @@ class _MainPageState extends State<MainPage> {
                         ),
                       ]
                     ),
-                  ),
-                  margin: EdgeInsets.only(
-                    top: 10,
-                    left: 26,
-                    right: 26,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(color: Color(0xff5f66f2), width: 1.5),
-                      bottom: BorderSide(color: Color(0xff5f66f2), width: 1.5),
-                    ),
-                    color: Color(0xffeeeeee),
                   ),
                 ),
               ],
