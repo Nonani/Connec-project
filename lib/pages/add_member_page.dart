@@ -131,13 +131,11 @@ class _AddMemberPageState extends State<AddMemberPage> {
 
   Future _future() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
-    print(FirebaseAuth.instance.currentUser!.uid.toString());
     final result = await db
         .collection("member")
         .where("uid",
             isEqualTo: FirebaseAuth.instance.currentUser!.uid.toString())
         .get();
-    logger.w(result.size);
     return result;
   }
 }

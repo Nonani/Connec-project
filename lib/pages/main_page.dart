@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/expand_network_page.dart';
 import 'package:connec/pages/network_list_page.dart';
@@ -49,6 +51,7 @@ class _MainPageState extends State<MainPage> {
                     onPressed: () async{
                       final db = FirebaseFirestore.instance;
                       final result = await db.collection("users").doc("${FirebaseAuth.instance.currentUser!.uid}").get();
+                      logger.w(FirebaseAuth.instance.currentUser!.uid);
                       Clipboard.setData(ClipboardData(text: result["uuid"]));
                     }),
               ],
@@ -181,15 +184,8 @@ class _MainPageState extends State<MainPage> {
                           itemCount: snapshot.data['list'].length,
                           itemBuilder: (BuildContext context, int index) {
                             final notice = snapshot.data['list'][index];
-                            final db = FirebaseFirestore.instance;
-                            final from_name = db.collection("users").doc("${notice["from"]}").get();
-                            if(notice["from"] == FirebaseAuth.instance.currentUser!.uid) {
-                              //  내가 보낸 요청에 대한 응답 결과 출력
-                              return SentNetworkRequest(notice);
-                            }else{
-                              //  상대방이 내게 보낸 요청에 대한 응답결과 출력
-                              return ReceiveNetworkRequest(notice);
-                            }
+                            logger.w(notice["from_uid"]);
+                            return CustomNoticeItem(notice: notice);
                           },
                         ),
                       ]
@@ -272,9 +268,9 @@ class _MainPageState extends State<MainPage> {
         .get();
     if(result.data() == null)
       return {"list":[]};
-    result.data()?.forEach((key, value) {
-      print("${key}\t${value}");
-    });
+    // result.data()?.forEach((key, value) {
+    //   print("${key}\t${value}");
+    // });
     return result;
   }
 }
