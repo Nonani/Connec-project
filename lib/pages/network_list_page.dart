@@ -93,6 +93,7 @@ class _NetworkListPageState extends State<NetworkListPage> {
                       child: SingleChildScrollView(
                           child: Column(children: [
                         ListView.builder(
+                          primary: false,
                           shrinkWrap: true,
                           itemCount: snapshot.data['length'],
                           itemBuilder: (BuildContext context, int index) {
@@ -110,7 +111,7 @@ class _NetworkListPageState extends State<NetworkListPage> {
                                 child: SizedBox(
                                   width: 360,
                                   height: 120,
-                                  child: CustomItemWidget(
+                                  child: NetworkItemWidget(
                                     nameStyle: _nameStyle,
                                     contextStyle: _contextStyle,
                                     name: snapshot.data['users'][index]['name'],

@@ -1,5 +1,11 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connec/pages/acquitance_list_page.dart';
+import 'package:connec/components/custom_item_widget.dart';
+import 'package:connec/pages/acquitance_management_page.dart';
+import 'package:connec/pages/add_member_page.dart';
+import 'package:connec/pages/member_body_page.dart';
+import 'package:connec/pages/network_management_page.dart';
 import 'package:connec/pages/network_reduction_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,26 +14,37 @@ import 'package:provider/provider.dart';
 import '../components/custom_expansion_tile.dart';
 import '../services/service_class.dart';
 import 'expand_network_page.dart';
-import 'network_list_page.dart';
 
-class NetworkManagementPage extends StatefulWidget {
-  const NetworkManagementPage({Key? key}) : super(key: key);
+class AcquitanceListPage extends StatefulWidget {
+  const AcquitanceListPage({Key? key}) : super(key: key);
 
   @override
-  State<NetworkManagementPage> createState() => _NetworkManagementPageState();
+  State<AcquitanceListPage> createState() => _AcquitanceListPageState();
 }
 
-class _NetworkManagementPageState extends State<NetworkManagementPage> {
+class _AcquitanceListPageState extends State<AcquitanceListPage> {
   final logger = Logger();
   final TextStyle _nameStyle = const TextStyle(
     color: Color(0xff333333),
-    fontSize: 19,
+    fontSize: 15,
     fontFamily: 'S-CoreDream-6Bold',
     fontWeight: FontWeight.w500,
   );
+  final TextStyle _classStyle = const TextStyle(
+    color: Color(0xff999999),
+    fontSize: 9,
+    fontFamily: 'EchoDream',
+    fontWeight: FontWeight.w200,
+  );
   final TextStyle _contextStyle = const TextStyle(
     color: Color(0xffafafaf),
-    fontSize: 13,
+    fontSize: 11,
+    fontFamily: 'EchoDream',
+    fontWeight: FontWeight.w200,
+  );
+  final TextStyle _itemStyle = const TextStyle(
+    color: Color(0xff333333),
+    fontSize: 11,
     fontFamily: 'EchoDream',
     fontWeight: FontWeight.w200,
   );
@@ -44,7 +61,6 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<ServiceClass>(context, listen: false);
     return FutureBuilder(
         future: _future(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -87,119 +103,75 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                 ),
                 body: Column(children: [
                   Container(
-                      height: 635,
+                      height: 540,
                       width: double.infinity,
-                      padding: const EdgeInsets.only(top: 12),
+                      margin: const EdgeInsets.only(top: 18, bottom: 9),
                       child: SingleChildScrollView(
                           child: Column(children: [
-                        SizedBox(
-                          width: double.infinity,
-                          height: 220,
-                          child: Image.network(""),
-                        ),
-                        Column(children: [
-                          Container(
-                            width: double.infinity,
-                            height: 0,
-                            margin: const EdgeInsets.only(top: 10),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Color(0xff5f66f2),
-                                width: 1.5,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 360,
-                            height: 34,
-                            alignment: Alignment.center,
-                            child: Text(
-                              "한 다리",
-                              style: TextStyle(
-                                color: Color(0xff5f66f2),
-                                fontSize: 16,
-                                fontFamily: 'EchoDream',
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            height: 0,
-                            margin: const EdgeInsets.only(bottom: 12),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Color(0xff5f66f2),
-                                width: 1.5,
-                              ),
-                            ),
-                          )
-                        ]),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size(160, 43),
-                                  backgroundColor: const Color(0xff5f66f2),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ExpandNetworkPage(),
-                                      ));
-                                },
-                                child: const Text(
-                                  "네트워크 확장",
-                                  style: TextStyle(
-                                    color: Color(0xfffafafa),
-                                    fontSize: 15,
-                                    fontFamily: 'EchoDream',
-                                  ),
-                                )),
-                            const SizedBox(width: 13),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size(160, 43),
-                                  backgroundColor: const Color(0xff5f66f2),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            NetworkListPage(),
-                                      ));
-                                },
-                                child: const Text(
-                                  "네트워크 축소",
-                                  style: TextStyle(
-                                    color: Color(0xfffafafa),
-                                    fontSize: 15,
-                                    fontFamily: 'EchoDream',
-                                  ),
-                                ))
-                          ],
-                        ),
                         ListView.builder(
+                          primary: false,
                           shrinkWrap: true,
-                          itemCount: 1,//snapshot.data['list'].length,
+                          itemCount: snapshot.data['length'],
                           itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                                padding: EdgeInsets.only(bottom: 14),
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          AcquitanceManagementPage(snapshot.data!['list'][index]),
+                                    ));
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(bottom: 7),
                                 child: SizedBox(
                                   width: 360,
-                                  height: 300,
+                                  height: 130,
+                                  child: MemberItemWidget(
+                                    nameStyle: _nameStyle,
+                                    classStyle: _classStyle,
+                                    contextStyle: _contextStyle,
+                                    itemStyle: _itemStyle,
+                                    field: snapshot.data['list'][index]['work'],
+                                    rate: '0',
+                                    relationship: '0',
+                                    capability: snapshot.data['list'][index]['capability'],
+                                  ),
                                 ),
-                              );
+                              ),
+                            );
                           },
                         ),
                       ]))),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MemberBodyPage(),
+                          ));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(247.3, 55.9),
+                      backgroundColor: Color(0xfffafafa),
+                      side: BorderSide(
+                        color: Color(0xff5f66f2),
+                        width: 2,
+                      ),
+                    ),
+                    child: Text(
+                      '지인을 등록 해주세요',
+                      style: TextStyle(
+                        color: Color(0xff5f66f2),
+                        fontSize: 18,
+                        fontFamily: 'EchoDream',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  )
                 ]),
                 bottomNavigationBar: Container(
-                  height: 65,
+                  height: 70,
                   child: BottomNavigationBar(
                     currentIndex: _currentIndex,
                     onTap: (index) {
@@ -268,11 +240,18 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
   Future _future() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     print(FirebaseAuth.instance.currentUser!.uid.toString());
-    final result = await db
-        .collection("networks")
-        .doc(FirebaseAuth.instance.currentUser!.uid.toString())
+    final list = await db
+        .collection("member")
+        .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid.toString())
         .get();
-    logger.w(result);
-    return result;
+    Map <String, dynamic> data = {};
+    logger.w(list.docs);
+    data['list'] = List.empty( growable: true);
+    data['length'] = list.docs.length;
+    list.docs.forEach((member) {
+      data['list'].add(member.data());
+    });
+    logger.w(data['list'][1]);
+    return data;
   }
 }

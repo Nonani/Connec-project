@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/pages/acquitance_list_page.dart';
 import 'package:connec/pages/expand_network_page.dart';
 import 'package:connec/pages/network_list_page.dart';
 import 'package:connec/pages/network_management_page.dart';
@@ -24,7 +25,7 @@ class _MainPageState extends State<MainPage> {
   Logger logger = Logger();
   List<Widget> list = [
     NetworkManagementPage(),
-    ExpandNetworkPage(),
+    AcquitanceListPage(),
     ExpansionTileSample(),
     ExpandNetworkPage(),
     ExpandNetworkPage(),
