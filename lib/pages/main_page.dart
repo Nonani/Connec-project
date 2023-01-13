@@ -12,6 +12,7 @@ import 'package:logger/logger.dart';
 
 import '../components/custom_expansion_tile.dart';
 import '../components/custom_notice_item.dart';
+import 'mypage/my_info_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class _MainPageState extends State<MainPage> {
     AcquitanceListPage(),
     ExpansionTileSample(),
     ExpandNetworkPage(),
-    ExpandNetworkPage(),
+    MyInfoPage(),
   ];
 
   @override
