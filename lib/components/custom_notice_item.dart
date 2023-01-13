@@ -14,9 +14,11 @@ class CustomNoticeItem extends StatefulWidget {
 class _CustomNoticeItemState extends State<CustomNoticeItem> {
   @override
   Widget build(BuildContext context) {
-    if(widget.notice["from_uid"] !=FirebaseAuth.instance.currentUser!.uid.toString())
+    if (widget.notice["from_uid"] !=
+        FirebaseAuth.instance.currentUser!.uid.toString())
       return ReceiveNetworkRequest(widget.notice);
-    else return SentNetworkRequest(widget.notice);
+    else
+      return SentNetworkRequest(widget.notice);
   }
 
   Widget ReceiveNetworkRequest(Map<String, dynamic> notice) {
@@ -63,22 +65,34 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                               .update({
                             'list': FieldValue.arrayUnion([notice])
                           });
+                          db
+                              .collection('networks')
+                              .doc(notice['from_uid'])
+                              .update({
+                            'list': FieldValue.arrayUnion([notice['to_uid']])
+                          });
+                          db
+                              .collection('networks')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .update({
+                            'list': FieldValue.arrayUnion([notice['from_uid']])
+                          });
                           Navigator.push(
                               context,
                               DialogRoute(
                                   context: context,
                                   builder: (context) => AlertDialog(
-                                    title: Text("요청 수락"),
-                                    content: Text(
-                                        "${notice["from_uid"]}님의 요청을 수락하였습니다."),
-                                    actions: [
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text("Close")),
-                                    ],
-                                  ))).then((value) => setState(() {}));
+                                        title: Text("요청 수락"),
+                                        content: Text(
+                                            "${notice["from_uid"]}님의 요청을 수락하였습니다."),
+                                        actions: [
+                                          ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text("Close")),
+                                        ],
+                                      ))).then((value) => setState(() {}));
                         },
                         icon: Image.asset("assets/images/accept_btn.png")),
                     IconButton(
@@ -126,4 +140,3 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
     }
   }
 }
-
