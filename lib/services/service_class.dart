@@ -49,6 +49,7 @@ class ServiceClass extends ChangeNotifier {
         }
         try{
           db.collection("users").doc("${data.uid}").set(data.toJson());
+          db.collection('networks').doc(data.uid).set({'list':[]});
         }catch(e){
           logger.w(e);
           return false;
@@ -70,6 +71,7 @@ class ServiceClass extends ChangeNotifier {
           data.uid = credential.user?.uid;
           logger.w(data.toJson().toString());
           db.collection("users").doc(data.uid).set(data.toJson());
+          db.collection('networks').doc(data.uid).set({'list':[]});
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
             logger.w('The password provided is too weak.');
