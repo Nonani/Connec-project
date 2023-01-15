@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../components/custom_edit_textform.dart';
@@ -48,11 +49,16 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
           ),
         ),
         centerTitle: true,
-        actions: const [
+        actions: [
           IconButton(
               icon: Icon(Icons.link_sharp),
               color: Color(0xff5f66f2),
-              onPressed: null),
+              onPressed: () async{
+                final db = FirebaseFirestore.instance;
+                final result = await db.collection("users").doc("${FirebaseAuth.instance.currentUser!.uid}").get();
+                logger.w(FirebaseAuth.instance.currentUser!.uid);
+                Clipboard.setData(ClipboardData(text: result["uuid"]));
+              }),
         ],
       ),
       body: Consumer<ServiceClass>(

@@ -5,6 +5,7 @@ import 'package:connec/components/custom_item_widget.dart';
 import 'package:connec/pages/network_reduction_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../components/custom_expansion_tile.dart';
@@ -33,15 +34,6 @@ class _NetworkListPageState extends State<NetworkListPage> {
     fontWeight: FontWeight.w200,
   );
 
-  int _currentIndex = 0;
-
-  List<Widget> list = [
-    NetworkListPage(),
-    ExpandNetworkPage(),
-    ExpansionTileSample(),
-    ExpandNetworkPage(),
-    ExpandNetworkPage(),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -78,16 +70,21 @@ class _NetworkListPageState extends State<NetworkListPage> {
                     ),
                   ),
                   centerTitle: true,
-                  actions: const [
+                  actions: [
                     IconButton(
                         icon: Icon(Icons.link_sharp),
                         color: Color(0xff5f66f2),
-                        onPressed: null),
+                        onPressed: () async{
+                          final db = FirebaseFirestore.instance;
+                          final result = await db.collection("users").doc("${FirebaseAuth.instance.currentUser!.uid}").get();
+                          logger.w(FirebaseAuth.instance.currentUser!.uid);
+                          Clipboard.setData(ClipboardData(text: result["uuid"]));
+                        }),
                   ],
                 ),
                 body: Column(children: [
                   Container(
-                      height: 522,
+                      height: 600,
                       width: double.infinity,
                       margin: const EdgeInsets.only(top: 27, bottom: 9),
                       child: SingleChildScrollView(
@@ -136,12 +133,12 @@ class _NetworkListPageState extends State<NetworkListPage> {
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(247.3, 55.9),
                       backgroundColor: Color(0xfffafafa),
-                      side: BorderSide(
+                      side: const BorderSide(
                         color: Color(0xff5f66f2),
                         width: 2,
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       '네트워크를 확장 해주세요',
                       style: TextStyle(
                         color: Color(0xff5f66f2),
@@ -152,69 +149,8 @@ class _NetworkListPageState extends State<NetworkListPage> {
                     ),
                   )
                 ]),
-                bottomNavigationBar: Container(
-                  height: 70,
-                  child: BottomNavigationBar(
-                    currentIndex: _currentIndex,
-                    onTap: (index) {
-                      print('index test : ${index}');
-                      if (_currentIndex != index) {
-                        setState(() {
-                          _currentIndex = index;
-                        });
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => list[_currentIndex],
-                            ));
-                      }
-                    },
-                    type: BottomNavigationBarType.fixed,
-                    backgroundColor: Color(0xff5f66f2),
-                    showSelectedLabels: true,
-                    fixedColor: Colors.white,
-                    unselectedItemColor: Colors.white,
-                    selectedFontSize: 12,
-                    unselectedFontSize: 12,
-                    items: [
-                      BottomNavigationBarItem(
-                          icon: Image.asset(
-                            "assets/images/navigation_icon_1.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                          label: "네트워크"),
-                      BottomNavigationBarItem(
-                          icon: Image.asset(
-                            "assets/images/navigation_icon_2.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                          label: "지인관리"),
-                      BottomNavigationBarItem(
-                          icon: Image.asset(
-                            "assets/images/navigation_icon_3.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                          label: "검색"),
-                      BottomNavigationBarItem(
-                          icon: Image.asset(
-                            "assets/images/navigation_icon_4.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                          label: "구인장터"),
-                      BottomNavigationBarItem(
-                          icon: Image.asset(
-                            "assets/images/navigation_icon_5.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                          label: "마이페이지"),
-                    ],
-                  ),
-                ));
+
+                );
           }
         });
   }

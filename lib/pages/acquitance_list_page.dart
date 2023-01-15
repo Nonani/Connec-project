@@ -9,6 +9,7 @@ import 'package:connec/pages/network_management_page.dart';
 import 'package:connec/pages/network_reduction_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../components/custom_expansion_tile.dart';
@@ -49,7 +50,7 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
     fontWeight: FontWeight.w200,
   );
 
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   List<Widget> list = [
     NetworkManagementPage(),
@@ -94,11 +95,16 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                     ),
                   ),
                   centerTitle: true,
-                  actions: const [
+                  actions: [
                     IconButton(
                         icon: Icon(Icons.link_sharp),
                         color: Color(0xff5f66f2),
-                        onPressed: null),
+                        onPressed: () async{
+                          final db = FirebaseFirestore.instance;
+                          final result = await db.collection("users").doc("${FirebaseAuth.instance.currentUser!.uid}").get();
+                          logger.w(FirebaseAuth.instance.currentUser!.uid);
+                          Clipboard.setData(ClipboardData(text: result["uuid"]));
+                        }),
                   ],
                 ),
                 body: Column(children: [
@@ -180,11 +186,10 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                         setState(() {
                           _currentIndex = index;
                         });
-                        Navigator.push(
-                            context,
+                        Navigator.pushReplacement(context,
                             MaterialPageRoute(
-                              builder: (context) => list[_currentIndex],
-                            ));
+                          builder: (context) => list[_currentIndex],
+                        ));
                       }
                     },
                     type: BottomNavigationBarType.fixed,
