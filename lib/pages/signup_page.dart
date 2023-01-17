@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:logger/logger.dart';
 import '../components/custom_dialog.dart';
 import '../components/custom_dropdown_button.dart';
 import '../const/data.dart';
