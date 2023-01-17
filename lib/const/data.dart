@@ -19,3 +19,4 @@ const List<String> careerList =
   "중심에서 이끌어봤다(1년 이상~3년 미만)",
   "전문가다(4년 이상)",
 ];
+const List<String> genderList = <String>['선택', "남성", "여성"];

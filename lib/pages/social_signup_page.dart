@@ -1,10 +1,11 @@
 import 'package:connec/components/custom_dialog.dart';
 import 'package:uuid/uuid.dart';
 
+import '../const/data.dart';
 import '../models/SignUpBody.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import '../components/custom_dropdown_button.dart';
 import '../components/custom_edit_textform.dart';
 import '../services/service_class.dart';
 
@@ -22,10 +23,10 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
   var uuid = Uuid();
   String? _name;
   String? _work;
-  String? _career;
+  String _career = careerList.first;
   String? _location;
-  String? _gender;
-  String? _age;
+  String _gender = genderList.first;
+  String _age = ageList.first;
   String? _capability;
   String? _introduction;
   bool checkboxValue1 = false;
@@ -56,15 +57,21 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 ),
                 SignUpEditTextForm(
                   label: "직군/직무",
-                  hint: "직군/직무을 입력해주세요",
+                  hint: "직군/직무를 입력해주세요",
                   isSecret: false,
                   onSaved: (newValue) => _work = newValue,
                 ),
-                SignUpEditTextForm(
+                CustomDropdownButton(
                   label: "경력",
-                  hint: "경력을 입력해주세요",
-                  isSecret: false,
-                  onSaved: (newValue) => _career = newValue,
+                  itemList: careerList,
+                  selectedItem: _career,
+                  onChanged: (value) {
+                    setState(
+                          () {
+                        _career = value;
+                      },
+                    );
+                  },
                 ),
                 SignUpEditTextForm(
                   label: "활동지",
@@ -72,18 +79,31 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                   isSecret: false,
                   onSaved: (newValue) => _location = newValue,
                 ),
-                SignUpEditTextForm(
+                CustomDropdownButton(
                   label: "성별",
-                  hint: "성별을 입력해주세요",
-                  isSecret: false,
-                  onSaved: (newValue) => _gender = newValue,
+                  itemList: genderList,
+                  selectedItem: _gender,
+                  onChanged: (value) {
+                    setState(
+                          () {
+                        _gender = value;
+                      },
+                    );
+                  },
                 ),
-                SignUpEditTextForm(
+                CustomDropdownButton(
                   label: "나이",
-                  hint: "나이를 입력해주세요",
-                  isSecret: false,
-                  onSaved: (newValue) => _age = newValue,
+                  itemList: ageList,
+                  selectedItem: _age,
+                  onChanged: (value) {
+                    setState(
+                          () {
+                        _age = value;
+                      },
+                    );
+                  },
                 ),
+
                 SignUpEditTextForm(
                   label: "능력",
                   hint: "능력을 입력해주세요",
