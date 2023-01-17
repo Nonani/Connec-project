@@ -70,30 +70,33 @@ class _MyInfoPageState extends State<MyInfoPage> {
                               color: Color(0xffafafaf),
                             ),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${snapshot.data['name']} 님',
-                                style: TextStyle(
-                                  color: Color(0xff333333),
-                                  fontSize: 17,
-                                  fontFamily: 'S-CoreDream-6Bold',
-                                  fontWeight: FontWeight.w200,
+                          Container(
+                            width: 150,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${snapshot.data['name']} 님',
+                                  style: TextStyle(
+                                    color: Color(0xff333333),
+                                    fontSize: 17,
+                                    fontFamily: 'S-CoreDream-6Bold',
+                                    fontWeight: FontWeight.w200,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                snapshot.data['email'] != null
-                                    ? '${snapshot.data['email']}'
-                                    : 'email이 등록되지 않았습니다.',
-                                style: TextStyle(
-                                  color: Color(0xffbdbdbd),
-                                  fontSize: 16,
-                                  fontFamily: 'S-CoreDream-4Regular',
-                                  fontWeight: FontWeight.w700,
+                                Text(
+                                  snapshot.data['email'] != null
+                                      ? '${snapshot.data['email']}'
+                                      : 'email이 등록되지 않았습니다.',
+                                  style: TextStyle(
+                                    color: Color(0xffbdbdbd),
+                                    fontSize: 16,
+                                    fontFamily: 'S-CoreDream-4Regular',
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
