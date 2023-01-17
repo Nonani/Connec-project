@@ -106,7 +106,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => AccountSettingPaqe(),
-                              ));
+                              )).then((value) => setState((){}));
                         },
                         child: Container(
                           padding: EdgeInsets.fromLTRB(8, 5, 8, 5),

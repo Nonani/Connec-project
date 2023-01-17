@@ -5,16 +5,16 @@ import 'package:logger/logger.dart';
 
 import '../../components/custom_edit_textform.dart';
 
-class ChangeNamePage extends StatefulWidget {
-  const ChangeNamePage({Key? key}) : super(key: key);
+class ChangeEmailPage extends StatefulWidget {
+  const ChangeEmailPage({Key? key}) : super(key: key);
 
   @override
-  State<ChangeNamePage> createState() => _ChangeNamePageState();
+  State<ChangeEmailPage> createState() => _ChangeEmailPageState();
 }
 
-class _ChangeNamePageState extends State<ChangeNamePage> {
+class _ChangeEmailPageState extends State<ChangeEmailPage> {
   final _formKey = GlobalKey<FormState>();
-  String name="";
+  String email="";
   Logger logger = Logger();
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(
-          '이름 변경',
+          '이메일 변경',
           style: TextStyle(
             color: Color(0xff333333),
             fontSize: 20,
@@ -51,10 +51,10 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
             Padding(
               padding: EdgeInsets.only(top: 47.1),
               child: LoginEditTextForm(
-                label: "이름",
-                hint: "김컨넥",
+                label: "이메일",
+                hint: "example@connec.co.kr",
                 isSecret: false,
-                onSaved: (newValue) => name = newValue,
+                onSaved: (newValue) => email = newValue,
               ),
             ),
           ],
@@ -66,7 +66,7 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
               _formKey.currentState!.save();
               final db = FirebaseFirestore.instance;
               final user = (await db.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get()).data();
-              user!["name"]= name.toString();
+              user!["email"]= email.toString();
               db.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update(user);
               Navigator.pop(context);
             }

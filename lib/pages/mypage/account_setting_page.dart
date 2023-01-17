@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/pages/mypage/change_email_page.dart';
 import 'package:connec/pages/mypage/change_name_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -85,21 +86,23 @@ class _AccountSettingPaqeState extends State<AccountSettingPaqe> {
                           label: "이름",
                           text: "${snapshot.data["name"]}",
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeNamePage(),));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeNamePage(),)).then((value) => setState((){}),);
                           }),
                       buildContainer(
                           label: "이메일",
                           text: "${snapshot.data["email"]}",
-                          onPressed: () {}),
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeEmailPage(),)).then((value) => setState((){}),);
+                          }),
                       (snapshot.data["serviceName"] == "None")
                           ? buildContainer(
-                              label: "이름",
-                              text: "${snapshot.data["name"]}",
+                              label: "비밀번호",
+                              text: "***********",
                               onPressed: () {})
                           : Container(),
                       buildContainer(
                           label: "전화번호",
-                          text: "${snapshot.data["name"]}",
+                          text: "010-1234-5678",
                           onPressed: () {}),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
