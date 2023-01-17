@@ -1,6 +1,8 @@
 import 'dart:ffi';
 
+import 'package:logger/logger.dart';
 import '../components/custom_dialog.dart';
+import '../const/data.dart';
 import '../models/SignUpBody.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../components/custom_edit_textform.dart';
 import '../services/service_class.dart';
 import 'package:uuid/uuid.dart';
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
@@ -19,16 +22,16 @@ class _SignUpPageState extends State<SignUpPage> {
   // String? _uid;
   // String? _serviceName;
 
-
+  static const List<String> genderList = <String>['선택', "남성", "여성"];
   var uuid = Uuid();
   String? _email;
   String? _password;
   String? _name;
   String? _work;
-  String? _career;
+  String _career = careerList.first;
   String? _location;
-  String? _gender;
-  String? _age;
+  String _gender = genderList.first;
+  String _age = ageList.first;
   String? _capability;
   String? _introduction;
   bool checkboxValue1 = false;
@@ -41,7 +44,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
         appBar: AppBar(
           shape:
-          Border(bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
+              Border(bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
           backgroundColor: Color(0xfffafafa),
           elevation: 0,
           leading: BackButton(color: Color(0xff5f66f2)),
@@ -88,30 +91,55 @@ class _SignUpPageState extends State<SignUpPage> {
                         isSecret: false,
                         onSaved: (newValue) => _work = newValue,
                       ),
-                      SignUpEditTextForm(
+                      CustomDropdownButton(
                         label: "경력",
-                        hint: "경력을 입력해주세요",
-                        isSecret: false,
-                        onSaved: (newValue) => _career = newValue,
+                        itemList: careerList,
+                        selectedItem: _career,
+                        onChanged: (value) {
+                          setState(
+                                () {
+                              _career = value;
+                            },
+                          );
+                        },
                       ),
-                      SignUpEditTextForm(
-                        label: "활동지",
-                        hint: "활동지를 입력해주세요",
-                        isSecret: false,
-                        onSaved: (newValue) => _location = newValue,
-                      ),
-                      SignUpEditTextForm(
+                      // CustomDropdownButton(
+                      //   label: "활동지",
+                      //   itemList: ageList,
+                      //   selectedItem: _location,
+                      //   onChanged: (value) {
+                      //     setState(
+                      //           () {
+                      //         _career = value;
+                      //       },
+                      //     );
+                      //   },
+                      // ),
+                      CustomDropdownButton(
                         label: "성별",
-                        hint: "성별을 입력해주세요",
-                        isSecret: false,
-                        onSaved: (newValue) => _gender = newValue,
+                        itemList: genderList,
+                        selectedItem: _gender,
+                        onChanged: (value) {
+                          setState(
+                            () {
+                              _gender = value;
+                            },
+                          );
+                        },
                       ),
-                      SignUpEditTextForm(
+                      CustomDropdownButton(
                         label: "나이",
-                        hint: "나이를 입력해주세요",
-                        isSecret: false,
-                        onSaved: (newValue) => _age = newValue,
+                        itemList: ageList,
+                        selectedItem: _age,
+                        onChanged: (value) {
+                          setState(
+                                () {
+                              _age = value;
+                            },
+                          );
+                        },
                       ),
+
                       SignUpEditTextForm(
                         label: "능력",
                         hint: "능력을 입력해주세요",
@@ -215,7 +243,71 @@ class _SignUpPageState extends State<SignUpPage> {
         ));
   }
 
-  void _showDialog() {
+  Widget CustomDropdownButton(
+      {required List<String> itemList,
+      required String label,
+      required ValueChanged onChanged,
+      required String selectedItem}) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Color(0xff5f66f2),
+            width: 1.0,
+          ),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
 
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("${label}",
+              style: TextStyle(
+                fontFamily: "EchoDream",
+                fontWeight: FontWeight.w600,
+                fontSize: 17,
+              )),
+          SizedBox(height: 10),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: Color(0xffeeeeee),
+            ),
+            child: DropdownButton<String>(
+              value: selectedItem,
+              elevation: 16,
+              icon: const Visibility(
+                  visible: false, child: Icon(Icons.arrow_downward)),
+              style: selectedItem == "선택"
+                  ? const TextStyle(
+                      color: Color(0xffbdbdbd),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                    )
+                  : const TextStyle(
+                      color: Color(0xff333333),
+                      fontSize: 16,
+                      fontFamily: 'S-CoreDream-4',
+                    ),
+              underline: Visibility(
+                visible: false,
+                child: Container(
+                ),
+              ),
+              onChanged: onChanged,
+              items:itemList.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

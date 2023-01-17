@@ -68,16 +68,17 @@ Widget SignUpEditTextForm(
             )),
         SizedBox(height: 10),
         TextFormField(
+          maxLines: label == "소개" ? 5 : 1,
           obscureText: isSecret,
           decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: TextStyle(
-              color: Color(0xffbdbdbd),
-              fontSize: 16,
-              fontFamily: 'EchoDream',
-              fontWeight: FontWeight.w400,
-            ),
-            filled: true,
+              hintText: hint,
+              hintStyle: TextStyle(
+                color: Color(0xffbdbdbd),
+                fontSize: 16,
+                fontFamily: 'EchoDream',
+                fontWeight: FontWeight.w400,
+              ),
+              filled: true,
               fillColor: Color(0xffeeeeee),
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(width: 1, color: Color(0xff5f66f2)))),
