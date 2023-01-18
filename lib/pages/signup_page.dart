@@ -27,7 +27,6 @@ class _SignUpPageState extends State<SignUpPage> {
   String? _email;
   String? _password;
   String? _name;
-  String? _work;
   String _career = careerList.first;
   String? _location;
   String _gender = genderList.first;
@@ -276,7 +275,7 @@ class _SignUpPageState extends State<SignUpPage> {
         SizedBox(height: 10),
         GestureDetector(
           onTap: () {
-            if (workItems.length < 5) showListDialog(snapshot, "직군/직무");
+            if (workItems.length < 5) showWorkListDialog(snapshot, "직군/직무");
           },
           child: Container(
             width: double.infinity,
@@ -339,7 +338,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return result.docs;
   }
 
-  void showListDialog(AsyncSnapshot snapshot, String title) {
+  void showWorkListDialog(AsyncSnapshot snapshot, String title) {
     List dialogList = [];
     List<Widget> dialogWidgetList = [];
 
@@ -373,7 +372,7 @@ class _SignUpPageState extends State<SignUpPage> {
             }
             curWorkTier += 1;
             curWorkParent = element.data()["code"];
-            showListDialog(snapshot, title);
+            showWorkListDialog(snapshot, title);
           },
         ));
       }
@@ -381,19 +380,19 @@ class _SignUpPageState extends State<SignUpPage> {
     switch (curWorkTier) {
       case 1:
         SimpleDialog dialog =
-            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+        SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
               return dialog;
             }).then((value) => setState(() {
-              curWorkTier = 1;
-              curWorkParent = "";
-            }));
+          curWorkTier = 1;
+          curWorkParent = "";
+        }));
         break;
       case 2:
         SimpleDialog dialog =
-            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+        SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
@@ -402,7 +401,7 @@ class _SignUpPageState extends State<SignUpPage> {
         break;
       case 3:
         SimpleDialog dialog =
-            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+        SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
