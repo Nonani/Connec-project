@@ -207,6 +207,21 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
       },
     );
   }
+
+
+  Future _future() async {
+    Logger logger = Logger();
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    final workResult = await db.collection("workData").get();
+    final localResult = await db.collection("localData").get();
+    // print(result.size);
+    //
+    // result.docs.forEach((element) {
+    //   print(element.data);
+    // });
+
+    return {"workData": workResult.docs, "localData": localResult.docs};
+  }
   Container buildWorkContainer(AsyncSnapshot snapshot) {
     return Container(
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -268,7 +283,11 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(child: Text(workItems[index], overflow: TextOverflow.ellipsis,)),
+                  Expanded(
+                      child: Text(
+                        workItems[index],
+                        overflow: TextOverflow.ellipsis,
+                      )),
                   IconButton(
                       onPressed: () {
                         workItems.removeAt(index);
@@ -284,26 +303,11 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
       ]),
     );
   }
-
-  Future _future() async {
-    Logger logger = Logger();
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    final workResult = await db.collection("workData").get();
-    final localResult = await db.collection("localData").get();
-    // print(result.size);
-    //
-    // result.docs.forEach((element) {
-    //   print(element.data);
-    // });
-
-    return {"workData": workResult.docs, "localData": localResult.docs};
-  }
-
   void showWorkListDialog(AsyncSnapshot snapshot, String title) {
     List dialogList = [];
     List<Widget> dialogWidgetList = [];
 
-    snapshot.data.forEach((element) {
+    snapshot.data["workData"].forEach((element) {
       if (element.data()["tier"] == curWorkTier &&
           element.data()["parent"] == curWorkParent) {
         dialogList.add(element.data());
@@ -435,7 +439,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 break;
               case 2:
                 title = title + ' > ${element.data()["title"]}';
-                _location = element.data()["title"];
+                _location = element.data()["code"];
                 _locaion_label = title;
                 Navigator.pop(context);
                 setState() {

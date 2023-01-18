@@ -123,26 +123,27 @@ class _AccountSettingPaqeState extends State<AccountSettingPaqe> {
                             onPressed: () async{
                               Logger logger = Logger();
                               final db = FirebaseFirestore.instance;
-                              db.collection("deviceToken").doc(FirebaseAuth.instance.currentUser!.uid).delete().then(
+                              final uid = FirebaseAuth.instance.currentUser!.uid;
+                              await db.collection("deviceToken").doc(FirebaseAuth.instance.currentUser!.uid).delete().then(
                                     (doc) => print("Document deleted"),
                                 onError: (e) => print("Error updating document $e"),
                               );
                               QuerySnapshot members = await db.collection("member").where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
                               members.docs.forEach((doc) => doc.reference.delete());
-                              db.collection("networks").doc(FirebaseAuth.instance.currentUser!.uid).delete().then(
+                              await db.collection("networks").doc(FirebaseAuth.instance.currentUser!.uid).delete().then(
                                     (doc) => print("Document deleted"),
                                 onError: (e) => print("Error updating document $e"),
                               );
-                              db.collection("notification").doc(FirebaseAuth.instance.currentUser!.uid).delete().then(
+                              await db.collection("notification").doc(FirebaseAuth.instance.currentUser!.uid).delete().then(
                                     (doc) => print("Document deleted"),
                                 onError: (e) => print("Error updating document $e"),
                               );
-                              db.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).delete().then(
+                              await db.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).delete().then(
                                     (doc) => print("Document deleted"),
                                 onError: (e) => print("Error updating document $e"),
                               );
-                              FirebaseAuth.instance.currentUser!.delete();
-                              FirebaseAuth.instance.signOut();
+                              await FirebaseAuth.instance.currentUser!.delete();
+                              await FirebaseAuth.instance.signOut();
                               Navigator.popUntil(context, (route) => route.isFirst);
                             },
                           ),

@@ -480,7 +480,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 break;
               case 2:
                 title = title + ' > ${element.data()["title"]}';
-                _location = element.data()["title"];
+                _location = element.data()["code"];
                 _locaion_label = title;
                 Navigator.pop(context);
                 setState() {
