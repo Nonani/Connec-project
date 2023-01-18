@@ -5,12 +5,12 @@ import 'package:connec/pages/acquitance_list_page.dart';
 import 'package:connec/pages/expand_network_page.dart';
 import 'package:connec/pages/network_list_page.dart';
 import 'package:connec/pages/network_management_page.dart';
+import 'package:connec/pages/search_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 
-import '../components/custom_expansion_tile.dart';
 import '../components/custom_notice_item.dart';
 import 'mypage/my_info_page.dart';
 
@@ -27,7 +27,7 @@ class _MainPageState extends State<MainPage> {
   List<Widget> list = [
     NetworkManagementPage(),
     AcquitanceListPage(),
-    ExpansionTileSample(),
+    SearchPage(),
     ExpandNetworkPage(),
     MyInfoPage(),
   ];

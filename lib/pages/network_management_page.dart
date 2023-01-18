@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/acquitance_list_page.dart';
 import 'package:connec/pages/network_reduction_page.dart';
+import 'package:connec/pages/search_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,7 +39,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
   List<Widget> list = [
     NetworkManagementPage(),
     AcquitanceListPage(),
-    ExpansionTileSample(),
+    SearchPage(),
     ExpandNetworkPage(),
     ExpandNetworkPage(),
   ];
