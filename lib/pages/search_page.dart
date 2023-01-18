@@ -86,15 +86,16 @@ class _SearchPageState extends State<SearchPage> {
                 currentIndex: _currentIndex,
                 onTap: (index) {
                   print('index test : ${index}');
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => list[_currentIndex],
-                      )).then((value) => setState(() {}));
-                },
+                  if (_currentIndex != index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(
+                          builder: (context) => list[_currentIndex],
+                        ));
+                  }
+                  },
                 type: BottomNavigationBarType.fixed,
                 backgroundColor: Color(0xff5f66f2),
                 showSelectedLabels: true,
