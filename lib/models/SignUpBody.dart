@@ -5,7 +5,7 @@ class SignUpBody {
   String? email;
   String? password;
   String? name;
-  String? work;
+  List<String>? work;
   String? career;
   String? location;
   String? gender;

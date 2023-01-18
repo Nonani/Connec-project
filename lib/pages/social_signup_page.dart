@@ -183,7 +183,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 gender: _gender,
                 introduction: _introduction,
                 location: _location,
-                work: _work,
+                work: [],
                 serviceName: widget.serviceName.toString(),
               ));
               if(provider.isComplete){
