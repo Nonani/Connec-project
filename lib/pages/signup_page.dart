@@ -28,18 +28,22 @@ class _SignUpPageState extends State<SignUpPage> {
   String? _password;
   String? _name;
   String _career = careerList.first;
+  String? _locaion_label;
   String? _location;
   String _gender = genderList.first;
   String _age = ageList.first;
   String? _capability;
   String? _introduction;
-  bool checkboxValue1 = false;
-  bool checkboxValue2 = false;
   int curWorkTier = 1;
+  int curLocalTier = 1;
   String curWorkParent = "";
-  final _formKey = GlobalKey<FormState>();
+  String curLocalParent = "";
   List<String> workItems = [];
   List<String> workCodes = [];
+  bool checkboxValue1 = false;
+  bool checkboxValue2 = false;
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ServiceClass>(context, listen: false);
@@ -111,12 +115,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 );
                               },
                             ),
-                            SignUpEditTextForm(
-                              label: "활동지",
-                              hint: "활동지를 입력해주세요",
-                              isSecret: false,
-                              onSaved: (newValue) => _location = newValue,
-                            ),
+                            buildLocalContainer(snapshot),
                             CustomDropdownButton(
                               label: "성별",
                               itemList: genderList,
@@ -247,6 +246,22 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+
+
+
+  Future _future() async {
+    Logger logger = Logger();
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    final workResult = await db.collection("workData").get();
+    final localResult = await db.collection("localData").get();
+    // print(result.size);
+    //
+    // result.docs.forEach((element) {
+    //   print(element.data);
+    // });
+
+    return {"workData": workResult.docs, "localData": localResult.docs};
+  }
   Container buildWorkContainer(AsyncSnapshot snapshot) {
     return Container(
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -308,7 +323,11 @@ class _SignUpPageState extends State<SignUpPage> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(child: Text(workItems[index], overflow: TextOverflow.ellipsis,)),
+                  Expanded(
+                      child: Text(
+                        workItems[index],
+                        overflow: TextOverflow.ellipsis,
+                      )),
                   IconButton(
                       onPressed: () {
                         workItems.removeAt(index);
@@ -324,25 +343,11 @@ class _SignUpPageState extends State<SignUpPage> {
       ]),
     );
   }
-
-  Future _future() async {
-    Logger logger = Logger();
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    final result = await db.collection("workData").get();
-    // print(result.size);
-    //
-    // result.docs.forEach((element) {
-    //   print(element.data);
-    // });
-
-    return result.docs;
-  }
-
   void showWorkListDialog(AsyncSnapshot snapshot, String title) {
     List dialogList = [];
     List<Widget> dialogWidgetList = [];
 
-    snapshot.data.forEach((element) {
+    snapshot.data["workData"].forEach((element) {
       if (element.data()["tier"] == curWorkTier &&
           element.data()["parent"] == curWorkParent) {
         dialogList.add(element.data());
@@ -380,19 +385,19 @@ class _SignUpPageState extends State<SignUpPage> {
     switch (curWorkTier) {
       case 1:
         SimpleDialog dialog =
-        SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
               return dialog;
             }).then((value) => setState(() {
-          curWorkTier = 1;
-          curWorkParent = "";
-        }));
+              curWorkTier = 1;
+              curWorkParent = "";
+            }));
         break;
       case 2:
         SimpleDialog dialog =
-        SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
@@ -401,7 +406,112 @@ class _SignUpPageState extends State<SignUpPage> {
         break;
       case 3:
         SimpleDialog dialog =
-        SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+        showDialog(
+            context: context,
+            builder: (context) {
+              return dialog;
+            }).then((value) {
+          Navigator.pop(context);
+          setState(() {});
+        });
+        break;
+    }
+  }
+
+  Container buildLocalContainer(AsyncSnapshot snapshot) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+      width: double.infinity,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text("지역",
+            style: TextStyle(
+              fontFamily: "EchoDream",
+              fontWeight: FontWeight.w600,
+              fontSize: 17,
+            )),
+        SizedBox(height: 10),
+        GestureDetector(
+          onTap: () {
+            showLocalListDialog(snapshot, "지역");
+          },
+          child: Container(
+            width: double.infinity,
+            height: 40,
+            padding: EdgeInsets.only(left: 10),
+            decoration: BoxDecoration(
+                color: Color(0xffeeeeee),
+                border: Border(
+                    bottom: BorderSide(color: Color(0xff5f66f2), width: 1))),
+            alignment: Alignment.centerLeft,
+            child: _location==null?Text(
+              '선택',
+              style: TextStyle(
+                color: Color(0xffbdbdbd),
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+              ),
+            ):Text('${_locaion_label}',
+              style: TextStyle(
+                color: Color(0xff333333),
+                fontSize: 16,
+                fontFamily: 'S-CoreDream-4',
+              ),
+            ),
+          ),
+        ),
+      ]),
+    );
+  }
+  void showLocalListDialog(AsyncSnapshot snapshot, String title) {
+    List dialogList = [];
+    List<Widget> dialogWidgetList = [];
+
+    snapshot.data["localData"].forEach((element) {
+      if (element.data()["tier"] == curLocalTier &&
+          element.data()["parent"] == curLocalParent) {
+        dialogList.add(element.data());
+        dialogWidgetList.add(SimpleDialogOption(
+          child: Text(element.data()["title"]),
+          onPressed: () {
+            switch (curLocalTier) {
+              case 1:
+                title = element.data()["title"];
+                break;
+              case 2:
+                title = title + ' > ${element.data()["title"]}';
+                _location = element.data()["title"];
+                _locaion_label = title;
+                Navigator.pop(context);
+                setState() {
+                  curWorkTier = 1;
+                  curWorkParent = "";
+                }
+                return;
+            }
+            curLocalTier += 1;
+            curLocalParent = element.data()["code"];
+            showLocalListDialog(snapshot, title);
+          },
+        ));
+      }
+    });
+    switch (curLocalTier) {
+      case 1:
+        SimpleDialog dialog =
+            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+        showDialog(
+            context: context,
+            builder: (context) {
+              return dialog;
+            }).then((value) => setState(() {
+              curLocalTier = 1;
+              curLocalParent = "";
+            }));
+        break;
+      case 2:
+        SimpleDialog dialog =
+            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
