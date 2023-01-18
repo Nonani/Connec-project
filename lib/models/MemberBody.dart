@@ -1,6 +1,6 @@
 class MemberBody {
   String? uid;
-  String? work;
+  List<String>? work;
   String? career;
   String? location;
   String? gender;

@@ -49,6 +49,7 @@ Widget CustomDropdownButton(
                 : const TextStyle(
               color: Color(0xff333333),
               fontSize: 16,
+              fontWeight: FontWeight.w400,
               fontFamily: 'S-CoreDream-4',
             ),
             underline: Visibility(
