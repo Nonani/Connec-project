@@ -34,6 +34,11 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
 
   int connectionCount = 0;
   List<String> connectionText = ['한 다리', '두 다리', '세 다리'];
+  List<String> connectionList = [
+    'https://firebasestorage.googleapis.com/v0/b/connec-project.appspot.com/o/connec%20~%EB%8B%A4%EB%A6%AC-03.png?alt=media&token=c5bd0d56-f0be-47b4-9253-764712720c9a',
+    'https://firebasestorage.googleapis.com/v0/b/connec-project.appspot.com/o/connec%20~%EB%8B%A4%EB%A6%AC-04.png?alt=media&token=6e0f685e-1c75-4209-a027-caf2b61a21ba',
+    'https://firebasestorage.googleapis.com/v0/b/connec-project.appspot.com/o/connec%20~%EB%8B%A4%EB%A6%AC-05.png?alt=media&token=6c4f0fa5-601a-4c81-b4ec-0fde0afe929b'
+  ];
   int _currentIndex = 0;
 
   List<Widget> list = [
@@ -103,109 +108,104 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                       padding: const EdgeInsets.only(top: 12),
                       child: SingleChildScrollView(
                           child: Column(children: [
-                            SizedBox(
-                              width: double.infinity,
-                              height: 220,
-                              child: Image.network(
-                                  "https://firebasestorage.googleapis.com/v0/b/connec-project.appspot.com/o/KakaoTalk_20230102_190357034.png?alt=media&token=4959fefe-88af-4ec1-b8e3-a23f3b012552"),
-                            ),
-                            Column(children: [
-                              Container(
-                                width: 360,
-                                alignment: Alignment.center,
-                                child: Padding(
-                                    padding: EdgeInsets.only(top: 5, bottom: 5),
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        setState(() =>
-                                        connectionCount =
-                                            (connectionCount + 1) % 3);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        minimumSize: const Size(186, 36),
-                                        backgroundColor: const Color(
-                                            0xfffafafa),
-                                        side: const BorderSide(
-                                          color: Color(0xff5f66f2),
-                                          width: 2,
-                                        ),
-                                      ),
-                                      child: Text(
-                                        connectionText[connectionCount],
-                                        style: TextStyle(
-                                          color: Color(0xff5f66f2),
-                                          fontSize: 16,
-                                          fontFamily: 'EchoDream',
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    )),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        minimumSize: const Size(160, 43),
-                                        backgroundColor: const Color(
-                                            0xff5f66f2),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ExpandNetworkPage(),
-                                            ));
-                                      },
-                                      child: const Text(
-                                        "네트워크 확장",
-                                        style: TextStyle(
-                                          color: Color(0xfffafafa),
-                                          fontSize: 15,
-                                          fontFamily: 'EchoDream',
-                                        ),
-                                      )),
-                                  const SizedBox(width: 13),
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        minimumSize: const Size(160, 43),
-                                        backgroundColor: const Color(
-                                            0xff5f66f2),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  NetworkListPage(),
-                                            ));
-                                      },
-                                      child: const Text(
-                                        "네트워크 축소",
-                                        style: TextStyle(
-                                          color: Color(0xfffafafa),
-                                          fontSize: 15,
-                                          fontFamily: 'EchoDream',
-                                        ),
-                                      ))
-                                ],
-                              ),
-                            ]),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: 1, //snapshot.data['list'].length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return const Padding(
-                                  padding: EdgeInsets.only(bottom: 14),
-                                  child: SizedBox(
-                                    width: 360,
-                                    height: 300,
+                        SizedBox(
+                          width: double.infinity,
+                          height: 220,
+                          child: Image.network(connectionList[connectionCount]),
+                        ),
+                        Column(children: [
+                          Container(
+                            width: 360,
+                            alignment: Alignment.center,
+                            child: Padding(
+                                padding: EdgeInsets.only(top: 5, bottom: 5),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    setState(() => connectionCount =
+                                        (connectionCount + 1) % 3);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(186, 36),
+                                    backgroundColor: const Color(0xfffafafa),
+                                    side: const BorderSide(
+                                      color: Color(0xff5f66f2),
+                                      width: 2,
+                                    ),
                                   ),
-                                );
-                              },
-                            ),
-                          ]))),
+                                  child: Text(
+                                    connectionText[connectionCount],
+                                    style: TextStyle(
+                                      color: Color(0xff5f66f2),
+                                      fontSize: 16,
+                                      fontFamily: 'EchoDream',
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                )),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(160, 43),
+                                    backgroundColor: const Color(0xff5f66f2),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ExpandNetworkPage(),
+                                        ));
+                                  },
+                                  child: const Text(
+                                    "네트워크 확장",
+                                    style: TextStyle(
+                                      color: Color(0xfffafafa),
+                                      fontSize: 15,
+                                      fontFamily: 'EchoDream',
+                                    ),
+                                  )),
+                              const SizedBox(width: 13),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: const Size(160, 43),
+                                    backgroundColor: const Color(0xff5f66f2),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              NetworkListPage(),
+                                        ));
+                                  },
+                                  child: const Text(
+                                    "네트워크 축소",
+                                    style: TextStyle(
+                                      color: Color(0xfffafafa),
+                                      fontSize: 15,
+                                      fontFamily: 'EchoDream',
+                                    ),
+                                  ))
+                            ],
+                          ),
+                        ]),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: 1, //snapshot.data['list'].length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return const Padding(
+                              padding: EdgeInsets.only(bottom: 14),
+                              child: SizedBox(
+                                width: 360,
+                                height: 300,
+                              ),
+                            );
+                          },
+                        ),
+                      ]))),
                 ]),
                 bottomNavigationBar: SizedBox(
                   height: 65,
