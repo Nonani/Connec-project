@@ -99,11 +99,15 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                     IconButton(
                         icon: Icon(Icons.link_sharp),
                         color: Color(0xff5f66f2),
-                        onPressed: () async{
+                        onPressed: () async {
                           final db = FirebaseFirestore.instance;
-                          final result = await db.collection("users").doc("${FirebaseAuth.instance.currentUser!.uid}").get();
+                          final result = await db
+                              .collection("users")
+                              .doc("${FirebaseAuth.instance.currentUser!.uid}")
+                              .get();
                           logger.w(FirebaseAuth.instance.currentUser!.uid);
-                          Clipboard.setData(ClipboardData(text: result["uuid"]));
+                          Clipboard.setData(
+                              ClipboardData(text: result["uuid"]));
                         }),
                   ],
                 ),
@@ -121,12 +125,11 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          AcquitanceManagementPage(snapshot.data!['list'][index]),
-                                    ));
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return AcquitanceManagementPage(
+                                      snapshot.data!['list'][index]);
+                                }));
                               },
                               child: Padding(
                                 padding: EdgeInsets.only(bottom: 7),
@@ -138,11 +141,12 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                                     classStyle: _classStyle,
                                     contextStyle: _contextStyle,
                                     itemStyle: _itemStyle,
-                                    field: '',
+                                    field: snapshot.data['list'][index]['title'],
                                     // field: snapshot.data['list'][index]['work'],
                                     rate: '0',
-                                    relationship: '0',
-                                    capability: snapshot.data['list'][index]['capability'],
+                                    relationship: '한 다리',
+                                    capability: snapshot.data['list'][index]
+                                        ['capability'],
                                   ),
                                 ),
                               ),
@@ -187,10 +191,11 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                         setState(() {
                           _currentIndex = index;
                         });
-                        Navigator.pushReplacement(context,
+                        Navigator.pushReplacement(
+                            context,
                             MaterialPageRoute(
-                          builder: (context) => list[_currentIndex],
-                        ));
+                              builder: (context) => list[_currentIndex],
+                            ));
                       }
                     },
                     type: BottomNavigationBarType.fixed,
@@ -244,20 +249,30 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
   }
 
   Future _future() async {
+    String workString = "";
     FirebaseFirestore db = FirebaseFirestore.instance;
-    print(FirebaseAuth.instance.currentUser!.uid.toString());
     final list = await db
         .collection("member")
-        .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid.toString())
+        .where('uid',
+            isEqualTo: FirebaseAuth.instance.currentUser!.uid.toString())
         .get();
-    Map <String, dynamic> data = {};
-    logger.w(list.docs);
-    data['list'] = List.empty( growable: true);
+    Map<String, dynamic> data = {};
+    data['list'] = List.empty(growable: true);
     data['length'] = list.docs.length;
-    list.docs.forEach((member) {
-      data['list'].add(member.data());
-    });
-    logger.w(data['list'][1]);
+    for (var member in list.docs) {
+      var memberData = member.data();
+      QuerySnapshot<Map<String, dynamic>> tmp = await db
+          .collection('workData')
+          .where('code', isEqualTo: memberData['work'][0])
+          .get();
+      memberData['title'] = tmp.docs[0]['title'];
+      tmp = await db
+          .collection('localData')
+          .where('code', isEqualTo: memberData['location'])
+          .get();
+      memberData['location'] = tmp.docs[0]['title'];
+      data['list'].add(memberData);
+    }
     return data;
   }
 }

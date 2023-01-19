@@ -35,7 +35,7 @@ class AcquitanceManagementPage extends StatelessWidget {
   );
 
   @override
-  Widget build(BuildContext context) {
+  build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -63,7 +63,7 @@ class AcquitanceManagementPage extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.only(top: 13, bottom: 13),
                     child: Text(
-                      data['capability'],
+                      data['title'],
                       style: const TextStyle(
                         color: Color(0xff333333),
                         fontSize: 21,
@@ -78,7 +78,7 @@ class AcquitanceManagementPage extends StatelessWidget {
                     margin: const EdgeInsets.only(top: 7.5, bottom: 10.5),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: Color(0xff5f66f2),
+                        color: const Color(0xff5f66f2),
                         width: 1,
                       ),
                     ),
@@ -146,13 +146,21 @@ class AcquitanceManagementPage extends StatelessWidget {
                                       style: _contextStyleValue),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text(data['capability'],
-                                      style: _contextStyleValue),
-                                ),
+                                    padding: EdgeInsets.only(top: 10),
+                                    child: FutureBuilder(
+                                      future: workString(data['work']),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          return Text(snapshot.data!,
+                                              style: _contextStyleValue);
+                                        } else {
+                                          return Text("");
+                                        }
+                                      },
+                                    )),
                                 Padding(
                                   padding: EdgeInsets.only(top: 10),
-                                  child: Text(data['work'],
+                                  child: Text(data['career'],
                                       style: _contextStyleValue),
                                 ),
                                 Padding(
@@ -230,5 +238,28 @@ class AcquitanceManagementPage extends StatelessWidget {
             ),
           ),
         ]));
+  }
+
+  Future<String> workString(List<dynamic> workData) async {
+    logger.w(workData);
+    String ret = "";
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    for (String code in workData) {
+      QuerySnapshot<Map<String, dynamic>> data =
+          await db.collection('workData').where('code', isEqualTo: code).get();
+      ret = "> ${data.docs[0]['title']}";
+      data = await db
+          .collection('workData')
+          .where('code', isEqualTo: data.docs[0]['parent'])
+          .get();
+      ret = "> ${data.docs[0]['title']}" + ret;
+      data = await db
+          .collection('workData')
+          .where('code', isEqualTo: data.docs[0]['parent'])
+          .get();
+      ret = data.docs[0]['title'] + ret;
+    }
+    logger.w(ret);
+    return ret;
   }
 }
