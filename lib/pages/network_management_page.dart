@@ -32,6 +32,8 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     fontWeight: FontWeight.w200,
   );
 
+  int connectionCount = 0;
+  List<String> connectionText = ['한 다리', '두 다리', '세 다리'];
   int _currentIndex = 0;
 
   List<Widget> list = [
@@ -82,11 +84,15 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                     IconButton(
                         icon: Icon(Icons.link_sharp),
                         color: Color(0xff5f66f2),
-                        onPressed: () async{
+                        onPressed: () async {
                           final db = FirebaseFirestore.instance;
-                          final result = await db.collection("users").doc("${FirebaseAuth.instance.currentUser!.uid}").get();
+                          final result = await db
+                              .collection("users")
+                              .doc("${FirebaseAuth.instance.currentUser!.uid}")
+                              .get();
                           logger.w(FirebaseAuth.instance.currentUser!.uid);
-                          Clipboard.setData(ClipboardData(text: result["uuid"]));
+                          Clipboard.setData(
+                              ClipboardData(text: result["uuid"]));
                         }),
                   ],
                 ),
@@ -97,101 +103,109 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                       padding: const EdgeInsets.only(top: 12),
                       child: SingleChildScrollView(
                           child: Column(children: [
-                        SizedBox(
-                          width: double.infinity,
-                          height: 220,
-                          child: Image.network("gs://connec-project.appspot.com/KakaoTalk_20230102_190357034.png"),
-                        ),
-                        Column(children: [
-                          Container(
-                            width: 360,
-                            alignment: Alignment.center,
-                            child: Padding(
-                                padding: EdgeInsets.only(top: 5, bottom: 5),
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: const Size(186, 36),
-                                    backgroundColor: const Color(0xfffafafa),
-                                    side: const BorderSide(
-                                      color: Color(0xff5f66f2),
-                                      width: 2,
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    "한 다리",
-                                    style: TextStyle(
-                                      color: Color(0xff5f66f2),
-                                      fontSize: 16,
-                                      fontFamily: 'EchoDream',
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                )),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: const Size(160, 43),
-                                    backgroundColor: const Color(0xff5f66f2),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ExpandNetworkPage(),
-                                        ));
-                                  },
-                                  child: const Text(
-                                    "네트워크 확장",
-                                    style: TextStyle(
-                                      color: Color(0xfffafafa),
-                                      fontSize: 15,
-                                      fontFamily: 'EchoDream',
-                                    ),
-                                  )),
-                              const SizedBox(width: 13),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: const Size(160, 43),
-                                    backgroundColor: const Color(0xff5f66f2),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              NetworkListPage(),
-                                        ));
-                                  },
-                                  child: const Text(
-                                    "네트워크 축소",
-                                    style: TextStyle(
-                                      color: Color(0xfffafafa),
-                                      fontSize: 15,
-                                      fontFamily: 'EchoDream',
-                                    ),
-                                  ))
-                            ],
-                          ),
-                        ]),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: 1, //snapshot.data['list'].length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return const Padding(
-                              padding: EdgeInsets.only(bottom: 14),
-                              child: SizedBox(
+                            SizedBox(
+                              width: double.infinity,
+                              height: 220,
+                              child: Image.network(
+                                  "https://firebasestorage.googleapis.com/v0/b/connec-project.appspot.com/o/KakaoTalk_20230102_190357034.png?alt=media&token=4959fefe-88af-4ec1-b8e3-a23f3b012552"),
+                            ),
+                            Column(children: [
+                              Container(
                                 width: 360,
-                                height: 300,
+                                alignment: Alignment.center,
+                                child: Padding(
+                                    padding: EdgeInsets.only(top: 5, bottom: 5),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        setState(() =>
+                                        connectionCount =
+                                            (connectionCount + 1) % 3);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        minimumSize: const Size(186, 36),
+                                        backgroundColor: const Color(
+                                            0xfffafafa),
+                                        side: const BorderSide(
+                                          color: Color(0xff5f66f2),
+                                          width: 2,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        connectionText[connectionCount],
+                                        style: TextStyle(
+                                          color: Color(0xff5f66f2),
+                                          fontSize: 16,
+                                          fontFamily: 'EchoDream',
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    )),
                               ),
-                            );
-                          },
-                        ),
-                      ]))),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        minimumSize: const Size(160, 43),
+                                        backgroundColor: const Color(
+                                            0xff5f66f2),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ExpandNetworkPage(),
+                                            ));
+                                      },
+                                      child: const Text(
+                                        "네트워크 확장",
+                                        style: TextStyle(
+                                          color: Color(0xfffafafa),
+                                          fontSize: 15,
+                                          fontFamily: 'EchoDream',
+                                        ),
+                                      )),
+                                  const SizedBox(width: 13),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        minimumSize: const Size(160, 43),
+                                        backgroundColor: const Color(
+                                            0xff5f66f2),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  NetworkListPage(),
+                                            ));
+                                      },
+                                      child: const Text(
+                                        "네트워크 축소",
+                                        style: TextStyle(
+                                          color: Color(0xfffafafa),
+                                          fontSize: 15,
+                                          fontFamily: 'EchoDream',
+                                        ),
+                                      ))
+                                ],
+                              ),
+                            ]),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: 1, //snapshot.data['list'].length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return const Padding(
+                                  padding: EdgeInsets.only(bottom: 14),
+                                  child: SizedBox(
+                                    width: 360,
+                                    height: 300,
+                                  ),
+                                );
+                              },
+                            ),
+                          ]))),
                 ]),
                 bottomNavigationBar: SizedBox(
                   height: 65,
@@ -203,7 +217,8 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                         setState(() {
                           _currentIndex = index;
                         });
-                        Navigator.pushReplacement(context,
+                        Navigator.pushReplacement(
+                            context,
                             MaterialPageRoute(
                               builder: (context) => list[_currentIndex],
                             ));
