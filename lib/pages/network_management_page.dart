@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/acquitance_list_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -56,11 +57,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
         future: _future(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (!snapshot.hasData) {
-            return const SafeArea(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+            return CustomLoadingDialog();
           } else {
             return Scaffold(
                 appBar: AppBar(

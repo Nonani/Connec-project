@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 
+import '../components/custom_dialog.dart';
 import '../components/custom_expansion_tile.dart';
 import '../components/custom_notice_item.dart';
 import 'mypage/my_info_page.dart';
@@ -39,11 +40,7 @@ class _SearchPageState extends State<SearchPage> {
       future: getList(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (!snapshot.hasData) {
-          return SafeArea(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return CustomLoadingPage();
         } else {
           data = snapshot.data!;
           List<Widget> workList = [];

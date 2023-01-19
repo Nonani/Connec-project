@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/mypage/account_setting_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +19,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
       future: _future(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return SafeArea(
-              child: Center(
-            child: CircularProgressIndicator(),
-          ));
+          return CustomLoadingDialog();
         } else {
           return Scaffold(
             appBar: AppBar(

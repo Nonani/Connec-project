@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../components/custom_dialog.dart';
 import '../components/custom_item_widget.dart';
 import 'acquitance_management_page.dart';
 import 'member_body_page.dart';
@@ -62,11 +63,7 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
         future: _future(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (!snapshot.hasData) {
-            return const SafeArea(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+            return CustomLoadingPage();
           } else {
             return Scaffold(
                 appBar: AppBar(

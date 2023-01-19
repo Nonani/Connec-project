@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/acquitance_list_page.dart';
 import 'package:connec/pages/expand_network_page.dart';
 import 'package:connec/pages/network_list_page.dart';
@@ -38,11 +39,7 @@ class _MainPageState extends State<MainPage> {
       future: _future(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if(!snapshot.hasData){
-          return SafeArea(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return CustomLoadingPage();
         }else{
           return Scaffold(
             appBar: AppBar(
