@@ -3,18 +3,13 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../components/custom_item_widget.dart';
 import 'acquitance_management_page.dart';
-import 'add_member_page.dart';
 import 'member_body_page.dart';
 import 'network_management_page.dart';
-import 'network_reduction_page.dart';
 import 'search_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
-import '../components/custom_expansion_tile.dart';
-import '../services/service_class.dart';
 import 'expand_network_page.dart';
 
 class AcquitanceListPage extends StatefulWidget {
