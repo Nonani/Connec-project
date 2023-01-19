@@ -86,7 +86,9 @@ class _MainPageState extends State<MainPage> {
                     width: double.infinity,
                     height: 41,
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage(),));
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
                           foregroundColor: Colors.black,
