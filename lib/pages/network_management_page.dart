@@ -100,7 +100,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                         SizedBox(
                           width: double.infinity,
                           height: 220,
-                          child: Image.network(""),
+                          child: Image.network("gs://connec-project.appspot.com/KakaoTalk_20230102_190357034.png"),
                         ),
                         Column(children: [
                           Container(
