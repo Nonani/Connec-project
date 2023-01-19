@@ -1,12 +1,13 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connec/components/custom_item_widget.dart';
-import 'package:connec/pages/acquitance_management_page.dart';
-import 'package:connec/pages/add_member_page.dart';
-import 'package:connec/pages/member_body_page.dart';
-import 'package:connec/pages/network_management_page.dart';
-import 'package:connec/pages/network_reduction_page.dart';
+import '../components/custom_item_widget.dart';
+import 'acquitance_management_page.dart';
+import 'add_member_page.dart';
+import 'member_body_page.dart';
+import 'network_management_page.dart';
+import 'network_reduction_page.dart';
+import 'search_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,7 +56,7 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
   List<Widget> list = [
     NetworkManagementPage(),
     AcquitanceListPage(),
-    ExpansionTileSample(),
+    SearchPage(),
     ExpandNetworkPage(),
     ExpandNetworkPage(),
   ];

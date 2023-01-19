@@ -54,7 +54,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                 backgroundColor: Color(0xfffafafa),
                 elevation: 0,
                 leading: BackButton(color: Color(0xff5f66f2)),
-                title: Text("회원가입",
+                title: Text("지인 등록",
                     style: TextStyle(
                         fontFamily: "EchoDream", fontSize: 20, color: Colors.black)),
                 centerTitle: true,

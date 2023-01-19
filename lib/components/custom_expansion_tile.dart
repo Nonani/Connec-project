@@ -1,13 +1,43 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
+import 'package:logger/logger.dart';
+
 class ExpansionTileSample extends StatelessWidget {
+  Logger logger = Logger();
+  List<Entry> data = [];
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) =>
-          EntryItem(data[index], 0),
-      itemCount: data.length,
+    return FutureBuilder(
+      future: getList(),
+      builder: (context, snapshot) {
+        // logger.w(snapshot.data);
+        if (!snapshot.hasData) {
+          return SafeArea(
+              child: Center(
+            child: CircularProgressIndicator(),
+          ));
+        } else {
+          data = snapshot.data!;
+          // logger.w(snapshot.data);
+          // data.forEach((element) {
+          //   logger.w(element.children.length);
+          // });
+          List<Widget> list = [];
+          for(int index =0;index<data.length;index++){
+            list.add(EntryItem(data[index], 0));
+          }
+          return Scaffold(
+              body: SingleChildScrollView(
+            child:Column(
+              children: list,
+            )
+          ));
+        }
+      },
     );
   }
 }
@@ -60,10 +90,46 @@ String json = """
 """;
 
 // The entire multilevel list displayed by this app.
-final List<Entry> data = parseEntries(json);
+
 
 // Displays one Entry. If the entry has children then it's displayed
 // with an ExpansionTile.
+
+Future<List<Entry>> getList() async {
+  Logger logger = Logger();
+  final db = FirebaseFirestore.instance;
+  List<Entry> list1 = [];
+  final work1 =
+      (await db.collection("workData").where("tier", isEqualTo: 1).get()).docs;
+
+  for (var element1 in work1){
+    List<Entry> list2 = [];
+
+    final work2 = (await db
+            .collection("workData")
+            .where("tier", isEqualTo: 2)
+            .where("parent", isEqualTo: "${element1.data()["code"]}")
+            .get())
+        .docs;
+    for (var element2 in work2) {
+      List<Entry> list3 = [];
+      final work3 = (await db
+              .collection("workData")
+              .where("tier", isEqualTo: 3)
+              .where("parent", isEqualTo: "${element2.data()["code"]}")
+              .get())
+          .docs;
+      for (var element3 in work3) {
+        list3.add(Entry(title: element3.data()["title"], children: []));
+      }
+      list2.add(Entry(title: element2.data()["title"], children: list3));
+    }
+    list1.add(Entry(title: element1.data()["title"], children: list2));
+  }
+
+  return list1;
+}
+
 class EntryItem extends StatelessWidget {
   const EntryItem(this.entry, this.num);
 
@@ -71,6 +137,7 @@ class EntryItem extends StatelessWidget {
   final Entry entry;
 
   Widget _buildTiles1(Entry root) {
+    // print(root.title);
     if (root.children.isEmpty)
       return ListTile(
         title: Text(
