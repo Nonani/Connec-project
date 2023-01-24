@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +22,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<ServiceClass>(context, listen: false);
+    //var provider = Provider.of<ServiceClass>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -51,8 +49,8 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
         centerTitle: true,
         actions: [
           IconButton(
-              icon: Icon(Icons.link_sharp),
-              color: Color(0xff5f66f2),
+              icon: const Icon(Icons.link_sharp),
+              color: const Color(0xff5f66f2),
               onPressed: () async{
                 final db = FirebaseFirestore.instance;
                 final result = await db.collection("users").doc("${FirebaseAuth.instance.currentUser!.uid}").get();
@@ -64,7 +62,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
       body: Consumer<ServiceClass>(
         builder: (context, data, child) {
           return data.loading
-              ? Container(child: const Text("네트워크 확장"))
+              ? const Text("네트워크 확장")
               : SafeArea(
                   child: Form(
                   key: _formKey,
@@ -72,7 +70,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 47.1),
+                        padding: const EdgeInsets.only(top: 47.1),
                         child: LoginEditTextForm(
                           label: "확장할 지인 코드",
                           hint: "지인의 코드를 입력해 주세요",
@@ -102,7 +100,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
 
             var info = await FirebaseFirestore.instance
                 .collection('users')
-                .doc('${FirebaseAuth.instance.currentUser!.uid}')
+                .doc(FirebaseAuth.instance.currentUser!.uid)
                 .get();
             var data = info.data();
             final url =
@@ -114,7 +112,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
                   'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: <String, String>{
-                  'to': '${_userCode}',
+                  'to': '$_userCode',
                   'from': "${data!['uuid']}",
                 },
               );

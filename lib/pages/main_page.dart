@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/acquitance_list_page.dart';
 import 'package:connec/pages/expand_network_page.dart';
-import 'package:connec/pages/network_list_page.dart';
 import 'package:connec/pages/network_management_page.dart';
 import 'package:connec/pages/search_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -52,15 +49,15 @@ class _MainPageState extends State<MainPage> {
                     color: Color(0xff5f66f2),
                     onPressed: () async{
                       final db = FirebaseFirestore.instance;
-                      final result = await db.collection("users").doc("${FirebaseAuth.instance.currentUser!.uid}").get();
+                      final result = await db.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get();
                       logger.w(FirebaseAuth.instance.currentUser!.uid);
                       Clipboard.setData(ClipboardData(text: result["uuid"]));
                     }),
               ],
-              shape: Border(bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
+              shape: const Border(bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
               backgroundColor: Color(0xfffafafa),
               elevation: 0,
-              title: Text(
+              title: const Text(
                 'CONNEC',
                 style: TextStyle(
                   color: Color(0xff5f66f2),
@@ -74,8 +71,8 @@ class _MainPageState extends State<MainPage> {
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.only(left: 23, top: 54),
-                  child: Text(
+                  margin: const EdgeInsets.only(left: 23, top: 54),
+                  child: const Text(
                     '어떤 사람을 찾으시나요?',
                     style: TextStyle(
                       color: Color(0xff333333),
@@ -94,7 +91,7 @@ class _MainPageState extends State<MainPage> {
                           backgroundColor: Colors.transparent,
                           foregroundColor: Colors.black,
                           elevation: 0,
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(21)),
                             side: BorderSide(
                               width: 1.0,
@@ -129,7 +126,7 @@ class _MainPageState extends State<MainPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         '알림',
                         style: TextStyle(
                           color: Color(0xff333333),
@@ -146,12 +143,12 @@ class _MainPageState extends State<MainPage> {
                         alignment: Alignment.center,
                         width: 32,
                         decoration: BoxDecoration(
-                          color: Color(0xff5f66f2),
+                          color: const Color(0xff5f66f2),
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Text(
                           '${snapshot.data['list'].length}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Color(0xfffafafa),
                             fontSize: 13,
                             fontFamily: 'S-CoreDream-6',
@@ -186,7 +183,6 @@ class _MainPageState extends State<MainPage> {
                           itemCount: snapshot.data['list'].length,
                           itemBuilder: (BuildContext context, int index) {
                             final notice = snapshot.data['list'][index];
-                            logger.w(notice["from_uid"]);
                             return CustomNoticeItem(notice: notice);
                           },
                         ),
@@ -196,7 +192,7 @@ class _MainPageState extends State<MainPage> {
                 ),
               ],
             ),
-            bottomNavigationBar: Container(
+            bottomNavigationBar: SizedBox(
               height: 70,
               child: BottomNavigationBar(
                 currentIndex: _currentIndex,
