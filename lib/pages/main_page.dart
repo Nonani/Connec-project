@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/acquitance_list_page.dart';
 import 'package:connec/pages/expand_network_page.dart';
 import 'package:connec/pages/network_management_page.dart';
@@ -35,11 +36,7 @@ class _MainPageState extends State<MainPage> {
       future: _future(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if(!snapshot.hasData){
-          return SafeArea(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return CustomLoadingPage();
         }else{
           return Scaffold(
             appBar: AppBar(
@@ -86,7 +83,9 @@ class _MainPageState extends State<MainPage> {
                     width: double.infinity,
                     height: 41,
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage(),));
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
                           foregroundColor: Colors.black,
