@@ -1,13 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/acquitance_list_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
 import '../components/custom_expansion_tile.dart';
-import '../services/service_class.dart';
 import 'expand_network_page.dart';
 import 'network_list_page.dart';
 
@@ -20,18 +17,6 @@ class NetworkManagementPage extends StatefulWidget {
 
 class _NetworkManagementPageState extends State<NetworkManagementPage> {
   final logger = Logger();
-  final TextStyle _nameStyle = const TextStyle(
-    color: Color(0xff333333),
-    fontSize: 19,
-    fontFamily: 'S-CoreDream-6Bold',
-    fontWeight: FontWeight.w500,
-  );
-  final TextStyle _contextStyle = const TextStyle(
-    color: Color(0xffafafaf),
-    fontSize: 13,
-    fontFamily: 'EchoDream',
-    fontWeight: FontWeight.w200,
-  );
 
   int connectionCount = 0;
   List<String> connectionText = ['한 다리', '두 다리', '세 다리'];
@@ -52,233 +37,362 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<ServiceClass>(context, listen: false);
-    return FutureBuilder(
-        future: _future(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (!snapshot.hasData) {
-            return CustomLoadingDialog();
-          } else {
-            return Scaffold(
-                appBar: AppBar(
-                  elevation: 0,
-                  toolbarHeight: 56,
-                  backgroundColor: const Color(0xfffafafa),
-                  shape: const Border(
-                      bottom: BorderSide(color: Color(0xffdbdbdb), width: 2)),
-                  leading: IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Color(0xff5f66f2),
-                    ),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                  title: const Text(
-                    'CONNEC',
-                    style: TextStyle(
-                      color: Color(0xff5f66f2),
-                      fontSize: 25,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  centerTitle: true,
-                  actions: [
-                    IconButton(
-                        icon: Icon(Icons.link_sharp),
-                        color: Color(0xff5f66f2),
-                        onPressed: () async {
-                          final db = FirebaseFirestore.instance;
-                          final result = await db
-                              .collection("users")
-                              .doc("${FirebaseAuth.instance.currentUser!.uid}")
-                              .get();
-                          logger.w(FirebaseAuth.instance.currentUser!.uid);
-                          Clipboard.setData(
-                              ClipboardData(text: result["uuid"]));
-                        }),
-                  ],
+    //var provider = Provider.of<ServiceClass>(context, listen: false);
+    return Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          toolbarHeight: 56,
+          backgroundColor: const Color(0xfffafafa),
+          shape: const Border(
+              bottom: BorderSide(color: Color(0xffdbdbdb), width: 2)),
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xff5f66f2),
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          title: const Text(
+            'CONNEC',
+            style: TextStyle(
+              color: Color(0xff5f66f2),
+              fontSize: 25,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          centerTitle: true,
+          actions: [
+            IconButton(
+                icon: Icon(Icons.link_sharp),
+                color: Color(0xff5f66f2),
+                onPressed: () async {
+                  final db = FirebaseFirestore.instance;
+                  final result = await db
+                      .collection("users")
+                      .doc("${FirebaseAuth.instance.currentUser!.uid}")
+                      .get();
+                  logger.w(FirebaseAuth.instance.currentUser!.uid);
+                  Clipboard.setData(ClipboardData(text: result["uuid"]));
+                }),
+          ],
+        ),
+        body: Column(children: [
+          Container(
+              height: 635,
+              width: double.infinity,
+              padding: const EdgeInsets.only(top: 12),
+              child: SingleChildScrollView(
+                  child: Column(children: [
+                SizedBox(
+                  width: double.infinity,
+                  height: 220,
+                  child: Image.network(connectionList[connectionCount]),
                 ),
-                body: Column(children: [
+                Column(children: [
                   Container(
-                      height: 635,
-                      width: double.infinity,
-                      padding: const EdgeInsets.only(top: 12),
-                      child: SingleChildScrollView(
-                          child: Column(children: [
-                        SizedBox(
-                          width: double.infinity,
-                          height: 220,
-                          child: Image.network(connectionList[connectionCount]),
-                        ),
-                        Column(children: [
-                          Container(
-                            width: 360,
-                            alignment: Alignment.center,
-                            child: Padding(
-                                padding: EdgeInsets.only(top: 5, bottom: 5),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    setState(() => connectionCount =
-                                        (connectionCount + 1) % 3);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: const Size(186, 36),
-                                    backgroundColor: const Color(0xfffafafa),
-                                    side: const BorderSide(
-                                      color: Color(0xff5f66f2),
-                                      width: 2,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    connectionText[connectionCount],
-                                    style: TextStyle(
-                                      color: Color(0xff5f66f2),
-                                      fontSize: 16,
-                                      fontFamily: 'EchoDream',
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                )),
+                    width: 360,
+                    alignment: Alignment.center,
+                    child: Padding(
+                        padding: EdgeInsets.only(top: 5, bottom: 5),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setState(() =>
+                                connectionCount = (connectionCount + 1) % 3);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(186, 36),
+                            backgroundColor: const Color(0xfffafafa),
+                            side: const BorderSide(
+                              color: Color(0xff5f66f2),
+                              width: 2,
+                            ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          child: Text(
+                            connectionText[connectionCount],
+                            style: TextStyle(
+                              color: Color(0xff5f66f2),
+                              fontSize: 16,
+                              fontFamily: 'EchoDream',
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        )),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(160, 43),
+                            backgroundColor: const Color(0xff5f66f2),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ExpandNetworkPage(),
+                                ));
+                          },
+                          child: const Text(
+                            "네트워크 확장",
+                            style: TextStyle(
+                              color: Color(0xfffafafa),
+                              fontSize: 15,
+                              fontFamily: 'EchoDream',
+                            ),
+                          )),
+                      const SizedBox(width: 13),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(160, 43),
+                            backgroundColor: const Color(0xff5f66f2),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => NetworkListPage(),
+                                ));
+                          },
+                          child: const Text(
+                            "네트워크 축소",
+                            style: TextStyle(
+                              color: Color(0xfffafafa),
+                              fontSize: 15,
+                              fontFamily: 'EchoDream',
+                            ),
+                          ))
+                    ],
+                  ),
+                ]),
+                FutureBuilder(
+                    future: data(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
+                      return Column(children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 40, top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: const Size(160, 43),
-                                    backgroundColor: const Color(0xff5f66f2),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ExpandNetworkPage(),
-                                        ));
-                                  },
-                                  child: const Text(
-                                    "네트워크 확장",
-                                    style: TextStyle(
-                                      color: Color(0xfffafafa),
-                                      fontSize: 15,
-                                      fontFamily: 'EchoDream',
-                                    ),
-                                  )),
-                              const SizedBox(width: 13),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: const Size(160, 43),
-                                    backgroundColor: const Color(0xff5f66f2),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              NetworkListPage(),
-                                        ));
-                                  },
-                                  child: const Text(
-                                    "네트워크 축소",
-                                    style: TextStyle(
-                                      color: Color(0xfffafafa),
-                                      fontSize: 15,
-                                      fontFamily: 'EchoDream',
-                                    ),
-                                  ))
+                              const Text(
+                                "총 지인",
+                                style: TextStyle(
+                                  color: Color(0xff333333),
+                                  fontSize: 17,
+                                  fontFamily: 'EchoDream',
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(width: 18, height: 0),
+                              Text(
+                                "${snapshot.data['count'][connectionCount].toString()}명",
+                                style: const TextStyle(
+                                  color: Color(0xff5f66f2),
+                                  fontSize: 17,
+                                  fontFamily: 'EchoDream',
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              )
                             ],
                           ),
-                        ]),
+                        ),
+                        Container(
+                          height: 0,
+                          width: 308,
+                          margin: const EdgeInsets.only(top: 10, bottom: 26.5),
+                          decoration: const BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                              color: Color(0xff5f66f2),
+                              width: 4,
+                            )),
+                          ),
+                        ),
                         ListView.builder(
                           shrinkWrap: true,
                           itemCount: 1, //snapshot.data['list'].length,
                           itemBuilder: (BuildContext context, int index) {
-                            return const Padding(
-                              padding: EdgeInsets.only(bottom: 14),
-                              child: SizedBox(
-                                width: 360,
-                                height: 300,
-                              ),
-                            );
+                            return Padding(
+                                padding: EdgeInsets.only(bottom: 14),
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: 1,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: 1,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return Container();
+                                          });
+                                    }));
                           },
-                        ),
-                      ]))),
-                ]),
-                bottomNavigationBar: SizedBox(
-                  height: 65,
-                  child: BottomNavigationBar(
-                    currentIndex: _currentIndex,
-                    onTap: (index) {
-                      print('index test : ${index}');
-                      if (_currentIndex != index) {
-                        setState(() {
-                          _currentIndex = index;
-                        });
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => list[_currentIndex],
-                            ));
-                      }
-                    },
-                    type: BottomNavigationBarType.fixed,
-                    backgroundColor: Color(0xff5f66f2),
-                    showSelectedLabels: true,
-                    fixedColor: Colors.white,
-                    unselectedItemColor: Colors.white,
-                    selectedFontSize: 12,
-                    unselectedFontSize: 12,
-                    items: [
-                      BottomNavigationBarItem(
-                          icon: Image.asset(
-                            "assets/images/navigation_icon_1.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                          label: "네트워크"),
-                      BottomNavigationBarItem(
-                          icon: Image.asset(
-                            "assets/images/navigation_icon_2.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                          label: "지인관리"),
-                      BottomNavigationBarItem(
-                          icon: Image.asset(
-                            "assets/images/navigation_icon_3.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                          label: "검색"),
-                      BottomNavigationBarItem(
-                          icon: Image.asset(
-                            "assets/images/navigation_icon_4.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                          label: "구인장터"),
-                      BottomNavigationBarItem(
-                          icon: Image.asset(
-                            "assets/images/navigation_icon_5.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                          label: "마이페이지"),
-                    ],
+                        )
+                      ]);
+                    })
+              ]))),
+        ]),
+        bottomNavigationBar: SizedBox(
+          height: 65,
+          child: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            onTap: (index) {
+              print('index test : ${index}');
+              if (_currentIndex != index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => list[_currentIndex],
+                    ));
+              }
+            },
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Color(0xff5f66f2),
+            showSelectedLabels: true,
+            fixedColor: Colors.white,
+            unselectedItemColor: Colors.white,
+            selectedFontSize: 12,
+            unselectedFontSize: 12,
+            items: [
+              BottomNavigationBarItem(
+                  icon: Image.asset(
+                    "assets/images/navigation_icon_1.png",
+                    height: 30,
+                    width: 30,
                   ),
-                ));
-          }
-        });
+                  label: "네트워크"),
+              BottomNavigationBarItem(
+                  icon: Image.asset(
+                    "assets/images/navigation_icon_2.png",
+                    height: 30,
+                    width: 30,
+                  ),
+                  label: "지인관리"),
+              BottomNavigationBarItem(
+                  icon: Image.asset(
+                    "assets/images/navigation_icon_3.png",
+                    height: 30,
+                    width: 30,
+                  ),
+                  label: "검색"),
+              BottomNavigationBarItem(
+                  icon: Image.asset(
+                    "assets/images/navigation_icon_4.png",
+                    height: 30,
+                    width: 30,
+                  ),
+                  label: "구인장터"),
+              BottomNavigationBarItem(
+                  icon: Image.asset(
+                    "assets/images/navigation_icon_5.png",
+                    height: 30,
+                    width: 30,
+                  ),
+                  label: "마이페이지"),
+            ],
+          ),
+        ));
   }
 
-  Future _future() async {
+  Future data() async {
+    Logger logger = Logger();
     FirebaseFirestore db = FirebaseFirestore.instance;
-    print(FirebaseAuth.instance.currentUser!.uid.toString());
-    final result = await db
-        .collection("networks")
-        .doc(FirebaseAuth.instance.currentUser!.uid.toString())
+
+    Map<String, dynamic> result = {};
+    result['count'] = [0, 0, 0];
+    result['degree'] = [{}, {}, {}];
+    // 한 다리
+    DocumentSnapshot<Map<String, dynamic>> firstNetwork = await db
+        .collection('networks')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
-    logger.w(result);
+    Map<String, dynamic>? networkData = firstNetwork.data();
+    QuerySnapshot<Map<String, dynamic>> networkUsers = await db
+        .collection('users')
+        .where(FieldPath.documentId, whereIn: networkData!['list'])
+        .get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>>? networkUserData =
+        networkUsers.docs;
+    QuerySnapshot<Map<String, dynamic>> firstRelation = await db
+        .collection('member')
+        .where('uid', whereIn: networkData['list'])
+        .get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>>? relationData =
+        firstRelation.docs;
+
+    result['count'][0] += networkData.length;
+    result['count'][0] += relationData.length;
+
+    //parsing workData
+    List<String> workData = [];
+    List<String> workQuery = [];
+    List<int> workDataCnt = [];
+    Map<String, dynamic> workDict = {};
+    Map<String, dynamic> leveledData = {};
+
+    for (QueryDocumentSnapshot<Map<String, dynamic>> element
+        in relationData + networkUserData) {
+      Map<String, dynamic> member = element.data();
+
+      if (!workData.contains(member['work'][0])) {
+        workData.add(member['work'][0]);
+        workDataCnt.add(1);
+      } else {
+        int idx = workData.indexOf(member['work'][0]);
+        workDataCnt[idx]++;
+      }
+    }
+
+    for (int idx = 0; idx < workData.length; idx++) {
+      String first = "${workData[idx][0]}00000";
+      String second = "${workData[idx].substring(0, 3)}000";
+
+      if (!workQuery.contains(first)) {
+        workQuery.add(first);
+      }
+      if (!workQuery.contains(second)) {
+        workQuery.add(second);
+      }
+      if (!workQuery.contains(workData[idx])) {
+        workQuery.add(workData[idx]);
+      }
+
+      if (!leveledData.containsKey(first)) {
+        leveledData[first] = {};
+        leveledData[first][second] = {};
+      } else if (!leveledData[first].containsKey(second)) {
+        leveledData[first][second] = {};
+      }
+      leveledData[first][second]['code'] = workData[idx];
+      leveledData[first][second]['count'] = workDataCnt[idx];
+    }
+
+    QuerySnapshot<Map<String, dynamic>> workDocument =
+        await db.collection('workData').where('code', whereIn: workQuery).get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> workString =
+        workDocument.docs;
+
+    for (int idx = 0; idx < workString.length; idx++) {
+      Map<String, dynamic> work = workString[idx].data();
+      workDict[work['code']] = work['title'];
+    }
+
+    logger.w(workDict);
+    logger.w(leveledData);
+    logger.w(workData);
+    logger.w(workDataCnt);
+
+    // 두 다리
+    logger.w(networkData['list']);
+    var data = await db
+        .collection('networks')
+        .where(FieldPath.documentId, whereIn: networkData['list'])
+        .get();
     return result;
   }
 }
