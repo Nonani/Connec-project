@@ -169,194 +169,230 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                         future: data(),
                         builder: (BuildContext context,
                             AsyncSnapshot<dynamic> snapshot) {
-                          if (snapshot.hasData) {
+                          logger.w(snapshot.data);
+                          if (snapshot.hasData && snapshot.data['count'][connectionCount] != 0) {
                             return Column(children: [
-                            Container(
-                              padding: EdgeInsets.only(left: 35, top: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "총 지인",
-                                    style: TextStyle(
-                                      color: Color(0xff333333),
-                                      fontSize: 17,
-                                      fontFamily: 'EchoDream',
-                                      fontWeight: FontWeight.w500,
+                              Container(
+                                padding: EdgeInsets.only(left: 35, top: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "총 지인",
+                                      style: TextStyle(
+                                        color: Color(0xff333333),
+                                        fontSize: 17,
+                                        fontFamily: 'EchoDream',
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 18, height: 0),
-                                  Text(
-                                    "${snapshot.data['count'][connectionCount]
-                                        .toString()}명",
-                                    style: const TextStyle(
-                                      color: Color(0xff5f66f2),
-                                      fontSize: 17,
-                                      fontFamily: 'EchoDream',
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  )
-                                ],
+                                    const SizedBox(width: 18, height: 0),
+                                    Text(
+                                      "${snapshot.data['count'][connectionCount]
+                                          .toString()}명",
+                                      style: const TextStyle(
+                                        color: Color(0xff5f66f2),
+                                        fontSize: 17,
+                                        fontFamily: 'EchoDream',
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                            Container(
-
-                              margin: const EdgeInsets.only(left: 35, top: 10, bottom: 26.5),
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                                      color: Color(0xff5f66f2),
-                                      width: 2,
-                                    )),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                    left: 35, top: 10, bottom: 26.5),
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                        color: Color(0xff5f66f2),
+                                        width: 2,
+                                      )),
+                                ),
                               ),
-                            ),
-                            ListView.builder(
-                              primary: false,
-                              shrinkWrap: true,
-                              itemCount: snapshot
-                                  .data['data'][connectionCount].keys.length,
-                              itemBuilder: (BuildContext context, int fIdx) {
-                                var fKeys = snapshot
-                                    .data['data'][connectionCount].keys
-                                    .toList();
-                                return Padding(
-                                    padding: EdgeInsets.only(bottom: 0),
-                                    child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(left: 35, bottom: 10),
-                                            child: Text(
-                                              snapshot.data['dict'][connectionCount][fKeys[fIdx]],
-                                              style: const TextStyle(
-                                                color: Color(0xff333333),
-                                                fontSize: 16,
-                                                fontFamily: 'EchoDream',
-                                                fontWeight: FontWeight.w700,
+                              ListView.builder(
+                                primary: false,
+                                shrinkWrap: true,
+                                itemCount: snapshot
+                                    .data['data'][connectionCount].keys.length,
+                                itemBuilder: (BuildContext context, int fIdx) {
+                                  var fKeys = snapshot
+                                      .data['data'][connectionCount].keys
+                                      .toList();
+                                  return Padding(
+                                      padding: EdgeInsets.only(bottom: 0),
+                                      child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .start,
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 35, bottom: 10),
+                                              child: Text(
+                                                snapshot
+                                                    .data['dict'][connectionCount][fKeys[fIdx]],
+                                                style: const TextStyle(
+                                                  color: Color(0xff333333),
+                                                  fontSize: 16,
+                                                  fontFamily: 'EchoDream',
+                                                  fontWeight: FontWeight.w700,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            height: 0,
-                                            margin: const EdgeInsets.only(left:35, right: 30, bottom: 16),
-                                            decoration: const BoxDecoration(
-                                              border: Border(
-                                                  bottom: BorderSide(
-                                                    color: Color(0xff5f66f2),
-                                                    width: 2,
-                                                  )),
+                                            Container(
+                                              height: 0,
+                                              margin: const EdgeInsets.only(
+                                                  left: 35,
+                                                  right: 30,
+                                                  bottom: 16),
+                                              decoration: const BoxDecoration(
+                                                border: Border(
+                                                    bottom: BorderSide(
+                                                      color: Color(0xff5f66f2),
+                                                      width: 2,
+                                                    )),
+                                              ),
                                             ),
-                                          ),
-                                          ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount: snapshot
-                                                  .data['data'][connectionCount][
-                                              snapshot
-                                                  .data['data'][connectionCount]
-                                                  .keys
-                                                  .toList()[fIdx]]
-                                                  .keys
-                                                  .length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                  int sIdx) {
-                                                var sKeys = snapshot
+                                            ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount: snapshot
                                                     .data['data'][connectionCount][
                                                 snapshot
-                                                    .data['data']
-                                                [connectionCount]
+                                                    .data['data'][connectionCount]
                                                     .keys
                                                     .toList()[fIdx]]
                                                     .keys
-                                                    .toList();
-                                                return Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Container(
-                                                        margin: const EdgeInsets.only(left: 35,
-                                                            bottom: 10),
-                                                        child: Row(children: [
-                                                          const Icon(Icons
-                                                              .arrow_forward_ios_outlined,
-                                                              color: Color(
-                                                                  0xff5f66f2),
-                                                              size: 18),
-                                                          Text(snapshot
-                                                              .data['dict']
-                                                          [connectionCount][sKeys[sIdx]],
-                                                            style: const TextStyle(
-                                                              color: Color(
-                                                                  0xff333333),
-                                                              fontSize: 16,
-                                                              fontFamily: 'EchoDream',
-                                                              fontWeight: FontWeight
-                                                                  .w700,
-                                                            ),),
-                                                        ]),
-                                                      ),
-                                                      ListView.builder(
-                                                          shrinkWrap: true,
-                                                          itemCount: snapshot.data['data'][connectionCount]
-                                                          [snapshot.data['data'][connectionCount].keys
-                                                              .toList()[fIdx]][snapshot.data['data'][connectionCount]
-                                                          [snapshot.data['data'][connectionCount].keys.toList()[fIdx]]
-                                                              .keys.toList()[sIdx]].length,
-                                                          itemBuilder: (BuildContext context, int tIdx) {
-                                                            var tKeys = snapshot.data['data']
-                                                            [connectionCount][snapshot.data['data']
-                                                            [connectionCount].keys.toList()[fIdx]][snapshot.data['data']
-                                                            [connectionCount][snapshot.data['data'][connectionCount]
-                                                                .keys.toList()[fIdx]].keys.toList()[sIdx]];
-                                                            return Container(
-                                                                margin: const EdgeInsets.only(left: 55, right: 43),
-                                                                child: Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                    children: [
-                                                                      Text(
-                                                                        snapshot.data['dict'][connectionCount]
-                                                                        [tKeys[tIdx]['code']],
-                                                                        style: const TextStyle(
-                                                                          color: Color(
-                                                                              0xff666666),
-                                                                          fontSize: 15,
-                                                                          fontFamily: 'EchoDream',
-                                                                          fontWeight: FontWeight
-                                                                              .w500,
+                                                    .length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                    int sIdx) {
+                                                  var sKeys = snapshot
+                                                      .data['data'][connectionCount][
+                                                  snapshot
+                                                      .data['data']
+                                                  [connectionCount]
+                                                      .keys
+                                                      .toList()[fIdx]]
+                                                      .keys
+                                                      .toList();
+                                                  return Column(
+                                                      crossAxisAlignment: CrossAxisAlignment
+                                                          .start,
+                                                      children: [
+                                                        Container(
+                                                          margin: const EdgeInsets
+                                                              .only(left: 35,
+                                                              bottom: 10),
+                                                          child: Row(children: [
+                                                            const Icon(Icons
+                                                                .arrow_forward_ios_outlined,
+                                                                color: Color(
+                                                                    0xff5f66f2),
+                                                                size: 18),
+                                                            Text(snapshot
+                                                                .data['dict']
+                                                            [connectionCount][sKeys[sIdx]],
+                                                              style: const TextStyle(
+                                                                color: Color(
+                                                                    0xff333333),
+                                                                fontSize: 16,
+                                                                fontFamily: 'EchoDream',
+                                                                fontWeight: FontWeight
+                                                                    .w700,
+                                                              ),),
+                                                          ]),
+                                                        ),
+                                                        ListView.builder(
+                                                            shrinkWrap: true,
+                                                            itemCount: snapshot
+                                                                .data['data'][connectionCount]
+                                                            [snapshot
+                                                                .data['data'][connectionCount]
+                                                                .keys
+                                                                .toList()[fIdx]][snapshot
+                                                                .data['data'][connectionCount]
+                                                            [snapshot
+                                                                .data['data'][connectionCount]
+                                                                .keys
+                                                                .toList()[fIdx]]
+                                                                .keys
+                                                                .toList()[sIdx]]
+                                                                .length,
+                                                            itemBuilder: (
+                                                                BuildContext context,
+                                                                int tIdx) {
+                                                              var tKeys = snapshot
+                                                                  .data['data']
+                                                              [connectionCount][snapshot
+                                                                  .data['data']
+                                                              [connectionCount]
+                                                                  .keys
+                                                                  .toList()[fIdx]][snapshot
+                                                                  .data['data']
+                                                              [connectionCount][snapshot
+                                                                  .data['data'][connectionCount]
+                                                                  .keys
+                                                                  .toList()[fIdx]]
+                                                                  .keys
+                                                                  .toList()[sIdx]];
+                                                              return Container(
+                                                                  margin: const EdgeInsets
+                                                                      .only(
+                                                                      left: 55,
+                                                                      right: 43),
+                                                                  child: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                      children: [
+                                                                        Text(
+                                                                          snapshot
+                                                                              .data['dict'][connectionCount]
+                                                                          [tKeys[tIdx]['code']],
+                                                                          style: const TextStyle(
+                                                                            color: Color(
+                                                                                0xff666666),
+                                                                            fontSize: 15,
+                                                                            fontFamily: 'EchoDream',
+                                                                            fontWeight: FontWeight
+                                                                                .w500,
+                                                                          ),
                                                                         ),
-                                                                      ),
-                                                                      Text("${tKeys[tIdx]['count'].toString()}명",
-                                                                        style: const TextStyle(
-                                                                          color: Color(
-                                                                              0xff666666),
-                                                                          fontSize: 15,
-                                                                          fontFamily: 'EchoDream',
-                                                                          fontWeight: FontWeight
-                                                                              .w500,
-                                                                        ),)
-                                                                    ]));
-                                                          }),
-                                                      Container(
-                                                        margin: const EdgeInsets
-                                                            .only(left: 55,
-                                                            right: 43,
-                                                            bottom: 16.5,
-                                                            top: 10),
-                                                        decoration: BoxDecoration(
-                                                          border: Border.all(
-                                                            color: const Color(
-                                                                0xffe2e2e2),
-                                                            width: 1.5,
+                                                                        Text(
+                                                                          "${tKeys[tIdx]['count']
+                                                                              .toString()}명",
+                                                                          style: const TextStyle(
+                                                                            color: Color(
+                                                                                0xff666666),
+                                                                            fontSize: 15,
+                                                                            fontFamily: 'EchoDream',
+                                                                            fontWeight: FontWeight
+                                                                                .w500,
+                                                                          ),)
+                                                                      ]));
+                                                            }),
+                                                        Container(
+                                                          margin: const EdgeInsets
+                                                              .only(left: 55,
+                                                              right: 43,
+                                                              bottom: 16.5,
+                                                              top: 10),
+                                                          decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                              color: const Color(
+                                                                  0xffe2e2e2),
+                                                              width: 1.5,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ]);
-                                              })
-                                        ]));
-                              },
-                            )
-                          ]);
+                                                      ]);
+                                                })
+                                          ]));
+                                },
+                              )
+                            ]);
                           }
-                          else{
+                          else {
                             return Container();
                           }
                         })
@@ -462,88 +498,101 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     result['data'].add(parsedData[0]);
     result['dict'].add(parsedData[1]);
     //두 다리
-
-    QuerySnapshot<Map<String, dynamic>> secondNetwork = await db
-        .collection('networks')
-        .where(FieldPath.documentId, whereIn: networkData['list'])
-        .get();
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> secondNetworkData = secondNetwork.docs;
-
     List<dynamic> networkQuery = [];
-    for(QueryDocumentSnapshot<Map<String, dynamic>> element in secondNetworkData) {
-      Map<String, dynamic> networkList = element.data();
-      networkList['list'].remove(FirebaseAuth.instance.currentUser!.uid);
-      networkQuery = networkQuery + networkList['list'];
-    }
-    networkUsers = await db
-        .collection('users')
-        .where(FieldPath.documentId, whereIn: networkQuery)
-        .get();
-    networkUserData = networkUsers.docs;
-    relation = await db
-        .collection('member')
-        .where('uid', whereIn: networkQuery)
-        .get();
-    relationData = relation.docs;
-
-    result['count'][1] += networkUserData.length;
-    result['count'][1] += relationData.length;
-
-    parsedData = await parseWork(relationData, networkUserData);
-    result['data'].add(parsedData[0]);
-    result['dict'].add(parsedData[1]);
+    try {
+      logger.w(result);
+      QuerySnapshot<Map<String, dynamic>> secondNetwork = await db
+          .collection('networks')
+          .where(FieldPath.documentId, whereIn: networkData['list'])
+          .get();
+      List<QueryDocumentSnapshot<
+          Map<String, dynamic>>> secondNetworkData = secondNetwork.docs;
 
 
-    QuerySnapshot<Map<String, dynamic>> thirdNetwork = await db
-        .collection('networks')
-        .where(FieldPath.documentId, whereIn: networkQuery)
-        .get();
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> thirdNetworkData = thirdNetwork.docs;
-
-    List<dynamic> lastNetworkQuery = [];
-    for(QueryDocumentSnapshot<Map<String, dynamic>> element in thirdNetworkData) {
-      Map<String, dynamic> networkList = element.data();
-      for (String user in networkQuery) {
-        networkList['list'].remove(user);
+      for (QueryDocumentSnapshot<
+          Map<String, dynamic>> element in secondNetworkData) {
+        Map<String, dynamic> networkList = element.data();
+        networkList['list'].remove(FirebaseAuth.instance.currentUser!.uid);
+        networkQuery = networkQuery + networkList['list'];
       }
-      for (String user in networkData['list']){
-        networkList['list'].remove(user);
-      }
-      lastNetworkQuery = lastNetworkQuery + networkList['list'];
+      networkUsers = await db
+          .collection('users')
+          .where(FieldPath.documentId, whereIn: networkQuery)
+          .get();
+      networkUserData = networkUsers.docs;
+      relation = await db
+          .collection('member')
+          .where('uid', whereIn: networkQuery)
+          .get();
+      relationData = relation.docs;
+
+      result['count'][1] += networkUserData.length;
+      result['count'][1] += relationData.length;
+
+      parsedData = await parseWork(relationData, networkUserData);
+      result['data'].add(parsedData[0]);
+      result['dict'].add(parsedData[1]);
+    }catch(e){
+      logger.w(e);
     }
-    logger.w(lastNetworkQuery);
-    networkUsers = await db
-        .collection('users')
-        .where(FieldPath.documentId, whereIn: lastNetworkQuery)
-        .get();
-    networkUserData = networkUsers.docs;
+    try{
+      QuerySnapshot<Map<String, dynamic>> thirdNetwork = await db
+          .collection('networks')
+          .where(FieldPath.documentId, whereIn: networkQuery)
+          .get();
+      List<QueryDocumentSnapshot<
+          Map<String, dynamic>>> thirdNetworkData = thirdNetwork.docs;
 
-    relation = await db
-        .collection('member')
-        .where('uid', whereIn: lastNetworkQuery)
-        .get();
-    relationData = relation.docs;
+      List<dynamic> lastNetworkQuery = [];
+      for (QueryDocumentSnapshot<
+          Map<String, dynamic>> element in thirdNetworkData) {
+        Map<String, dynamic> networkList = element.data();
+        for (String user in networkQuery) {
+          networkList['list'].remove(user);
+        }
+        for (String user in networkData['list']) {
+          networkList['list'].remove(user);
+        }
+        lastNetworkQuery = lastNetworkQuery + networkList['list'];
+      }
+      networkUsers = await db
+          .collection('users')
+          .where(FieldPath.documentId, whereIn: lastNetworkQuery)
+          .get();
+      networkUserData = networkUsers.docs;
 
-    result['count'][2] += networkUserData.length;
-    result['count'][2] += relationData.length;
+      relation = await db
+          .collection('member')
+          .where('uid', whereIn: lastNetworkQuery)
+          .get();
+      relationData = relation.docs;
 
-    parsedData = await parseWork(relationData, networkUserData);
-    result['data'].add(parsedData[0]);
-    result['dict'].add(parsedData[1]);
+      result['count'][2] += networkUserData.length;
+      result['count'][2] += relationData.length;
 
+      parsedData = await parseWork(relationData, networkUserData);
+      result['data'].add(parsedData[0]);
+      result['dict'].add(parsedData[1]);
+    } catch (e) {
+      logger.w(e);
+    }
     //hl
+    logger.w(result);
     return result;
   }
 
-  int boolToInt(bool expr){
+  int boolToInt(bool expr) {
     if (expr == true) {
       return 1;
     } else {
       return 0;
     }
   }
-  dynamic parseWork(List<QueryDocumentSnapshot<Map<String, dynamic>>>? relationData,
-      List<QueryDocumentSnapshot<Map<String, dynamic>>>? networkUserData ) async{
+
+  dynamic parseWork(
+      List<QueryDocumentSnapshot<Map<String, dynamic>>>? relationData,
+      List<
+          QueryDocumentSnapshot<Map<String, dynamic>>>? networkUserData) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     List<dynamic> result = [];
 
@@ -592,15 +641,18 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     }
 
     List<QueryDocumentSnapshot<Map<String, dynamic>>> workString = [];
-    for (int index = 0; index < (workQuery.length / 10  + boolToInt((workQuery.length % 10) > 0)).toInt(); index++) {
+    for (int index = 0; index <
+        (workQuery.length / 10 + boolToInt((workQuery.length % 10) > 0))
+            .toInt(); index++) {
       int start = 10 * index;
       int end = 10 * (index + 1);
-      if (end > workQuery.length){
+      if (end > workQuery.length) {
         end = workQuery.length;
       }
       QuerySnapshot<Map<String, dynamic>> workDocument =
-      await db.collection('workData').where('code', whereIn: workQuery.sublist(start, end)).get();
-       workString.addAll(workDocument.docs);
+      await db.collection('workData').where(
+          'code', whereIn: workQuery.sublist(start, end)).get();
+      workString.addAll(workDocument.docs);
     }
 
     for (int idx = 0; idx < workString.length; idx++) {
