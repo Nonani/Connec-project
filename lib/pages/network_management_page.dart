@@ -169,7 +169,8 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                         future: data(),
                         builder: (BuildContext context,
                             AsyncSnapshot<dynamic> snapshot) {
-                          return Column(children: [
+                          if (snapshot.hasData) {
+                            return Column(children: [
                             Container(
                               padding: EdgeInsets.only(left: 35, top: 10),
                               child: Row(
@@ -354,6 +355,10 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                               },
                             )
                           ]);
+                          }
+                          else{
+                            return Container();
+                          }
                         })
                   ]))),
         ]),
