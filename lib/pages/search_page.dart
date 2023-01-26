@@ -5,6 +5,7 @@ import 'package:connec/pages/acquitance_list_page.dart';
 import 'package:connec/pages/expand_network_page.dart';
 import 'package:connec/pages/network_list_page.dart';
 import 'package:connec/pages/network_management_page.dart';
+import 'package:connec/pages/search_network_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -45,7 +46,7 @@ class _SearchPageState extends State<SearchPage> {
           data = snapshot.data!;
           List<Widget> workList = [];
           for(int index =0;index<data.length;index++){
-            workList.add(EntryItem(data[index], 0));
+            workList.add(EntryItem(data[index], 0, context));
           }
           return Scaffold(
             appBar: AppBar(
@@ -180,11 +181,11 @@ class _SearchPageState extends State<SearchPage> {
             .get())
             .docs;
         for (var element3 in work3) {
-          list3.add(Entry(title: element3.data()["title"], children: []));
+          list3.add(Entry(title: element3.data()["title"], code: element3.data()["code"], children: []));
         }
-        list2.add(Entry(title: element2.data()["title"], children: list3));
+        list2.add(Entry(title: element2.data()["title"], code: element2.data()["code"], children: list3));
       }
-      list1.add(Entry(title: element1.data()["title"], children: list2));
+      list1.add(Entry(title: element1.data()["title"], code: element1.data()["code"], children: list2));
     }
 
     return list1;
@@ -195,15 +196,17 @@ class _SearchPageState extends State<SearchPage> {
 
 class Entry {
   final String title;
+  final String code;
   final List<Entry> children;
 
-  Entry({required this.title, required this.children});
+  Entry({required this.title,required this.code, required this.children});
 
   factory Entry.fromJson(Map<String, dynamic> json) {
     var childrenJson = json['children'] as List<dynamic>;
     List<Entry> children = childrenJson.map((i) => Entry.fromJson(i)).toList();
     return Entry(
       title: json['title'],
+      code:json['code'],
       children: children,
     );
   }
@@ -211,17 +214,18 @@ class Entry {
 }
 
 class EntryItem extends StatelessWidget {
-  const EntryItem(this.entry, this.num);
+  const EntryItem(this.entry, this.num, this.context);
 
   final double num;
   final Entry entry;
+  final BuildContext context;
 
   Widget _buildTiles1(Entry root) {
     // print(root.title);
     if (root.children.isEmpty)
       return ListTile(
         title: Text(
-          root.title,
+          root.code,
           style: TextStyle(
             color: Color(0xff666666),
             fontFamily: 'EchoDream',
@@ -231,7 +235,7 @@ class EntryItem extends StatelessWidget {
         onTap: () {
           // 이 부분을 go_router 패키지 써서
           // context.go('/${root.title}'), 이런 식으로 할 예정
-          print(root.title);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SearchNetworkPage(root.code),));
         },
       );
     return Container(
@@ -241,7 +245,7 @@ class EntryItem extends StatelessWidget {
         childrenPadding: EdgeInsets.only(left: 10),
         key: PageStorageKey<Entry>(root),
         title: Text(
-          root.title,
+          root.code,
           style: TextStyle(
             color: Color(0xff666666),
             fontSize: 16,
@@ -258,7 +262,7 @@ class EntryItem extends StatelessWidget {
     if (root.children.isEmpty)
       return ListTile(
         title: Text(
-          root.title,
+          root.code,
           style: TextStyle(
             color: Color(0xff666666),
             fontFamily: 'EchoDream',
@@ -276,7 +280,7 @@ class EntryItem extends StatelessWidget {
         childrenPadding: EdgeInsets.only(left: 10),
         key: PageStorageKey<Entry>(root),
         title: Text(
-          root.title,
+          root.code,
           style: TextStyle(
             color: Color(0xff666666),
             fontFamily: 'EchoDream',
