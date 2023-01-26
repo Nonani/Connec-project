@@ -2,18 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
+import 'member_body_page.dart';
+
 class AcquitanceManagementPage extends StatelessWidget {
   Map<String, dynamic> data;
 
   AcquitanceManagementPage(this.data, {Key? key}) : super(key: key);
 
   final logger = Logger();
-  final TextStyle _nameStyle = const TextStyle(
-    color: Color(0xff333333),
-    fontSize: 19,
-    fontFamily: 'S-CoreDream-6Bold',
-    fontWeight: FontWeight.w500,
-  );
+
   final TextStyle _contextStyleKey = const TextStyle(
     color: Color(0xffafafaf),
     fontSize: 13,
@@ -189,7 +186,13 @@ class AcquitanceManagementPage extends StatelessWidget {
         bottomNavigationBar: Row(children: [
           Expanded(
             child: ElevatedButton(
-              onPressed: () async {},
+              onPressed: () async {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MemberBodyPage(mode: data['docId'],),
+                    ));
+              },
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff5f66f2),
                   minimumSize: const Size(180, 56),
@@ -208,7 +211,11 @@ class AcquitanceManagementPage extends StatelessWidget {
           ),
           Expanded(
             child: ElevatedButton(
-              onPressed: () async {},
+              onPressed: () async {
+                FirebaseFirestore db = FirebaseFirestore.instance;
+                await db.collection('member').doc(data['docId']).delete();
+                Navigator.of(context).pop();
+              },
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff5f66f2),
                   minimumSize: const Size(180, 56),
