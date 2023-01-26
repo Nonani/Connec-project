@@ -99,7 +99,7 @@ class ServiceClass extends ChangeNotifier {
   }
   Future<bool> addMember(MemberBody data) async {
     try{
-      db.collection("member").add(data.toJson());
+      db.collection("member").doc(data.docId).set(data.toJson());
     }catch(e){
       logger.w(e);
     }

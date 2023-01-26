@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../components/custom_dialog.dart';
 import '../components/custom_dropdown_button.dart';
@@ -12,8 +13,10 @@ import '../const/data.dart';
 import '../services/service_class.dart';
 
 class MemberBodyPage extends StatefulWidget {
-  const MemberBodyPage({Key? key}) : super(key: key);
 
+
+  MemberBodyPage({required this.mode, Key? key}) : super(key: key);
+  String mode;
   @override
   State<MemberBodyPage> createState() => _MemberBodyPageState();
 }
@@ -126,6 +129,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                 child: ElevatedButton(
                   onPressed: () async{
                     if (_formKey.currentState!.validate()){
+                      var uuid = Uuid();
                       _formKey.currentState!.save();
                       showCustomDialog(context);
                       await provider.postMemberBody(MemberBody(
@@ -137,6 +141,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                         career: _career,
                         capability: _capability,
                         age: _age,
+                        docId: (widget.mode == '0') ? uuid.v4() : widget.mode.toString(),
                       ));
                       if(provider.isComplete){
                         Navigator.pop(context);
