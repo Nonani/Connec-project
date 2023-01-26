@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../components/custom_dialog.dart';
 import '../components/custom_item_widget.dart';
+import '../components/member_item_widget.dart';
 import 'acquitance_management_page.dart';
 import 'member_body_page.dart';
 import 'network_management_page.dart';

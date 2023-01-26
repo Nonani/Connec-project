@@ -80,109 +80,104 @@ class AcquitanceManagementPage extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 17.5, right: 17.5),
                     child: Column(
                       children: [
+                        SizedBox(height: 10,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text("관계", style: _contextStyleKey),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text("평점", style: _contextStyleKey),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text("직군/직무", style: _contextStyleKey),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text("경력", style: _contextStyleKey),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text("활동지", style: _contextStyleKey),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text("성별", style: _contextStyleKey),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text("나이", style: _contextStyleKey),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text("능력", style: _contextStyleKey),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text("소개", style: _contextStyleKey),
-                                ),
-                              ],
+                            Text("관계", style: _contextStyleKey),
+                            Text('한 다리', style: _contextStyleValue),
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("평점", style: _contextStyleKey),
+                            Text("${data['capability']} / 5.0",
+                                style: _contextStyleValue),
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "직군/직무",
+                              style: _contextStyleKey,
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child:
-                                      Text('한 다리', style: _contextStyleValue),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text("${data['capability']} / 5.0",
-                                      style: _contextStyleValue),
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.only(top: 10),
-                                    child: FutureBuilder(
-                                      future: workString(data['work']),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          return Text(snapshot.data!,
-                                              style: _contextStyleValue);
-                                        } else {
-                                          return Text("");
-                                        }
-                                      },
-                                    )),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text(data['career'],
-                                      style: _contextStyleValue),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text(data['location'],
-                                      style: _contextStyleValue),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text(data['gender'],
-                                      style: _contextStyleValue),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text(data['age'],
-                                      style: _contextStyleValue),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text(data['capability'],
-                                      style: _contextStyleValue),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text(data['introduction'],
-                                      style: _contextStyleValue),
-                                ),
-                              ],
-                            )
+                            SizedBox(width: 20,),
+                            FutureBuilder(
+                              future: workString(data['work']),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Expanded(
+                                    child: Text(
+                                      snapshot.data!,
+                                      style: _contextStyleValue,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  );
+                                } else {
+                                  return Text("불러오는 중",
+                                      style: _contextStyleValue);
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("경력", style: _contextStyleKey),
+                            SizedBox(width: 20,),
+                            Text(data['career'],
+                                style: _contextStyleValue),
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("지역", style: _contextStyleKey),
+                            Text(data['location'],
+                                style: _contextStyleValue),
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("성별", style: _contextStyleKey),
+                            Text(data['gender'],
+                                style: _contextStyleValue),
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("나이", style: _contextStyleKey),
+                            Text(data['age'], style: _contextStyleValue),
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("능력", style: _contextStyleKey),
+                            Text(data['capability'],
+                                style: _contextStyleValue),
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("소개", style: _contextStyleKey),
+                            Text(data['introduction'],
+                                style: _contextStyleValue),
                           ],
                         ),
                       ],
