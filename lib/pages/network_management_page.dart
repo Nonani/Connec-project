@@ -169,7 +169,6 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                         future: data(),
                         builder: (BuildContext context,
                             AsyncSnapshot<dynamic> snapshot) {
-                          logger.w(snapshot.data);
                           if (snapshot.hasData && snapshot.data['count'][connectionCount] != 0) {
                             return Column(children: [
                               Container(
@@ -393,7 +392,33 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                             ]);
                           }
                           else {
-                            return Container();
+                            return Container(
+                              padding: EdgeInsets.only(left: 35, top: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: const [
+                                  Text(
+                                    "총 지인",
+                                    style: TextStyle(
+                                      color: Color(0xff333333),
+                                      fontSize: 17,
+                                      fontFamily: 'EchoDream',
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(width: 18, height: 0),
+                                  Text(
+                                    "0명",
+                                    style: TextStyle(
+                                      color: Color(0xff5f66f2),
+                                      fontSize: 17,
+                                      fontFamily: 'EchoDream',
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            );
                           }
                         })
                   ]))),
@@ -465,112 +490,41 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
 
   Future data() async {
     Logger logger = Logger();
-    FirebaseFirestore db = FirebaseFirestore.instance;
 
     Map<String, dynamic> result = {};
     result['count'] = [0, 0, 0];
     result['data'] = [];
     result['dict'] = [];
-    // 한 다리
-    DocumentSnapshot<Map<String, dynamic>> firstNetwork = await db
-        .collection('networks')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-    Map<String, dynamic>? networkData = firstNetwork.data();
-    QuerySnapshot<Map<String, dynamic>> networkUsers = await db
-        .collection('users')
-        .where(FieldPath.documentId, whereIn: networkData!['list'])
-        .get();
-    List<QueryDocumentSnapshot<Map<String, dynamic>>>? networkUserData =
-        networkUsers.docs;
-    QuerySnapshot<Map<String, dynamic>> relation = await db
-        .collection('member')
-        .where('uid', whereIn: networkData['list'])
-        .get();
-    List<QueryDocumentSnapshot<Map<String, dynamic>>>? relationData =
-        relation.docs;
 
-    result['count'][0] += networkUserData.length;
-    result['count'][0] += relationData.length;
+    Map<String, dynamic>firstData = {};
+    Map<String, dynamic>secondData = {};
+    Map<String, dynamic>thirdData = {};
+
+    // 한 다리
+
+    firstData = await firstQueryData(FirebaseAuth.instance.currentUser!.uid);
 
     //parsing workData
-    List<dynamic> parsedData = await parseWork(relationData, networkUserData);
+    List<dynamic> parsedData = await parseWork(firstData['relationData'], firstData['networkUserData']);
+
+    result['count'][0] = firstData['count'];
     result['data'].add(parsedData[0]);
     result['dict'].add(parsedData[1]);
+    logger.w(result);
     //두 다리
-    List<dynamic> networkQuery = [];
     try {
-      logger.w(result);
-      QuerySnapshot<Map<String, dynamic>> secondNetwork = await db
-          .collection('networks')
-          .where(FieldPath.documentId, whereIn: networkData['list'])
-          .get();
-      List<QueryDocumentSnapshot<
-          Map<String, dynamic>>> secondNetworkData = secondNetwork.docs;
-
-
-      for (QueryDocumentSnapshot<
-          Map<String, dynamic>> element in secondNetworkData) {
-        Map<String, dynamic> networkList = element.data();
-        networkList['list'].remove(FirebaseAuth.instance.currentUser!.uid);
-        networkQuery = networkQuery + networkList['list'];
-      }
-      networkUsers = await db
-          .collection('users')
-          .where(FieldPath.documentId, whereIn: networkQuery)
-          .get();
-      networkUserData = networkUsers.docs;
-      relation = await db
-          .collection('member')
-          .where('uid', whereIn: networkQuery)
-          .get();
-      relationData = relation.docs;
-
-      result['count'][1] += networkUserData.length;
-      result['count'][1] += relationData.length;
-
-      parsedData = await parseWork(relationData, networkUserData);
+      secondData = await secondQueryData(firstData['networkData']);
+      parsedData = await parseWork(secondData['relationData'], secondData['networkUserData']);
+      result['count'][1] = secondData['count'];
       result['data'].add(parsedData[0]);
       result['dict'].add(parsedData[1]);
     }catch(e){
       logger.w(e);
     }
     try{
-      QuerySnapshot<Map<String, dynamic>> thirdNetwork = await db
-          .collection('networks')
-          .where(FieldPath.documentId, whereIn: networkQuery)
-          .get();
-      List<QueryDocumentSnapshot<
-          Map<String, dynamic>>> thirdNetworkData = thirdNetwork.docs;
-
-      List<dynamic> lastNetworkQuery = [];
-      for (QueryDocumentSnapshot<
-          Map<String, dynamic>> element in thirdNetworkData) {
-        Map<String, dynamic> networkList = element.data();
-        for (String user in networkQuery) {
-          networkList['list'].remove(user);
-        }
-        for (String user in networkData['list']) {
-          networkList['list'].remove(user);
-        }
-        lastNetworkQuery = lastNetworkQuery + networkList['list'];
-      }
-      networkUsers = await db
-          .collection('users')
-          .where(FieldPath.documentId, whereIn: lastNetworkQuery)
-          .get();
-      networkUserData = networkUsers.docs;
-
-      relation = await db
-          .collection('member')
-          .where('uid', whereIn: lastNetworkQuery)
-          .get();
-      relationData = relation.docs;
-
-      result['count'][2] += networkUserData.length;
-      result['count'][2] += relationData.length;
-
-      parsedData = await parseWork(relationData, networkUserData);
+      thirdData = thirdQueryData(firstData['networkData'], secondData['networkData']);
+      parsedData = await parseWork(thirdData['relationData'], thirdData['networkUserData']);
+      result['count'][2] = thirdData['count'];
       result['data'].add(parsedData[0]);
       result['dict'].add(parsedData[1]);
     } catch (e) {
@@ -587,6 +541,123 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     } else {
       return 0;
     }
+  }
+  dynamic firstQueryData(dynamic query) async{
+    Map<String, dynamic> result = {};
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    result['count'] = 0;
+
+    DocumentSnapshot<Map<String, dynamic>> firstNetwork = await db
+        .collection('networks')
+        .doc(query)
+        .get();
+    Map<String, dynamic>? networkData = firstNetwork.data();
+    QuerySnapshot<Map<String, dynamic>> networkUsers = await db
+        .collection('users')
+        .where(FieldPath.documentId, whereIn: networkData!['list'])
+        .get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>>? networkUserData =
+        networkUsers.docs;
+    QuerySnapshot<Map<String, dynamic>> relation = await db
+        .collection('member')
+        .where('uid', whereIn: networkData['list'])
+        .get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>>? relationData =
+        relation.docs;
+
+    result['networkData'] = networkData['list'];
+    result['networkUserData'] = networkUserData;
+    result['relationData'] = relationData;
+
+    result['count'] += networkUserData.length;
+    result['count'] += relationData.length;
+
+    return result;
+  }
+  dynamic secondQueryData(List<dynamic> networkData) async{
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    List<dynamic> networkQuery = [];
+    Map<String, dynamic> result = {};
+
+    result['count'] = 0;
+    QuerySnapshot<Map<String, dynamic>> secondNetwork = await db
+        .collection('networks')
+        .where(FieldPath.documentId, whereIn: networkData)
+        .get();
+    List<QueryDocumentSnapshot<
+        Map<String, dynamic>>> secondNetworkData = secondNetwork.docs;
+
+
+    for (QueryDocumentSnapshot<
+        Map<String, dynamic>> element in secondNetworkData) {
+      Map<String, dynamic> networkList = element.data();
+      networkList['list'].remove(FirebaseAuth.instance.currentUser!.uid);
+      networkQuery = networkQuery + networkList['list'];
+    }
+    QuerySnapshot<Map<String, dynamic>> networkUsers = await db
+        .collection('users')
+        .where(FieldPath.documentId, whereIn: networkQuery)
+        .get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>>? networkUserData = networkUsers.docs;
+    QuerySnapshot<Map<String, dynamic>> relation = await db
+        .collection('member')
+        .where('uid', whereIn: networkQuery)
+        .get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>>? relationData = relation.docs;
+
+    result['networkData'] = networkQuery;
+    result['networkUserData'] = networkUserData;
+    result['relationData'] = relationData;
+
+    result['count'] += networkUserData.length;
+    result['count'] += relationData.length;
+    return result;
+  }
+
+  dynamic thirdQueryData(dynamic firstNetworkData, dynamic secondNetworkData) async{
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    Map<String, dynamic>result = {};
+    List<dynamic> lastNetworkQuery = [];
+
+    result['count'] = 0;
+    QuerySnapshot<Map<String, dynamic>> thirdNetwork = await db
+        .collection('networks')
+        .where(FieldPath.documentId, whereIn: secondNetworkData)
+        .get();
+    List<QueryDocumentSnapshot<
+        Map<String, dynamic>>> thirdNetworkData = thirdNetwork.docs;
+
+
+    for (QueryDocumentSnapshot<
+        Map<String, dynamic>> element in thirdNetworkData) {
+      Map<String, dynamic> networkList = element.data();
+      for (String user in firstNetworkData) {
+        networkList['list'].remove(user);
+      }
+      for (String user in secondNetworkData['networkData']) {
+        networkList['list'].remove(user);
+      }
+      lastNetworkQuery = lastNetworkQuery + networkList['list'];
+    }
+    QuerySnapshot<Map<String, dynamic>> networkUsers = await db
+        .collection('users')
+        .where(FieldPath.documentId, whereIn: lastNetworkQuery)
+        .get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>>? networkUserData = networkUsers.docs;
+
+    QuerySnapshot<Map<String, dynamic>> relation = await db
+        .collection('member')
+        .where('uid', whereIn: lastNetworkQuery)
+        .get();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>>? relationData = relation.docs;
+
+    result['count'] += networkUserData.length;
+    result['count'] += relationData.length;
+
+    return result;
   }
 
   dynamic parseWork(
@@ -613,11 +684,10 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
         workDataCnt[idx]++;
       }
     }
-
     for (int idx = 0; idx < workData.length; idx++) {
       String first = "${workData[idx][0]}00000";
       String second = "${workData[idx].substring(0, 3)}000";
-
+      // overlap check
       if (!workQuery.contains(first)) {
         workQuery.add(first);
       }
@@ -640,10 +710,9 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
       leveledData[first][second].add(tmp);
     }
 
+    // cut list with size below 10
     List<QueryDocumentSnapshot<Map<String, dynamic>>> workString = [];
-    for (int index = 0; index <
-        (workQuery.length / 10 + boolToInt((workQuery.length % 10) > 0))
-            .toInt(); index++) {
+    for (int index = 0; index < (workQuery.length / 10 + boolToInt((workQuery.length % 10) > 0)).toInt(); index++) {
       int start = 10 * index;
       int end = 10 * (index + 1);
       if (end > workQuery.length) {
@@ -659,9 +728,11 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
       Map<String, dynamic> work = workString[idx].data();
       workDict[work['code']] = work['title'];
     }
+
     leveledData.keys;
     result.add(leveledData);
     result.add(workDict);
+
     return result;
   }
 }
