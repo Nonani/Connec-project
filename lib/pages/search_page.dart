@@ -225,7 +225,7 @@ class EntryItem extends StatelessWidget {
     if (root.children.isEmpty)
       return ListTile(
         title: Text(
-          root.code,
+          root.title,
           style: TextStyle(
             color: Color(0xff666666),
             fontFamily: 'EchoDream',
@@ -245,7 +245,7 @@ class EntryItem extends StatelessWidget {
         childrenPadding: EdgeInsets.only(left: 10),
         key: PageStorageKey<Entry>(root),
         title: Text(
-          root.code,
+          root.title,
           style: TextStyle(
             color: Color(0xff666666),
             fontSize: 16,
@@ -262,7 +262,7 @@ class EntryItem extends StatelessWidget {
     if (root.children.isEmpty)
       return ListTile(
         title: Text(
-          root.code,
+          root.title,
           style: TextStyle(
             color: Color(0xff666666),
             fontFamily: 'EchoDream',
@@ -280,7 +280,7 @@ class EntryItem extends StatelessWidget {
         childrenPadding: EdgeInsets.only(left: 10),
         key: PageStorageKey<Entry>(root),
         title: Text(
-          root.code,
+          root.title,
           style: TextStyle(
             color: Color(0xff666666),
             fontFamily: 'EchoDream',
