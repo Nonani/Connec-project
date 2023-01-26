@@ -38,9 +38,19 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
   List<String> workItems = [];
   List<String> workCodes = [];
 
+  int modeIdx = 0;
+  List<String> modeTitleString = ["지인 등록", "지인 수정"];
+  List<String> modeButtonString = ["등록하기", "수정하기"];
+
+
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ServiceClass>(context, listen: false);
+    if (widget.mode != '0'){
+      setState(() {
+        modeIdx = 1;
+      });
+    }
     return FutureBuilder(
       future: _future(),
       builder: (context, snapshot) {
@@ -57,7 +67,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                 backgroundColor: Color(0xfffafafa),
                 elevation: 0,
                 leading: BackButton(color: Color(0xff5f66f2)),
-                title: Text("지인 등록",
+                title: Text(modeTitleString[modeIdx],
                     style: TextStyle(
                         fontFamily: "EchoDream", fontSize: 20, color: Colors.black)),
                 centerTitle: true,
@@ -149,7 +159,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                       }
                     }
 
-                  }, child: Text('등록하기',
+                  }, child: Text(modeButtonString[modeIdx],
                   style: TextStyle(
                     color: Color(0xfffafafa),
                     fontSize: 20,

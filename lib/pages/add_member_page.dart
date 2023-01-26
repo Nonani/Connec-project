@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_dialog.dart';
-import 'package:connec/pages/expand_network_page.dart';
 import 'package:connec/pages/member_body_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -101,7 +100,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MemberBodyPage(),
+                                  builder: (context) => MemberBodyPage( mode: '0'),
                                 )).then((_) => setState(() {}));
 
                           },

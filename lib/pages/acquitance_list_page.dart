@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../components/custom_dialog.dart';
-import '../components/custom_item_widget.dart';
 import '../components/member_item_widget.dart';
 import 'acquitance_management_page.dart';
 import 'member_body_page.dart';
@@ -97,7 +96,7 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                           final db = FirebaseFirestore.instance;
                           final result = await db
                               .collection("users")
-                              .doc("${FirebaseAuth.instance.currentUser!.uid}")
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
                               .get();
                           logger.w(FirebaseAuth.instance.currentUser!.uid);
                           Clipboard.setData(
@@ -153,18 +152,18 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => MemberBodyPage(),
+                            builder: (context) => MemberBodyPage( mode: '0'),
                           ));
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(247.3, 55.9),
                       backgroundColor: Color(0xfffafafa),
-                      side: BorderSide(
+                      side: const BorderSide(
                         color: Color(0xff5f66f2),
                         width: 2,
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       '지인을 등록 해주세요',
                       style: TextStyle(
                         color: Color(0xff5f66f2),
@@ -180,7 +179,6 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                   child: BottomNavigationBar(
                     currentIndex: _currentIndex,
                     onTap: (index) {
-                      print('index test : ${index}');
                       if (_currentIndex != index) {
                         setState(() {
                           _currentIndex = index;
@@ -243,7 +241,6 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
   }
 
   Future _future() async {
-    String workString = "";
     FirebaseFirestore db = FirebaseFirestore.instance;
     final list = await db
         .collection("member")
