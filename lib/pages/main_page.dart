@@ -26,7 +26,7 @@ class _MainPageState extends State<MainPage> {
     NetworkManagementPage(),
     AcquitanceListPage(),
     SearchPage(),
-    ExpandNetworkPage(),
+    // ExpandNetworkPage(),
     MyInfoPage(),
   ];
 
@@ -235,13 +235,13 @@ class _MainPageState extends State<MainPage> {
                         width: 30,
                       ),
                       label: "검색"),
-                  BottomNavigationBarItem(
-                      icon: Image.asset(
-                        "assets/images/navigation_icon_4.png",
-                        height: 30,
-                        width: 30,
-                      ),
-                      label: "구인장터"),
+                  // BottomNavigationBarItem(
+                  //     icon: Image.asset(
+                  //       "assets/images/navigation_icon_4.png",
+                  //       height: 30,
+                  //       width: 30,
+                  //     ),
+                  //     label: "구인장터"),
                   BottomNavigationBarItem(
                       icon: Image.asset(
                         "assets/images/navigation_icon_5.png",

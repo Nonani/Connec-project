@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/acquitance_list_page.dart';
+import 'package:connec/pages/mypage/my_info_page.dart';
+import 'package:connec/pages/search_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,9 +32,9 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
   List<Widget> list = [
     NetworkManagementPage(),
     AcquitanceListPage(),
-    ExpansionTileSample(),
-    ExpandNetworkPage(),
-    ExpandNetworkPage(),
+    SearchPage(),
+    // ExpandNetworkPage(),
+    MyInfoPage(),
   ];
 
   @override
@@ -469,13 +471,13 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                     width: 30,
                   ),
                   label: "검색"),
-              BottomNavigationBarItem(
-                  icon: Image.asset(
-                    "assets/images/navigation_icon_4.png",
-                    height: 30,
-                    width: 30,
-                  ),
-                  label: "구인장터"),
+              // BottomNavigationBarItem(
+              //     icon: Image.asset(
+              //       "assets/images/navigation_icon_4.png",
+              //       height: 30,
+              //       width: 30,
+              //     ),
+              //     label: "구인장터"),
               BottomNavigationBarItem(
                   icon: Image.asset(
                     "assets/images/navigation_icon_5.png",
