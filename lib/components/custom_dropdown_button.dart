@@ -35,8 +35,18 @@ Widget CustomDropdownButton(
           decoration: BoxDecoration(
             color: Color(0xffeeeeee),
           ),
-          child: DropdownButton<String>(
+          child: DropdownButtonFormField<String>(
             value: selectedItem,
+            decoration: InputDecoration(
+
+              border: InputBorder.none,
+            ),
+            validator: (value) {
+              if(value!.isEmpty || value == '선택'){
+                return '선택해주세요.';
+              }else
+                return null;
+            },
             elevation: 16,
             icon: const Visibility(
                 visible: false, child: Icon(Icons.arrow_downward)),
@@ -52,11 +62,7 @@ Widget CustomDropdownButton(
               fontWeight: FontWeight.w400,
               fontFamily: 'S-CoreDream-4',
             ),
-            underline: Visibility(
-              visible: false,
-              child: Container(
-              ),
-            ),
+
             onChanged: onChanged,
             items:itemList.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(

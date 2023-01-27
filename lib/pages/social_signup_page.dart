@@ -390,31 +390,40 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
               fontSize: 17,
             )),
         SizedBox(height: 10),
-        GestureDetector(
-          onTap: () {
-            showLocalListDialog(snapshot, "지역");
+        FormField(
+          validator: (value) {
+            if(value==null || value == '선택'){
+              return '선택해주세요.';
+            }else{
+              return null;
+            }
           },
-          child: Container(
-            width: double.infinity,
-            height: 40,
-            padding: EdgeInsets.only(left: 10),
-            decoration: BoxDecoration(
-                color: Color(0xffeeeeee),
-                border: Border(
-                    bottom: BorderSide(color: Color(0xff5f66f2), width: 1))),
-            alignment: Alignment.centerLeft,
-            child: _location==null?Text(
-              '선택',
-              style: TextStyle(
-                color: Color(0xffbdbdbd),
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-              ),
-            ):Text('${_locaion_label}',
-              style: TextStyle(
-                color: Color(0xff333333),
-                fontSize: 16,
-                fontFamily: 'S-CoreDream-4',
+          builder:(field) => GestureDetector(
+            onTap: () {
+              showLocalListDialog(snapshot, "지역");
+            },
+            child: Container(
+              width: double.infinity,
+              height: 40,
+              padding: EdgeInsets.only(left: 10),
+              decoration: BoxDecoration(
+                  color: Color(0xffeeeeee),
+                  border: Border(
+                      bottom: BorderSide(color: Color(0xff5f66f2), width: 1))),
+              alignment: Alignment.centerLeft,
+              child: _location==null?Text(
+                '선택',
+                style: TextStyle(
+                  color: Color(0xffbdbdbd),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                ),
+              ):Text('${_locaion_label}',
+                style: TextStyle(
+                  color: Color(0xff333333),
+                  fontSize: 16,
+                  fontFamily: 'S-CoreDream-4',
+                ),
               ),
             ),
           ),

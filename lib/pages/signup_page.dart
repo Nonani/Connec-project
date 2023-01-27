@@ -94,6 +94,16 @@ class _SignUpPageState extends State<SignUpPage> {
                               label: "비밀번호 확인",
                               hint: "비밀번호를 입력해주세요",
                               isSecret: true,
+                              validate: (value) {
+                                if(value!.isEmpty){
+                                  return '빈 칸입니다.';
+                                }
+                                else if(value != _password){
+                                  return '비밀번호가 일치하지 않습니다.';
+                                }else{
+                                  return null;
+                                }
+                              },
                               onSaved: (newValue) => _password = newValue,
                             ),
                             SignUpEditTextForm(
@@ -215,8 +225,13 @@ class _SignUpPageState extends State<SignUpPage> {
                         fontWeight: FontWeight.w400),
                   ),
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
+                    _formKey.currentState!.save();
+                    if (_formKey.currentState!.validate() &&
+                        checkboxValue1 &&
+                        checkboxValue2 &&
+                        workCodes.length != 0 &&
+                        _location != null) {
+
                       showCustomDialog(context);
                       await provider.postSignUpBody(SignUpBody(
                         uuid: uuid.v4(),
@@ -246,9 +261,6 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-
-
-
   Future _future() async {
     Logger logger = Logger();
     FirebaseFirestore db = FirebaseFirestore.instance;
@@ -262,6 +274,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     return {"workData": workResult.docs, "localData": localResult.docs};
   }
+
   Container buildWorkContainer(AsyncSnapshot snapshot) {
     return Container(
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -325,9 +338,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: [
                   Expanded(
                       child: Text(
-                        workItems[index],
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                    workItems[index],
+                    overflow: TextOverflow.ellipsis,
+                  )),
                   IconButton(
                       onPressed: () {
                         workItems.removeAt(index);
@@ -343,6 +356,7 @@ class _SignUpPageState extends State<SignUpPage> {
       ]),
     );
   }
+
   void showWorkListDialog(AsyncSnapshot snapshot, String title) {
     List dialogList = [];
     List<Widget> dialogWidgetList = [];
@@ -444,25 +458,29 @@ class _SignUpPageState extends State<SignUpPage> {
                 border: Border(
                     bottom: BorderSide(color: Color(0xff5f66f2), width: 1))),
             alignment: Alignment.centerLeft,
-            child: _location==null?Text(
-              '선택',
-              style: TextStyle(
-                color: Color(0xffbdbdbd),
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-              ),
-            ):Text('${_locaion_label}',
-              style: TextStyle(
-                color: Color(0xff333333),
-                fontSize: 16,
-                fontFamily: 'S-CoreDream-4',
-              ),
-            ),
+            child: _location == null
+                ? Text(
+                    '선택',
+                    style: TextStyle(
+                      color: Color(0xffbdbdbd),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                    ),
+                  )
+                : Text(
+                    '${_locaion_label}',
+                    style: TextStyle(
+                      color: Color(0xff333333),
+                      fontSize: 16,
+                      fontFamily: 'S-CoreDream-4',
+                    ),
+                  ),
           ),
         ),
       ]),
     );
   }
+
   void showLocalListDialog(AsyncSnapshot snapshot, String title) {
     List dialogList = [];
     List<Widget> dialogWidgetList = [];
@@ -483,10 +501,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 _location = element.data()["code"];
                 _locaion_label = title;
                 Navigator.pop(context);
-                setState() {
-                  curWorkTier = 1;
-                  curWorkParent = "";
-                }
                 return;
             }
             curLocalTier += 1;

@@ -54,7 +54,8 @@ Widget SignUpEditTextForm(
     {required String label,
     bool isSecret = false,
     required String hint,
-    required FormFieldSetter onSaved}) {
+    required FormFieldSetter onSaved,
+    FormFieldValidator? validate}) {
   return Container(
     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
     child: Column(
@@ -83,6 +84,15 @@ Widget SignUpEditTextForm(
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(width: 1, color: Color(0xff5f66f2)))),
           onSaved: onSaved,
+          validator: validate != null
+              ? validate
+              : (value) {
+                  if (value!.isEmpty) {
+                    return "빈 칸입니다.";
+                  } else {
+                    return null;
+                  }
+                },
         ),
       ],
     ),
