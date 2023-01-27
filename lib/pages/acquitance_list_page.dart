@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/pages/mypage/my_info_page.dart';
 import '../components/custom_dialog.dart';
 import '../components/member_item_widget.dart';
 import 'acquitance_management_page.dart';
@@ -53,8 +54,8 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
     NetworkManagementPage(),
     AcquitanceListPage(),
     SearchPage(),
-    ExpandNetworkPage(),
-    ExpandNetworkPage(),
+    // ExpandNetworkPage(),
+    MyInfoPage(),
   ];
 
   @override
@@ -219,13 +220,13 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                             width: 30,
                           ),
                           label: "검색"),
-                      BottomNavigationBarItem(
-                          icon: Image.asset(
-                            "assets/images/navigation_icon_4.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                          label: "구인장터"),
+                      // BottomNavigationBarItem(
+                      //     icon: Image.asset(
+                      //       "assets/images/navigation_icon_4.png",
+                      //       height: 30,
+                      //       width: 30,
+                      //     ),
+                      //     label: "구인장터"),
                       BottomNavigationBarItem(
                           icon: Image.asset(
                             "assets/images/navigation_icon_5.png",
