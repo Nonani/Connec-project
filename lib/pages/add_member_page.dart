@@ -49,7 +49,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                         height: 112,
                         width: 112,
                         padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Color(0xff5f66f2),
                           shape: BoxShape.circle,
                           // image: DecorationImage(
@@ -57,13 +57,13 @@ class _AddMemberPageState extends State<AddMemberPage> {
                           //       'assets/images/navigation_icon_2.png'),
                           // )
                         ),
-                        child: ImageIcon(
+                        child: const ImageIcon(
                           AssetImage('assets/images/navigation_icon_2.png'),
                           color: Colors.white,
                         ),
                       ),
                       SizedBox(height: 17),
-                      Text(
+                      const Text(
                         '지인 등록 후 이용해주세요',
                         style: TextStyle(
                           color: Color(0xff333333),
@@ -71,11 +71,11 @@ class _AddMemberPageState extends State<AddMemberPage> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      SizedBox(height: 7),
+                      const SizedBox(height: 7),
                       Text(
                         '현재 ( ${snapshot.data.size} ) 명의 지인이 등록되었습니다.\n2명의 지인이 등록될 경우,\n해당 서비스를 이용할 수 있습니다.',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Color(0xff999999),
                           fontSize: 13,
                         ),
@@ -83,11 +83,11 @@ class _AddMemberPageState extends State<AddMemberPage> {
                       SizedBox(height: 85),
                       Text(
                         '현재 등록 지인 ( ${snapshot.data.size} / 2 )',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Color(0xff999999),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: 180,
                         height: 40,
                         child: ElevatedButton(
@@ -104,7 +104,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                                 )).then((_) => setState(() {}));
 
                           },
-                          child: Text(
+                          child: const Text(
                             '지인 등록',
                             style: TextStyle(
                               color: Color(0xfffafafa),
@@ -113,7 +113,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
