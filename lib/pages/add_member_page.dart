@@ -25,7 +25,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
           if (!snapshot.hasData) {
             return CustomLoadingDialog();
           }
-          if (snapshot.data.size < 5) {
+          if (snapshot.data.size < 2) {
             return SafeArea(
               child: Scaffold(
                 appBar: AppBar(
@@ -73,7 +73,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                       ),
                       SizedBox(height: 7),
                       Text(
-                        '현재 ( ${snapshot.data.size} ) 명의 지인이 등록되었습니다.\n5명의 지인이 등록될 경우,\n해당 서비스를 이용할 수 있습니다.',
+                        '현재 ( ${snapshot.data.size} ) 명의 지인이 등록되었습니다.\n2명의 지인이 등록될 경우,\n해당 서비스를 이용할 수 있습니다.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Color(0xff999999),
@@ -82,7 +82,7 @@ class _AddMemberPageState extends State<AddMemberPage> {
                       ),
                       SizedBox(height: 85),
                       Text(
-                        '현재 등록 지인 ( ${snapshot.data.size} / 5 )',
+                        '현재 등록 지인 ( ${snapshot.data.size} / 2 )',
                         style: TextStyle(
                           color: Color(0xff999999),
                         ),
