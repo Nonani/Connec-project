@@ -30,11 +30,12 @@ class _AddMemberPageState extends State<AddMemberPage> {
               child: Scaffold(
                 appBar: AppBar(
                   toolbarHeight: 55,
+                  backgroundColor: Color(0xff5f66f2),
                   leadingWidth: 20,
                   leading: IconButton(
                     icon: const Icon(
                       Icons.arrow_back,
-                      color: Color(0xff5f66f2),
+                      color: Color(0xfffafafa),
                     ),
                     onPressed: () async =>
                         await FirebaseAuth.instance.signOut(),
