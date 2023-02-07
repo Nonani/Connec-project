@@ -97,7 +97,7 @@ class _NetworkListPageState extends State<NetworkListPage> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          NetworkReductionPage(snapshot.data['users'][index]['uid'], snapshot.data['users'][index]['acquitances']),
+                                          NetworkReductionPage(snapshot.data['users'][index]['uid'], snapshot.data['users'][index]['acquaintances']),
                                     ));
                               },
                               child: Padding(
@@ -111,7 +111,7 @@ class _NetworkListPageState extends State<NetworkListPage> {
                                     name: snapshot.data['users'][index]['name'],
                                     rate: snapshot.data['users'][index]['rate'].toString(),
                                     number: snapshot.data['users'][index]['acquaintances'].toString(),
-                                    representative: snapshot.data['users'][index]['capability'],
+                                    representative: snapshot.data['users'][index]['personality'][0],
                                   ),
                                 ),
                               ),

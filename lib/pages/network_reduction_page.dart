@@ -2,12 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
-import '../components/custom_edit_textform.dart';
-import 'package:http/http.dart' as http;
-import '../components/custom_expansion_tile.dart';
-import '../services/service_class.dart';
-import 'expand_network_page.dart';
 
 class NetworkReductionPage extends StatelessWidget {
   String uid = "";
@@ -17,12 +11,12 @@ class NetworkReductionPage extends StatelessWidget {
       : super(key: key);
 
   final logger = Logger();
-  final TextStyle _nameStyle = const TextStyle(
-    color: Color(0xff333333),
-    fontSize: 19,
-    fontFamily: 'S-CoreDream-6Bold',
-    fontWeight: FontWeight.w500,
-  );
+  // final TextStyle _nameStyle = const TextStyle(
+  //   color: Color(0xff333333),
+  //   fontSize: 19,
+  //   fontFamily: 'S-CoreDream-6Bold',
+  //   fontWeight: FontWeight.w500,
+  // );
   final TextStyle _contextStyleKey = const TextStyle(
     color: Color(0xffafafaf),
     fontSize: 13,
@@ -138,7 +132,7 @@ class NetworkReductionPage extends StatelessWidget {
                                               style: _contextStyleValue),
                                           Text(acquitances.toString(),
                                               style: _contextStyleValue),
-                                          Text(snapshot.data['capability'],
+                                          Text(snapshot.data['personality'][0],
                                               style: _contextStyleValue)
                                         ],
                                       )
@@ -192,7 +186,7 @@ class NetworkReductionPage extends StatelessWidget {
                                         children: [
                                           Text(snapshot.data['name'],
                                               style: _contextStyleValue),
-                                          Text(snapshot.data['capability'],
+                                          Text(snapshot.data['personality'][0],
                                               style: _contextStyleValue),
                                           Text(snapshot.data['work'],
                                               style: _contextStyleValue),
