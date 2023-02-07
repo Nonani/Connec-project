@@ -38,8 +38,8 @@ class _SignUpPageState extends State<SignUpPage> {
   int curLocalTier = 1;
   String curWorkParent = "";
   String curLocalParent = "";
-  List<String> workItems = [];
-  List<String> workCodes = [];
+  List<String> workAreaItems = [];
+  List<String> workAreaCodes = [];
   bool checkboxValue1 = false;
   bool checkboxValue2 = false;
   final _formKey = GlobalKey<FormState>();
@@ -229,7 +229,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     if (_formKey.currentState!.validate() &&
                         checkboxValue1 &&
                         checkboxValue2 &&
-                        workCodes.length != 0 &&
+                        workAreaCodes.length != 0 &&
                         _location != null) {
 
                       showCustomDialog(context);
@@ -244,7 +244,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         introduction: _introduction,
                         location: _location,
                         password: _password,
-                        work: workCodes,
+                        workArea: workAreaCodes,
                         serviceName: "None",
                       ));
 
@@ -282,7 +282,7 @@ class _SignUpPageState extends State<SignUpPage> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(
           children: [
-            Text("직군/직무",
+            Text("전문분야",
                 style: TextStyle(
                   fontFamily: "EchoDream",
                   fontWeight: FontWeight.w600,
@@ -303,7 +303,7 @@ class _SignUpPageState extends State<SignUpPage> {
         SizedBox(height: 10),
         GestureDetector(
           onTap: () {
-            if (workItems.length < 5) showWorkListDialog(snapshot, "직군/직무");
+            if (workAreaItems.length < 5) showWorkListDialog(snapshot, "전문분야");
           },
           child: Container(
             width: double.infinity,
@@ -329,7 +329,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         ListView.separated(
           shrinkWrap: true,
-          itemCount: workItems.length,
+          itemCount: workAreaItems.length,
           separatorBuilder: (_, __) => const Divider(),
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
@@ -338,13 +338,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: [
                   Expanded(
                       child: Text(
-                    workItems[index],
+                    workAreaItems[index],
                     overflow: TextOverflow.ellipsis,
                   )),
                   IconButton(
                       onPressed: () {
-                        workItems.removeAt(index);
-                        workCodes.removeAt(index);
+                        workAreaItems.removeAt(index);
+                        workAreaCodes.removeAt(index);
                         setState(() {});
                       },
                       icon: Icon(Icons.cancel_outlined))
@@ -377,11 +377,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 break;
               case 3:
                 title = title + ' > ${element.data()["title"]}';
-                workItems.remove(title);
-                workCodes.remove(element.data()["code"]);
+                workAreaItems.remove(title);
+                workAreaCodes.remove(element.data()["code"]);
 
-                workItems.add(title);
-                workCodes.add(element.data()["code"]);
+                workAreaItems.add(title);
+                workAreaCodes.add(element.data()["code"]);
                 Navigator.pop(context);
                 setState() {
                   curWorkTier = 1;
