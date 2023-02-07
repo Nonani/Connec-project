@@ -8,12 +8,12 @@ class SearchNetworkDetailPage extends StatelessWidget {
   SearchNetworkDetailPage(this.data, {Key? key}) : super(key: key);
 
   final logger = Logger();
-  final TextStyle _nameStyle = const TextStyle(
-    color: Color(0xff333333),
-    fontSize: 19,
-    fontFamily: 'S-CoreDream-6Bold',
-    fontWeight: FontWeight.w500,
-  );
+  // final TextStyle _nameStyle = const TextStyle(
+  //   color: Color(0xff333333),
+  //   fontSize: 19,
+  //   fontFamily: 'S-CoreDream-6Bold',
+  //   fontWeight: FontWeight.w500,
+  // );
   final TextStyle _contextStyleKey = const TextStyle(
     color: Color(0xffafafaf),
     fontSize: 13,
@@ -93,7 +93,7 @@ class SearchNetworkDetailPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text("평점", style: _contextStyleKey),
-                                Text("${data['capability']} / 5.0",
+                                Text("${data['rate']} / 5.0",
                                     style: _contextStyleValue),
                               ],
                             ),
@@ -107,7 +107,7 @@ class SearchNetworkDetailPage extends StatelessWidget {
                                 ),
                                 SizedBox(width: 20,),
                                 FutureBuilder(
-                                  future: workString(data['work']),
+                                  future: workString(data['workArea']),
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
                                       return Expanded(
@@ -166,8 +166,8 @@ class SearchNetworkDetailPage extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("능력", style: _contextStyleKey),
-                                Text(data['capability'],
+                                Text("성격", style: _contextStyleKey),
+                                Text(data['personality'][0],
                                     style: _contextStyleValue),
                               ],
                             ),
