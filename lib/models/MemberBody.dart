@@ -1,6 +1,6 @@
 class MemberBody {
   String? uid;
-  List<String>? work;
+  List<String>? workArea;
   String? career;
   String? location;
   String? gender;
@@ -11,7 +11,7 @@ class MemberBody {
 
   MemberBody(
       {this.uid,
-      this.work,
+      this.workArea,
       this.career,
       this.location,
       this.gender,
@@ -22,7 +22,7 @@ class MemberBody {
 
   MemberBody.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
-    work = json['work'];
+    workArea = json['workArea'];
     career = json['career'];
     location = json['location'];
     gender = json['gender'];
@@ -35,7 +35,7 @@ class MemberBody {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['uid'] = this.uid;
-    data['work'] = this.work;
+    data['workArea'] = this.workArea;
     data['career'] = this.career;
     data['location'] = this.location;
     data['gender'] = this.gender;

@@ -22,10 +22,7 @@ class ExpansionTileSample extends StatelessWidget {
           ));
         } else {
           data = snapshot.data!;
-          // logger.w(snapshot.data);
-          // data.forEach((element) {
-          //   logger.w(element.children.length);
-          // });
+
           List<Widget> list = [];
           for(int index =0;index<data.length;index++){
             list.add(EntryItem(data[index], 0));

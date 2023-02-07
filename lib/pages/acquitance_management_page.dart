@@ -99,7 +99,7 @@ class AcquitanceManagementPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "직군/직무",
+                              "전문분야",
                               style: _contextStyleKey,
                             ),
                             SizedBox(width: 20,),

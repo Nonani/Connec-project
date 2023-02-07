@@ -24,7 +24,7 @@ class SocialSignUpPage extends StatefulWidget {
 class _SocialSignUpPageState extends State<SocialSignUpPage> {
   var uuid = Uuid();
   String? _name;
-  String? _work;
+  String _work = work.first;
   String _career = careerList.first;
   String? _location;
   String? _locaion_label;
@@ -38,8 +38,8 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
   int curLocalTier = 1;
   String curWorkParent = "";
   String curLocalParent = "";
-  List<String> workItems = [];
-  List<String> workCodes = [];
+  List<String> workAreaItems = [];
+  List<String> workAreaCodes = [];
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -73,6 +73,17 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                         isSecret: false,
                         onSaved: (newValue) => _name = newValue,
                       ),
+                      CustomDropdownButton(
+                          itemList: work,
+                          label: "직업",
+                          onChanged: (value) {
+                            setState(
+                                  () {
+                                _work = value;
+                              },
+                            );
+                          },
+                          selectedItem: _work),
                       buildWorkContainer(snapshot),
                       CustomDropdownButton(
                         label: "경력",
@@ -186,12 +197,13 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                       uuid: uuid.v4(),
                       name: _name,
                       age: _age,
+                      work: _work,
                       capability: _capability,
                       career: _career,
                       gender: _gender,
                       introduction: _introduction,
                       location: _location,
-                      work: workCodes,
+                      workArea: workAreaCodes,
                       serviceName: widget.serviceName.toString(),
                     ));
                     if(provider.isComplete){
@@ -229,7 +241,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(
           children: [
-            Text("직군/직무",
+            Text("전문분야",
                 style: TextStyle(
                   fontFamily: "EchoDream",
                   fontWeight: FontWeight.w600,
@@ -250,7 +262,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
         SizedBox(height: 10),
         GestureDetector(
           onTap: () {
-            if (workItems.length < 5) showWorkListDialog(snapshot, "직군/직무");
+            if (workAreaItems.length < 5) showWorkListDialog(snapshot, "전문분야");
           },
           child: Container(
             width: double.infinity,
@@ -276,7 +288,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
         ),
         ListView.separated(
           shrinkWrap: true,
-          itemCount: workItems.length,
+          itemCount: workAreaItems.length,
           separatorBuilder: (_, __) => const Divider(),
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
@@ -285,13 +297,13 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 children: [
                   Expanded(
                       child: Text(
-                        workItems[index],
+                        workAreaItems[index],
                         overflow: TextOverflow.ellipsis,
                       )),
                   IconButton(
                       onPressed: () {
-                        workItems.removeAt(index);
-                        workCodes.removeAt(index);
+                        workAreaItems.removeAt(index);
+                        workAreaCodes.removeAt(index);
                         setState(() {});
                       },
                       icon: Icon(Icons.cancel_outlined))
@@ -323,11 +335,11 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 break;
               case 3:
                 title = title + ' > ${element.data()["title"]}';
-                workItems.remove(title);
-                workCodes.remove(element.data()["code"]);
+                workAreaItems.remove(title);
+                workAreaCodes.remove(element.data()["code"]);
 
-                workItems.add(title);
-                workCodes.add(element.data()["code"]);
+                workAreaItems.add(title);
+                workAreaCodes.add(element.data()["code"]);
                 Navigator.pop(context);
                 setState() {
                   curWorkTier = 1;
