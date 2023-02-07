@@ -44,8 +44,9 @@ Widget CustomDropdownButton(
             validator: (value) {
               if(value!.isEmpty || value == '선택'){
                 return '선택해주세요.';
-              }else
+              }else {
                 return null;
+              }
             },
             elevation: 16,
             icon: const Visibility(

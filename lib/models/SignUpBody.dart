@@ -7,11 +7,11 @@ class SignUpBody {
   String? name;
   String? work;
   List<String>? workArea;
+  List<String>? personality;
   String? career;
   String? location;
   String? gender;
   String? age;
-  String? capability;
   String? introduction;
 
   SignUpBody(
@@ -23,11 +23,11 @@ class SignUpBody {
         this.name,
         this.work,
         this.workArea,
+        this.personality,
         this.career,
         this.location,
         this.gender,
         this.age,
-        this.capability,
         this.introduction});
 
   SignUpBody.fromJson(Map<String, dynamic> json) {
@@ -39,16 +39,16 @@ class SignUpBody {
     name = json['name'];
     work = json['work'];
     workArea = json['workArea'];
+    personality = json['personality'];
     career = json['career'];
     location = json['location'];
     gender = json['gender'];
     age = json['age'];
-    capability = json['capability'];
     introduction = json['introduction'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['uid'] = this.uid;
     data['uuid'] = this.uuid;
     data['serviceName'] = this.serviceName;
@@ -57,11 +57,11 @@ class SignUpBody {
     data['name'] = this.name;
     data['work'] = this.work;
     data['workArea'] = this.workArea;
+    data['personality'] = this.personality;
     data['career'] = this.career;
     data['location'] = this.location;
     data['gender'] = this.gender;
     data['age'] = this.age;
-    data['capability'] = this.capability;
     data['introduction'] = this.introduction;
     return data;
   }

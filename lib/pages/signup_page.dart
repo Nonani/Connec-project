@@ -27,22 +27,24 @@ class _SignUpPageState extends State<SignUpPage> {
   String? _email;
   String? _password;
   String? _name;
-  String _work = work.first;
+  String _work = workList.first;
   String _career = careerList.first;
   String? _locaion_label;
   String? _location;
   String _gender = genderList.first;
   String _age = ageList.first;
-  String? _capability;
   String? _introduction;
-  int curWorkTier = 1;
-  int curLocalTier = 1;
-  String curWorkParent = "";
-  String curLocalParent = "";
-  List<String> workAreaItems = [];
-  List<String> workAreaCodes = [];
-  bool checkboxValue1 = false;
-  bool checkboxValue2 = false;
+  int _curWorkTier = 1;
+  int _curLocalTier = 1;
+  String _curWorkParent = "";
+  String _curLocalParent = "";
+  String _personality = personalityList.first;
+  List<String> _personalityItems = [];
+  List<String> _workAreaItems = [];
+  List<String> _workAreaCodes = [];
+
+  bool _checkboxValue1 = false;
+  bool _checkboxValue2 = false;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -96,12 +98,11 @@ class _SignUpPageState extends State<SignUpPage> {
                               hint: "비밀번호를 입력해주세요",
                               isSecret: true,
                               validate: (value) {
-                                if(value!.isEmpty){
+                                if (value!.isEmpty) {
                                   return '빈 칸입니다.';
-                                }
-                                else if(value != _password){
+                                } else if (value != _password) {
                                   return '비밀번호가 일치하지 않습니다.';
-                                }else{
+                                } else {
                                   return null;
                                 }
                               },
@@ -111,10 +112,10 @@ class _SignUpPageState extends State<SignUpPage> {
                               label: "이름",
                               hint: "이름(실명)을 입력해주세요",
                               isSecret: false,
-                              onSaved: (newValue) => _work = newValue,
+                              onSaved: (newValue) => _name = newValue,
                             ),
                             CustomDropdownButton(
-                                itemList: work,
+                                itemList: workList,
                                 label: "직업",
                                 onChanged: (value) {
                                   setState(
@@ -125,6 +126,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 },
                                 selectedItem: _work),
                             buildWorkContainer(snapshot),
+                            buildPersonalityContainer(snapshot),
                             CustomDropdownButton(
                               label: "경력",
                               itemList: careerList,
@@ -162,12 +164,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 );
                               },
                             ),
-                            SignUpEditTextForm(
-                              label: "능력",
-                              hint: "능력을 입력해주세요",
-                              isSecret: false,
-                              onSaved: (newValue) => _capability = newValue,
-                            ),
+
                             SignUpEditTextForm(
                               label: "소개",
                               hint: "소개를 입력해주세요",
@@ -180,10 +177,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Checkbox(
-                                      value: checkboxValue1,
+                                      value: _checkboxValue1,
                                       onChanged: (value) {
                                         setState(() {
-                                          checkboxValue1 = value!;
+                                          _checkboxValue1 = value!;
                                         });
                                       }),
                                   Text(
@@ -202,10 +199,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Checkbox(
-                                      value: checkboxValue2,
+                                      value: _checkboxValue2,
                                       onChanged: (value) {
                                         setState(() {
-                                          checkboxValue2 = value!;
+                                          _checkboxValue2 = value!;
                                         });
                                       }),
                                   Text(
@@ -239,17 +236,17 @@ class _SignUpPageState extends State<SignUpPage> {
                   onPressed: () async {
                     _formKey.currentState!.save();
                     if (_formKey.currentState!.validate() &&
-                        checkboxValue1 &&
-                        checkboxValue2 &&
-                        workAreaCodes.length != 0 &&
+                        _checkboxValue1 &&
+                        _checkboxValue2 &&
+                        _workAreaCodes.length != 0 &&
+                        _personalityItems.length >= 2 &&
                         _location != null) {
-
                       showCustomDialog(context);
                       await provider.postSignUpBody(SignUpBody(
                         uuid: uuid.v4(),
                         name: _name,
                         age: _age,
-                        capability: _capability,
+                        personality: _personalityItems,
                         career: _career,
                         email: _email,
                         gender: _gender,
@@ -257,7 +254,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         location: _location,
                         password: _password,
                         work: _work,
-                        workArea: workAreaCodes,
+                        workArea: _workAreaCodes,
                         serviceName: "None",
                       ));
 
@@ -316,7 +313,7 @@ class _SignUpPageState extends State<SignUpPage> {
         SizedBox(height: 10),
         GestureDetector(
           onTap: () {
-            if (workAreaItems.length < 5) showWorkListDialog(snapshot, "전문분야");
+            if (_workAreaItems.length < 5) showWorkListDialog(snapshot, "전문분야");
           },
           child: Container(
             width: double.infinity,
@@ -342,7 +339,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         ListView.separated(
           shrinkWrap: true,
-          itemCount: workAreaItems.length,
+          itemCount: _workAreaItems.length,
           separatorBuilder: (_, __) => const Divider(),
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
@@ -351,13 +348,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: [
                   Expanded(
                       child: Text(
-                    workAreaItems[index],
+                    _workAreaItems[index],
                     overflow: TextOverflow.ellipsis,
                   )),
                   IconButton(
                       onPressed: () {
-                        workAreaItems.removeAt(index);
-                        workAreaCodes.removeAt(index);
+                        _workAreaItems.removeAt(index);
+                        _workAreaCodes.removeAt(index);
                         setState(() {});
                       },
                       icon: Icon(Icons.cancel_outlined))
@@ -375,41 +372,38 @@ class _SignUpPageState extends State<SignUpPage> {
     List<Widget> dialogWidgetList = [];
 
     snapshot.data["workData"].forEach((element) {
-      if (element.data()["tier"] == curWorkTier &&
-          element.data()["parent"] == curWorkParent) {
+      if (element.data()["tier"] == _curWorkTier &&
+          element.data()["parent"] == _curWorkParent) {
         dialogList.add(element.data());
         dialogWidgetList.add(SimpleDialogOption(
           child: Text(element.data()["title"]),
           onPressed: () {
-            switch (curWorkTier) {
+            switch (_curWorkTier) {
               case 1:
                 title = element.data()["title"];
                 break;
               case 2:
                 title = title + ' > ${element.data()["title"]}';
-                break;
-              case 3:
-                title = title + ' > ${element.data()["title"]}';
-                workAreaItems.remove(title);
-                workAreaCodes.remove(element.data()["code"]);
+                _workAreaItems.remove(title);
+                _workAreaCodes.remove(element.data()["code"]);
 
-                workAreaItems.add(title);
-                workAreaCodes.add(element.data()["code"]);
+                _workAreaItems.add(title);
+                _workAreaCodes.add(element.data()["code"]);
                 Navigator.pop(context);
                 setState() {
-                  curWorkTier = 1;
-                  curWorkParent = "";
+                  _curWorkTier = 1;
+                  _curWorkParent = "";
                 }
                 return;
             }
-            curWorkTier += 1;
-            curWorkParent = element.data()["code"];
+            _curWorkTier += 1;
+            _curWorkParent = element.data()["code"];
             showWorkListDialog(snapshot, title);
           },
         ));
       }
     });
-    switch (curWorkTier) {
+    switch (_curWorkTier) {
       case 1:
         SimpleDialog dialog =
             SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
@@ -418,20 +412,11 @@ class _SignUpPageState extends State<SignUpPage> {
             builder: (context) {
               return dialog;
             }).then((value) => setState(() {
-              curWorkTier = 1;
-              curWorkParent = "";
+              _curWorkTier = 1;
+              _curWorkParent = "";
             }));
         break;
       case 2:
-        SimpleDialog dialog =
-            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
-        showDialog(
-            context: context,
-            builder: (context) {
-              return dialog;
-            }).then((value) => Navigator.pop(context));
-        break;
-      case 3:
         SimpleDialog dialog =
             SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
         showDialog(
@@ -443,6 +428,18 @@ class _SignUpPageState extends State<SignUpPage> {
           setState(() {});
         });
         break;
+      // case 3:
+      //   SimpleDialog dialog =
+      //       SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+      //   showDialog(
+      //       context: context,
+      //       builder: (context) {
+      //         return dialog;
+      //       }).then((value) {
+      //     Navigator.pop(context);
+      //     setState(() {});
+      //   });
+      //   break;
     }
   }
 
@@ -499,13 +496,13 @@ class _SignUpPageState extends State<SignUpPage> {
     List<Widget> dialogWidgetList = [];
 
     snapshot.data["localData"].forEach((element) {
-      if (element.data()["tier"] == curLocalTier &&
-          element.data()["parent"] == curLocalParent) {
+      if (element.data()["tier"] == _curLocalTier &&
+          element.data()["parent"] == _curLocalParent) {
         dialogList.add(element.data());
         dialogWidgetList.add(SimpleDialogOption(
           child: Text(element.data()["title"]),
           onPressed: () {
-            switch (curLocalTier) {
+            switch (_curLocalTier) {
               case 1:
                 title = element.data()["title"];
                 break;
@@ -516,14 +513,14 @@ class _SignUpPageState extends State<SignUpPage> {
                 Navigator.pop(context);
                 return;
             }
-            curLocalTier += 1;
-            curLocalParent = element.data()["code"];
+            _curLocalTier += 1;
+            _curLocalParent = element.data()["code"];
             showLocalListDialog(snapshot, title);
           },
         ));
       }
     });
-    switch (curLocalTier) {
+    switch (_curLocalTier) {
       case 1:
         SimpleDialog dialog =
             SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
@@ -532,8 +529,8 @@ class _SignUpPageState extends State<SignUpPage> {
             builder: (context) {
               return dialog;
             }).then((value) => setState(() {
-              curLocalTier = 1;
-              curLocalParent = "";
+              _curLocalTier = 1;
+              _curLocalParent = "";
             }));
         break;
       case 2:
@@ -549,5 +546,55 @@ class _SignUpPageState extends State<SignUpPage> {
         });
         break;
     }
+  }
+
+  Container buildPersonalityContainer(AsyncSnapshot snapshot) {
+    return Container(
+      width: double.infinity,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        CustomDropdownButton(
+            itemList: personalityList,
+            label: "성격",
+            onChanged: (value) {
+              if(value != "선택" && _personalityItems.length<5){
+                _personalityItems.remove(value);
+                _personalityItems.add(value);
+                setState(() {
+
+                });
+              }
+            },
+            selectedItem: _personality),
+
+        Padding(
+          padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
+          child: ListView.separated(
+            shrinkWrap: true,
+            itemCount: _personalityItems.length,
+            separatorBuilder: (_, __) => const Divider(),
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: Text(
+                      _personalityItems[index],
+                      overflow: TextOverflow.ellipsis,
+                    )),
+                    IconButton(
+                        onPressed: () {
+                          _personalityItems.removeAt(index);
+                          setState(() {});
+                        },
+                        icon: Icon(Icons.cancel_outlined))
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ]),
+    );
   }
 }

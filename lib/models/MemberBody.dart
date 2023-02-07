@@ -1,6 +1,7 @@
 class MemberBody {
   String? uid;
   List<String>? workArea;
+  List<String>? personality;
   String? career;
   String? location;
   String? gender;
@@ -16,7 +17,7 @@ class MemberBody {
       this.location,
       this.gender,
       this.age,
-      this.capability,
+      this.personality,
       this.introduction,
       this.docId});
 
@@ -27,7 +28,7 @@ class MemberBody {
     location = json['location'];
     gender = json['gender'];
     age = json['age'];
-    capability = json['capability'];
+    personality = json['personality'];
     introduction = json['introduction'];
     docId = json['docId'];
   }
@@ -40,7 +41,7 @@ class MemberBody {
     data['location'] = this.location;
     data['gender'] = this.gender;
     data['age'] = this.age;
-    data['capability'] = this.capability;
+    data['personality'] = this.personality;
     data['introduction'] = this.introduction;
     data['docId'] = this.docId;
     return data;

@@ -149,7 +149,6 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                         introduction: _introduction,
                         gender: _gender,
                         career: _career,
-                        capability: _capability,
                         age: _age,
                         docId: (widget.mode == '0') ? uuid.v4() : widget.mode.toString(),
                       ));
