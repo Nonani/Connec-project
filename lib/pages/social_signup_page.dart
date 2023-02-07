@@ -24,7 +24,7 @@ class SocialSignUpPage extends StatefulWidget {
 class _SocialSignUpPageState extends State<SocialSignUpPage> {
   var uuid = Uuid();
   String? _name;
-  String? _work;
+  String _work = work.first;
   String _career = careerList.first;
   String? _location;
   String? _locaion_label;
@@ -73,6 +73,17 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                         isSecret: false,
                         onSaved: (newValue) => _name = newValue,
                       ),
+                      CustomDropdownButton(
+                          itemList: work,
+                          label: "직업",
+                          onChanged: (value) {
+                            setState(
+                                  () {
+                                _work = value;
+                              },
+                            );
+                          },
+                          selectedItem: _work),
                       buildWorkContainer(snapshot),
                       CustomDropdownButton(
                         label: "경력",
@@ -186,6 +197,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                       uuid: uuid.v4(),
                       name: _name,
                       age: _age,
+                      work: _work,
                       capability: _capability,
                       career: _career,
                       gender: _gender,

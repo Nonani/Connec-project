@@ -27,6 +27,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String? _email;
   String? _password;
   String? _name;
+  String _work = work.first;
   String _career = careerList.first;
   String? _locaion_label;
   String? _location;
@@ -110,8 +111,19 @@ class _SignUpPageState extends State<SignUpPage> {
                               label: "이름",
                               hint: "이름(실명)을 입력해주세요",
                               isSecret: false,
-                              onSaved: (newValue) => _name = newValue,
+                              onSaved: (newValue) => _work = newValue,
                             ),
+                            CustomDropdownButton(
+                                itemList: work,
+                                label: "직업",
+                                onChanged: (value) {
+                                  setState(
+                                    () {
+                                      _work = value;
+                                    },
+                                  );
+                                },
+                                selectedItem: _work),
                             buildWorkContainer(snapshot),
                             CustomDropdownButton(
                               label: "경력",
@@ -244,6 +256,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         introduction: _introduction,
                         location: _location,
                         password: _password,
+                        work: _work,
                         workArea: workAreaCodes,
                         serviceName: "None",
                       ));

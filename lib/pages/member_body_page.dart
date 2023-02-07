@@ -144,7 +144,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                       showCustomDialog(context);
                       await provider.postMemberBody(MemberBody(
                         uid: FirebaseAuth.instance.currentUser!.uid,
-                        work: workCodes,
+                        workArea: workCodes,
                         location: _location,
                         introduction: _introduction,
                         gender: _gender,

@@ -5,6 +5,7 @@ class SignUpBody {
   String? email;
   String? password;
   String? name;
+  String? work;
   List<String>? workArea;
   String? career;
   String? location;
@@ -20,6 +21,7 @@ class SignUpBody {
         this.email,
         this.password,
         this.name,
+        this.work,
         this.workArea,
         this.career,
         this.location,
@@ -35,6 +37,7 @@ class SignUpBody {
     email = json['email'];
     password = json['password'];
     name = json['name'];
+    work = json['work'];
     workArea = json['workArea'];
     career = json['career'];
     location = json['location'];
@@ -52,6 +55,7 @@ class SignUpBody {
     data['email'] = this.email;
     data['password'] = this.password;
     data['name'] = this.name;
+    data['work'] = this.work;
     data['workArea'] = this.workArea;
     data['career'] = this.career;
     data['location'] = this.location;
