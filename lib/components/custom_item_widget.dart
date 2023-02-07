@@ -70,7 +70,7 @@ class NetworkItemWidget extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text("${_rate}/5.0", style: _contextStyle),
+                          Text("$_rate/5.0", style: _contextStyle),
                           Text(_number, style: _contextStyle),
                           Text(_representative, style: _contextStyle)
                         ],

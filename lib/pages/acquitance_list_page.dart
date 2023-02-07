@@ -12,7 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
-import 'expand_network_page.dart';
+
 
 class AcquitanceListPage extends StatefulWidget {
   const AcquitanceListPage({Key? key}) : super(key: key);
@@ -121,6 +121,7 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                               onTap: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
+                                      logger.w(snapshot.data);
                                   return AcquitanceManagementPage(
                                       snapshot.data!['list'][index]);
                                 }));
@@ -140,7 +141,7 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                                     rate: '0',
                                     relationship: '한 다리',
                                     capability: snapshot.data['list'][index]
-                                        ['capability'],
+                                        ['personality'][0],
                                   ),
                                 ),
                               ),
@@ -255,7 +256,7 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
       var memberData = member.data();
       QuerySnapshot<Map<String, dynamic>> tmp = await db
           .collection('workData')
-          .where('code', isEqualTo: memberData['work'][0])
+          .where('code', isEqualTo: memberData['workArea'][0])
           .get();
       memberData['title'] = tmp.docs[0]['title'];
       tmp = await db

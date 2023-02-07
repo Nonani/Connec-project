@@ -14,7 +14,6 @@ class MemberItemWidget extends StatelessWidget {
   })  : _nameStyle = nameStyle,
         _classStyle = classStyle,
         _sectionStyle = contextStyle,
-        _itemStyle = itemStyle,
         _field = field,
         _rate = rate,
         _relationship = relationship,
@@ -24,7 +23,6 @@ class MemberItemWidget extends StatelessWidget {
   final TextStyle _nameStyle;
   final TextStyle _classStyle;
   final TextStyle _sectionStyle;
-  final TextStyle _itemStyle;
 
   final String _field;
   final String _rate;
@@ -71,7 +69,7 @@ class MemberItemWidget extends StatelessWidget {
                                 ),
                                 Padding(
                                     padding: EdgeInsets.only(top: 7),
-                                    child: Text("능력", style: _sectionStyle)
+                                    child: Text("성격", style: _sectionStyle)
                                 ),
                               ],
                             ),

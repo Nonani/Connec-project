@@ -83,6 +83,9 @@ flutter:
     - assets/images/navigation_icon_5.png
     - assets/images/accept_btn.png
     - assets/images/reject_btn.png
+    - assets/images/first_deg.png
+    - assets/images/second_deg.png
+    - assets/images/third_deg.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

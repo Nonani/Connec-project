@@ -22,10 +22,9 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
   int connectionCount = 0;
   List<String> connectionText = ['한 다리', '두 다리', '세 다리'];
   List<String> connectionList = [
-    'https://firebasestorage.googleapis.com/v0/b/connec-project.appspot.com/o/connec%20~%EB%8B%A4%EB%A6%AC-03.png?alt=media&token=c5bd0d56-f0be-47b4-9253-764712720c9a',
-    'https://firebasestorage.googleapis.com/v0/b/connec-project.appspot.com/o/connec%20~%EB%8B%A4%EB%A6%AC-04.png?alt=media&token=6e0f685e-1c75-4209-a027-caf2b61a21ba',
-    'https://firebasestorage.googleapis.com/v0/b/connec-project.appspot.com/o/connec%20~%EB%8B%A4%EB%A6%AC-05.png?alt=media&token=6c4f0fa5-601a-4c81-b4ec-0fde0afe929b'
-  ];
+    "assets/images/first_deg.png",
+    "assets/images/second_deg.png",
+    "assets/images/third_deg.png"];
   int _currentIndex = 0;
 
   List<Widget> list = [
@@ -87,7 +86,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                     SizedBox(
                       width: double.infinity,
                       height: 220,
-                      child: Image.network(connectionList[connectionCount]),
+                      child: Image.asset(connectionList[connectionCount]),
                     ),
                     Column(children: [
                       Container(
@@ -110,7 +109,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                               ),
                               child: Text(
                                 connectionText[connectionCount],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Color(0xff5f66f2),
                                   fontSize: 16,
                                   fontFamily: 'EchoDream',
@@ -262,37 +261,47 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                                                     .data['data'][connectionCount]
                                                     .keys
                                                     .toList()[fIdx]]
-                                                    .keys
                                                     .length,
                                                 itemBuilder:
                                                     (BuildContext context,
                                                     int sIdx) {
+                                                  logger.w(snapshot
+                                                      .data['data'][connectionCount][
+                                                  snapshot
+                                                      .data['data']
+                                                  [connectionCount]
+                                                      .keys
+                                                      .toList()[fIdx]]);
                                                   var sKeys = snapshot
                                                       .data['data'][connectionCount][
                                                   snapshot
                                                       .data['data']
                                                   [connectionCount]
                                                       .keys
-                                                      .toList()[fIdx]]
-                                                      .keys
-                                                      .toList();
+                                                      .toList()[fIdx]];
                                                   return Column(
-                                                      crossAxisAlignment: CrossAxisAlignment
-                                                          .start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Container(
                                                           margin: const EdgeInsets
-                                                              .only(left: 35,
+                                                              .only(left: 40, right: 40,
                                                               bottom: 10),
-                                                          child: Row(children: [
-                                                            const Icon(Icons
-                                                                .arrow_forward_ios_outlined,
-                                                                color: Color(
-                                                                    0xff5f66f2),
-                                                                size: 18),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: [
+
                                                             Text(snapshot
                                                                 .data['dict']
-                                                            [connectionCount][sKeys[sIdx]],
+                                                            [connectionCount][sKeys[sIdx]['code']],
+                                                              style: const TextStyle(
+                                                                color: Color(
+                                                                    0xff333333),
+                                                                fontSize: 16,
+                                                                fontFamily: 'EchoDream',
+                                                                fontWeight: FontWeight
+                                                                    .w700,
+                                                              ),),
+                                                            Text("${sKeys[sIdx]['count']}명",
                                                               style: const TextStyle(
                                                                 color: Color(
                                                                     0xff333333),
@@ -302,20 +311,6 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                                                                     .w700,
                                                               ),),
                                                           ]),
-                                                        ),
-                                                        Container(
-                                                          margin: const EdgeInsets
-                                                              .only(left: 55,
-                                                              right: 43,
-                                                              bottom: 16.5,
-                                                              top: 10),
-                                                          decoration: BoxDecoration(
-                                                            border: Border.all(
-                                                              color: const Color(
-                                                                  0xffe2e2e2),
-                                                              width: 1.5,
-                                                            ),
-                                                          ),
                                                         ),
                                                       ]);
                                                 })
@@ -420,7 +415,6 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
           ),
         ));
   }
-
   Future data() async {
     Logger logger = Logger();
 
@@ -464,6 +458,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
       logger.w(e);
     }
     //hl
+    logger.w(result);
     return result;
   }
 
@@ -647,11 +642,11 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     for (QueryDocumentSnapshot<Map<String, dynamic>> element
     in relationData! + networkUserData!) {
       Map<String, dynamic> member = element.data();
-      if (!workData.contains(member['work'][0])) {
-        workData.add(member['work'][0]);
+      if (!workData.contains(member['workArea'][0])) {
+        workData.add(member['workArea'][0]);
         workDataCnt.add(1);
       } else {
-        int idx = workData.indexOf(member['work'][0]);
+        int idx = workData.indexOf(member['workArea'][0]);
         workDataCnt[idx]++;
       }
     }
