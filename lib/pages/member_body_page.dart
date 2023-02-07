@@ -119,7 +119,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                         ),
                         SignUpEditTextForm(
                           label: "소개",
-                          hint: "소개를 입력해주세요",
+                          hint: "지인에 대해 추가로 알려줄 정보를 입력해주세요.",
                           isSecret: false,
                           onSaved: (newValue) => _introduction = newValue,
                         ),
