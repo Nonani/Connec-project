@@ -7,9 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
-import '../components/custom_expansion_tile.dart';
-import '../services/service_class.dart';
 import 'expand_network_page.dart';
 
 class NetworkListPage extends StatefulWidget {
@@ -113,7 +110,7 @@ class _NetworkListPageState extends State<NetworkListPage> {
                                     contextStyle: _contextStyle,
                                     name: snapshot.data['users'][index]['name'],
                                     rate: snapshot.data['users'][index]['rate'].toString(),
-                                    number: snapshot.data['users'][index]['acquitances'].toString(),
+                                    number: snapshot.data['users'][index]['acquaintances'].toString(),
                                     representative: snapshot.data['users'][index]['capability'],
                                   ),
                                 ),
@@ -168,9 +165,9 @@ class _NetworkListPageState extends State<NetworkListPage> {
     for (String uid in list.data()?['list']) {
       var tmp = await db.collection('users').doc(uid).get();
       var data = tmp.data();
-      var acquitances =  await db.collection('members').where('uid', isEqualTo: tmp.data()?['uid']).get();
-      logger.w(acquitances.docs.length);
-      data!['acquitances'] = acquitances.docs.length;
+      var acquaintances =  await db.collection('members').where('uid', isEqualTo: tmp.data()?['uid']).get();
+      logger.w(acquaintances.docs.length);
+      data!['acquaintances'] = acquaintances.docs.length;
       result['users'].add(data);
     }
     logger.w(result);
