@@ -107,7 +107,7 @@ class SearchNetworkPage extends StatelessWidget {
                                       rate: '0',
                                       relationship: '한 다리',
                                       capability: snapshot.data['list'][index]
-                                          ['capability'],
+                                          ['personality'][0],
                                     ),
                                   ),
                                 ),
@@ -127,9 +127,9 @@ class SearchNetworkPage extends StatelessWidget {
     final db = FirebaseFirestore.instance;
 
     var user =
-        await db.collection("users").where("work", arrayContains: code).get();
+        await db.collection("users").where("workArea", arrayContains: code).get();
     var member =
-        await db.collection("member").where("work", arrayContains: code).get();
+        await db.collection("member").where("workArea", arrayContains: code).get();
     Map<String, dynamic> data = {};
     data['list'] = List.empty(growable: true);
 
@@ -138,7 +138,7 @@ class SearchNetworkPage extends StatelessWidget {
       var elementData = element.data();
       QuerySnapshot<Map<String, dynamic>> tmp = await db
           .collection('workData')
-          .where('code', isEqualTo: elementData['work'][0])
+          .where('code', isEqualTo: elementData['workArea'][0])
           .get();
       elementData['title'] = tmp.docs[0]['title'];
       tmp = await db
@@ -157,7 +157,7 @@ class SearchNetworkPage extends StatelessWidget {
       var elementData = element.data();
       QuerySnapshot<Map<String, dynamic>> tmp = await db
           .collection('workData')
-          .where('code', isEqualTo: elementData['work'][0])
+          .where('code', isEqualTo: elementData['workArea'][0])
           .get();
       elementData['title'] = tmp.docs[0]['title'];
       tmp = await db

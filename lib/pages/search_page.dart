@@ -173,17 +173,7 @@ class _SearchPageState extends State<SearchPage> {
           .get())
           .docs;
       for (var element2 in work2) {
-        List<Entry> list3 = [];
-        final work3 = (await db
-            .collection("workData")
-            .where("tier", isEqualTo: 3)
-            .where("parent", isEqualTo: "${element2.data()["code"]}")
-            .get())
-            .docs;
-        for (var element3 in work3) {
-          list3.add(Entry(title: element3.data()["title"], code: element3.data()["code"], children: []));
-        }
-        list2.add(Entry(title: element2.data()["title"], code: element2.data()["code"], children: list3));
+        list2.add(Entry(title: element2.data()["title"], code: element2.data()["code"], children: []));
       }
       list1.add(Entry(title: element1.data()["title"], code: element1.data()["code"], children: list2));
     }
@@ -235,7 +225,7 @@ class EntryItem extends StatelessWidget {
         onTap: () {
           // 이 부분을 go_router 패키지 써서
           // context.go('/${root.title}'), 이런 식으로 할 예정
-          Navigator.push(context, MaterialPageRoute(builder: (context) => SearchNetworkPage(root.code),));
+
         },
       );
     return Container(
@@ -272,7 +262,7 @@ class EntryItem extends StatelessWidget {
         onTap: () {
           // 이 부분을 go_router 패키지 써서
           // context.go('/${root.title}'), 이런 식으로 할 예정
-          print(root.title);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SearchNetworkPage(root.code),));
         },
       );
     return Container(

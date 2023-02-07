@@ -96,33 +96,6 @@ Future<List<Entry>> getList() async {
   Logger logger = Logger();
   final db = FirebaseFirestore.instance;
   List<Entry> list1 = [];
-  final work1 =
-      (await db.collection("workData").where("tier", isEqualTo: 1).get()).docs;
-
-  for (var element1 in work1){
-    List<Entry> list2 = [];
-
-    final work2 = (await db
-            .collection("workData")
-            .where("tier", isEqualTo: 2)
-            .where("parent", isEqualTo: "${element1.data()["code"]}")
-            .get())
-        .docs;
-    for (var element2 in work2) {
-      List<Entry> list3 = [];
-      final work3 = (await db
-              .collection("workData")
-              .where("tier", isEqualTo: 3)
-              .where("parent", isEqualTo: "${element2.data()["code"]}")
-              .get())
-          .docs;
-      for (var element3 in work3) {
-        list3.add(Entry(title: element3.data()["title"], children: []));
-      }
-      list2.add(Entry(title: element2.data()["title"], children: list3));
-    }
-    list1.add(Entry(title: element1.data()["title"], children: list2));
-  }
 
   return list1;
 }
@@ -166,45 +139,10 @@ class EntryItem extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
-        children: root.children.map(_buildTiles2).toList(),
-      ),
-    );
-  }
-
-  Widget _buildTiles2(Entry root) {
-    if (root.children.isEmpty)
-      return ListTile(
-        title: Text(
-          root.title,
-          style: TextStyle(
-            color: Color(0xff666666),
-            fontFamily: 'EchoDream',
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        onTap: () {
-          // 이 부분을 go_router 패키지 써서
-          // context.go('/${root.title}'), 이런 식으로 할 예정
-          print(root.title);
-        },
-      );
-    return Container(
-      child: ExpansionTile(
-        childrenPadding: EdgeInsets.only(left: 10),
-        key: PageStorageKey<Entry>(root),
-        title: Text(
-          root.title,
-          style: TextStyle(
-            color: Color(0xff666666),
-            fontFamily: 'EchoDream',
-            fontWeight: FontWeight.w500,
-          ),
-        ),
         children: root.children.map(_buildTiles1).toList(),
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return _buildTiles1(entry);
