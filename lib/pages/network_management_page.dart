@@ -22,10 +22,9 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
   int connectionCount = 0;
   List<String> connectionText = ['한 다리', '두 다리', '세 다리'];
   List<String> connectionList = [
-    'https://firebasestorage.googleapis.com/v0/b/connec-project.appspot.com/o/connec%20~%EB%8B%A4%EB%A6%AC-03.png?alt=media&token=c5bd0d56-f0be-47b4-9253-764712720c9a',
-    'https://firebasestorage.googleapis.com/v0/b/connec-project.appspot.com/o/connec%20~%EB%8B%A4%EB%A6%AC-04.png?alt=media&token=6e0f685e-1c75-4209-a027-caf2b61a21ba',
-    'https://firebasestorage.googleapis.com/v0/b/connec-project.appspot.com/o/connec%20~%EB%8B%A4%EB%A6%AC-05.png?alt=media&token=6c4f0fa5-601a-4c81-b4ec-0fde0afe929b'
-  ];
+    "assets/images/first_deg.png",
+    "assets/images/second_deg.png",
+    "assets/images/third_deg.png"];
   int _currentIndex = 0;
 
   List<Widget> list = [
@@ -87,7 +86,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                     SizedBox(
                       width: double.infinity,
                       height: 220,
-                      child: Image.network(connectionList[connectionCount]),
+                      child: Image.asset(connectionList[connectionCount]),
                     ),
                     Column(children: [
                       Container(
