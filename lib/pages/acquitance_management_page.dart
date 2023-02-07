@@ -104,7 +104,7 @@ class AcquitanceManagementPage extends StatelessWidget {
                             ),
                             SizedBox(width: 20,),
                             FutureBuilder(
-                              future: workString(data['work']),
+                              future: workString(data['workArea']),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   return Expanded(
@@ -163,8 +163,8 @@ class AcquitanceManagementPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("능력", style: _contextStyleKey),
-                            Text(data['capability'],
+                            Text("성격", style: _contextStyleKey),
+                            Text(data['personality'][0],
                                 style: _contextStyleValue),
                           ],
                         ),
