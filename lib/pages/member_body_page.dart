@@ -13,42 +13,40 @@ import '../const/data.dart';
 import '../services/service_class.dart';
 
 class MemberBodyPage extends StatefulWidget {
-
-
   MemberBodyPage({required this.mode, Key? key}) : super(key: key);
   String mode;
+
   @override
   State<MemberBodyPage> createState() => _MemberBodyPageState();
 }
 
 class _MemberBodyPageState extends State<MemberBodyPage> {
   final _formKey = GlobalKey<FormState>();
-  String? _work;
+  String _work = workList.first;
   String _career = careerList.first;
   String? _location;
   String? _locaion_label;
   String _gender = genderList.first;
   String _age = ageList.first;
-  String? _capability;
   String? _introduction;
-  int curWorkTier = 1;
-  int curLocalTier = 1;
-  String curWorkParent = "";
-  String curLocalParent = "";
-  List<String> workItems = [];
-  List<String> workCodes = [];
-
-  int modeIdx = 0;
-  List<String> modeTitleString = ["지인 등록", "지인 수정"];
-  List<String> modeButtonString = ["등록하기", "수정하기"];
-
+  int _curWorkTier = 1;
+  int _curLocalTier = 1;
+  String _curWorkParent = "";
+  String _curLocalParent = "";
+  String _personality = personalityList.first;
+  List<String> _personalityItems = [];
+  List<String> _workAreaItems = [];
+  List<String> _workAreaCodes = [];
+  int _modeIdx = 0;
+  List<String> _modeTitleString = ["지인 등록", "지인 수정"];
+  List<String> _modeButtonString = ["등록하기", "수정하기"];
 
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ServiceClass>(context, listen: false);
-    if (widget.mode != '0'){
+    if (widget.mode != '0') {
       setState(() {
-        modeIdx = 1;
+        _modeIdx = 1;
       });
     }
     return FutureBuilder(
@@ -59,17 +57,19 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
               child: Center(
             child: CircularProgressIndicator(),
           ));
-        }else{
+        } else {
           return Scaffold(
               appBar: AppBar(
-                shape:
-                Border(bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
+                shape: Border(
+                    bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
                 backgroundColor: Color(0xfffafafa),
                 elevation: 0,
                 leading: BackButton(color: Color(0xff5f66f2)),
-                title: Text(modeTitleString[modeIdx],
+                title: Text(_modeTitleString[_modeIdx],
                     style: TextStyle(
-                        fontFamily: "EchoDream", fontSize: 20, color: Colors.black)),
+                        fontFamily: "EchoDream",
+                        fontSize: 20,
+                        color: Colors.black)),
                 centerTitle: true,
               ),
               body: SafeArea(
@@ -85,20 +85,21 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                           selectedItem: _career,
                           onChanged: (value) {
                             setState(
-                                  () {
+                              () {
                                 _career = value;
                               },
                             );
                           },
                         ),
                         buildLocalContainer(snapshot),
+                        buildPersonalityContainer(snapshot),
                         CustomDropdownButton(
                           label: "성별",
                           itemList: genderList,
                           selectedItem: _gender,
                           onChanged: (value) {
                             setState(
-                                  () {
+                              () {
                                 _gender = value;
                               },
                             );
@@ -110,17 +111,11 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                           selectedItem: _age,
                           onChanged: (value) {
                             setState(
-                                  () {
+                              () {
                                 _age = value;
                               },
                             );
                           },
-                        ),
-                        SignUpEditTextForm(
-                          label: "능력",
-                          hint: "능력을 입력해주세요",
-                          isSecret: false,
-                          onSaved: (newValue) => _capability = newValue,
                         ),
                         SignUpEditTextForm(
                           label: "소개",
@@ -130,47 +125,53 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                         ),
                       ],
                     ),
-
                   ),
                 ),
               ),
-              bottomNavigationBar:Container(
+              bottomNavigationBar: Container(
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () async{
-                    if (_formKey.currentState!.validate()){
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate() &&
+                        _workAreaCodes.isNotEmpty &&
+                        _personalityItems.length >= 2 &&
+                        _location != null) {
                       var uuid = Uuid();
                       _formKey.currentState!.save();
                       showCustomDialog(context);
                       await provider.postMemberBody(MemberBody(
                         uid: FirebaseAuth.instance.currentUser!.uid,
-                        workArea: workCodes,
+                        workArea: _workAreaCodes,
                         location: _location,
+                        personality: _personalityItems,
                         introduction: _introduction,
                         gender: _gender,
                         career: _career,
                         age: _age,
-                        docId: (widget.mode == '0') ? uuid.v4() : widget.mode.toString(),
+                        docId: (widget.mode == '0')
+                            ? uuid.v4()
+                            : widget.mode.toString(),
                       ));
-                      if(provider.isComplete){
+                      if (provider.isComplete) {
                         Navigator.pop(context);
                         Navigator.pop(context);
                       }
                     }
-
-                  }, child: Text(modeButtonString[modeIdx],
-                  style: TextStyle(
-                    color: Color(0xfffafafa),
-                    fontSize: 20,
+                  },
+                  child: Text(
+                    _modeButtonString[_modeIdx],
+                    style: TextStyle(
+                      color: Color(0xfffafafa),
+                      fontSize: 20,
+                    ),
                   ),
                 ),
-                ),
-              )
-          );
+              ));
         }
       },
     );
   }
+
   Future _future() async {
     Logger logger = Logger();
     FirebaseFirestore db = FirebaseFirestore.instance;
@@ -184,6 +185,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
 
     return {"workData": workResult.docs, "localData": localResult.docs};
   }
+
   Container buildWorkContainer(AsyncSnapshot snapshot) {
     return Container(
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -191,7 +193,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(
           children: [
-            Text("직군/직무",
+            Text("전문분야",
                 style: TextStyle(
                   fontFamily: "EchoDream",
                   fontWeight: FontWeight.w600,
@@ -212,7 +214,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
         SizedBox(height: 10),
         GestureDetector(
           onTap: () {
-            if (workItems.length < 5) showWorkListDialog(snapshot, "직군/직무");
+            if (_workAreaItems.length < 5) showWorkListDialog(snapshot, "전문분야");
           },
           child: Container(
             width: double.infinity,
@@ -238,7 +240,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
         ),
         ListView.separated(
           shrinkWrap: true,
-          itemCount: workItems.length,
+          itemCount: _workAreaItems.length,
           separatorBuilder: (_, __) => const Divider(),
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
@@ -247,13 +249,13 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                 children: [
                   Expanded(
                       child: Text(
-                        workItems[index],
-                        overflow: TextOverflow.ellipsis,
-                      )),
+                    _workAreaItems[index],
+                    overflow: TextOverflow.ellipsis,
+                  )),
                   IconButton(
                       onPressed: () {
-                        workItems.removeAt(index);
-                        workCodes.removeAt(index);
+                        _workAreaItems.removeAt(index);
+                        _workAreaCodes.removeAt(index);
                         setState(() {});
                       },
                       icon: Icon(Icons.cancel_outlined))
@@ -265,70 +267,59 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
       ]),
     );
   }
+
   void showWorkListDialog(AsyncSnapshot snapshot, String title) {
     List dialogList = [];
     List<Widget> dialogWidgetList = [];
 
     snapshot.data["workData"].forEach((element) {
-      if (element.data()["tier"] == curWorkTier &&
-          element.data()["parent"] == curWorkParent) {
+      if (element.data()["tier"] == _curWorkTier &&
+          element.data()["parent"] == _curWorkParent) {
         dialogList.add(element.data());
         dialogWidgetList.add(SimpleDialogOption(
           child: Text(element.data()["title"]),
           onPressed: () {
-            switch (curWorkTier) {
+            switch (_curWorkTier) {
               case 1:
                 title = element.data()["title"];
                 break;
               case 2:
                 title = title + ' > ${element.data()["title"]}';
-                break;
-              case 3:
-                title = title + ' > ${element.data()["title"]}';
-                workItems.remove(title);
-                workCodes.remove(element.data()["code"]);
+                _workAreaItems.remove(title);
+                _workAreaCodes.remove(element.data()["code"]);
 
-                workItems.add(title);
-                workCodes.add(element.data()["code"]);
+                _workAreaItems.add(title);
+                _workAreaCodes.add(element.data()["code"]);
                 Navigator.pop(context);
                 setState() {
-                  curWorkTier = 1;
-                  curWorkParent = "";
+                  _curWorkTier = 1;
+                  _curWorkParent = "";
                 }
                 return;
             }
-            curWorkTier += 1;
-            curWorkParent = element.data()["code"];
+            _curWorkTier += 1;
+            _curWorkParent = element.data()["code"];
             showWorkListDialog(snapshot, title);
           },
         ));
       }
     });
-    switch (curWorkTier) {
+    switch (_curWorkTier) {
       case 1:
         SimpleDialog dialog =
-        SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
               return dialog;
             }).then((value) => setState(() {
-          curWorkTier = 1;
-          curWorkParent = "";
-        }));
+              _curWorkTier = 1;
+              _curWorkParent = "";
+            }));
         break;
       case 2:
         SimpleDialog dialog =
-        SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
-        showDialog(
-            context: context,
-            builder: (context) {
-              return dialog;
-            }).then((value) => Navigator.pop(context));
-        break;
-      case 3:
-        SimpleDialog dialog =
-        SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
@@ -340,6 +331,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
         break;
     }
   }
+
   Container buildLocalContainer(AsyncSnapshot snapshot) {
     return Container(
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -365,37 +357,41 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                 border: Border(
                     bottom: BorderSide(color: Color(0xff5f66f2), width: 1))),
             alignment: Alignment.centerLeft,
-            child: _location==null?Text(
-              '선택',
-              style: TextStyle(
-                color: Color(0xffbdbdbd),
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-              ),
-            ):Text('${_locaion_label}',
-              style: TextStyle(
-                color: Color(0xff333333),
-                fontSize: 16,
-                fontFamily: 'S-CoreDream-4',
-              ),
-            ),
+            child: _location == null
+                ? Text(
+                    '선택',
+                    style: TextStyle(
+                      color: Color(0xffbdbdbd),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                    ),
+                  )
+                : Text(
+                    '${_locaion_label}',
+                    style: TextStyle(
+                      color: Color(0xff333333),
+                      fontSize: 16,
+                      fontFamily: 'S-CoreDream-4',
+                    ),
+                  ),
           ),
         ),
       ]),
     );
   }
+
   void showLocalListDialog(AsyncSnapshot snapshot, String title) {
     List dialogList = [];
     List<Widget> dialogWidgetList = [];
 
     snapshot.data["localData"].forEach((element) {
-      if (element.data()["tier"] == curLocalTier &&
-          element.data()["parent"] == curLocalParent) {
+      if (element.data()["tier"] == _curLocalTier &&
+          element.data()["parent"] == _curLocalParent) {
         dialogList.add(element.data());
         dialogWidgetList.add(SimpleDialogOption(
           child: Text(element.data()["title"]),
           onPressed: () {
-            switch (curLocalTier) {
+            switch (_curLocalTier) {
               case 1:
                 title = element.data()["title"];
                 break;
@@ -404,35 +400,31 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                 _location = element.data()["code"];
                 _locaion_label = title;
                 Navigator.pop(context);
-                setState() {
-                  curWorkTier = 1;
-                  curWorkParent = "";
-                }
                 return;
             }
-            curLocalTier += 1;
-            curLocalParent = element.data()["code"];
+            _curLocalTier += 1;
+            _curLocalParent = element.data()["code"];
             showLocalListDialog(snapshot, title);
           },
         ));
       }
     });
-    switch (curLocalTier) {
+    switch (_curLocalTier) {
       case 1:
         SimpleDialog dialog =
-        SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
               return dialog;
             }).then((value) => setState(() {
-          curLocalTier = 1;
-          curLocalParent = "";
-        }));
+              _curLocalTier = 1;
+              _curLocalParent = "";
+            }));
         break;
       case 2:
         SimpleDialog dialog =
-        SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
@@ -443,5 +435,52 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
         });
         break;
     }
+  }
+
+  Container buildPersonalityContainer(AsyncSnapshot snapshot) {
+    return Container(
+      width: double.infinity,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        CustomDropdownButton(
+            itemList: personalityList,
+            label: "성격",
+            onChanged: (value) {
+              if (value != "선택" && _personalityItems.length < 5) {
+                _personalityItems.remove(value);
+                _personalityItems.add(value);
+                setState(() {});
+              }
+            },
+            selectedItem: _personality),
+        Padding(
+          padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
+          child: ListView.separated(
+            shrinkWrap: true,
+            itemCount: _personalityItems.length,
+            separatorBuilder: (_, __) => const Divider(),
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: Text(
+                      _personalityItems[index],
+                      overflow: TextOverflow.ellipsis,
+                    )),
+                    IconButton(
+                        onPressed: () {
+                          _personalityItems.removeAt(index);
+                          setState(() {});
+                        },
+                        icon: Icon(Icons.cancel_outlined))
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ]),
+    );
   }
 }

@@ -381,18 +381,6 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
           setState(() {});
         });
         break;
-    // case 3:
-    //   SimpleDialog dialog =
-    //       SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
-    //   showDialog(
-    //       context: context,
-    //       builder: (context) {
-    //         return dialog;
-    //       }).then((value) {
-    //     Navigator.pop(context);
-    //     setState(() {});
-    //   });
-    //   break;
     }
   }
 
