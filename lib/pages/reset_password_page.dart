@@ -26,6 +26,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>{
       appBar: AppBar(
         elevation: 0,
         toolbarHeight: 80,
+        centerTitle: true,
         backgroundColor: const Color(0xfffafafa),
         shape: const Border(
             bottom: BorderSide(
@@ -44,7 +45,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>{
           style: TextStyle(
             color: Color(0xff333333),
             fontSize: 20,
-            fontFamily: 'S-CoreDream-5Medium',
+            fontFamily: 'EchoDream',
             fontWeight: FontWeight.w500,
           ),
         ),

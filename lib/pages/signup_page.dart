@@ -225,7 +225,10 @@ class _SignUpPageState extends State<SignUpPage> {
               bottomNavigationBar: Container(
                 height: 56,
                 child: ElevatedButton(
-                  child: Text(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff5f66f2)
+                  ),
+                  child: const Text(
                     '회원가입',
                     style: TextStyle(
                         color: Color(0xfffafafa),

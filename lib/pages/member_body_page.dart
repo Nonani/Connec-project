@@ -22,7 +22,6 @@ class MemberBodyPage extends StatefulWidget {
 
 class _MemberBodyPageState extends State<MemberBodyPage> {
   final _formKey = GlobalKey<FormState>();
-  String _work = workList.first;
   String _career = careerList.first;
   String? _location;
   String? _locaion_label;
@@ -128,15 +127,18 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                   ),
                 ),
               ),
-              bottomNavigationBar: Container(
+              bottomNavigationBar: SizedBox(
                 height: 56,
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff5f66f2)
+                  ),
                   onPressed: () async {
                     if (_formKey.currentState!.validate() &&
                         _workAreaCodes.isNotEmpty &&
                         _personalityItems.length >= 2 &&
                         _location != null) {
-                      var uuid = Uuid();
+                      var uuid = const Uuid();
                       _formKey.currentState!.save();
                       showCustomDialog(context);
                       await provider.postMemberBody(MemberBody(
@@ -160,7 +162,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                   },
                   child: Text(
                     _modeButtonString[_modeIdx],
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xfffafafa),
                       fontSize: 20,
                     ),
@@ -211,7 +213,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
             ),
           ],
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         GestureDetector(
           onTap: () {
             if (_workAreaItems.length < 5) showWorkListDialog(snapshot, "전문분야");
@@ -219,13 +221,13 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
           child: Container(
             width: double.infinity,
             height: 40,
-            padding: EdgeInsets.only(left: 10),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.only(left: 10),
+            decoration: const BoxDecoration(
                 color: Color(0xffeeeeee),
                 border: Border(
                     bottom: BorderSide(color: Color(0xff5f66f2), width: 1))),
             alignment: Alignment.centerLeft,
-            child: Text(
+            child: const Text(
               '선택',
               style: TextStyle(
                 color: Color(0xffbdbdbd),
@@ -235,7 +237,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         ListView.separated(
@@ -258,7 +260,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                         _workAreaCodes.removeAt(index);
                         setState(() {});
                       },
-                      icon: Icon(Icons.cancel_outlined))
+                      icon: const Icon(Icons.cancel_outlined))
                 ],
               ),
             );
@@ -284,7 +286,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                 title = element.data()["title"];
                 break;
               case 2:
-                title = title + ' > ${element.data()["title"]}';
+                title = '$title > ${element.data()["title"]}';
                 _workAreaItems.remove(title);
                 _workAreaCodes.remove(element.data()["code"]);
 
@@ -307,7 +309,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
     switch (_curWorkTier) {
       case 1:
         SimpleDialog dialog =
-            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+            SimpleDialog(title: Text(title), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
@@ -319,7 +321,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
         break;
       case 2:
         SimpleDialog dialog =
-            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+            SimpleDialog(title: Text(title), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
@@ -334,16 +336,16 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
 
   Container buildLocalContainer(AsyncSnapshot snapshot) {
     return Container(
-      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       width: double.infinity,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text("지역",
+        const Text("지역",
             style: TextStyle(
               fontFamily: "EchoDream",
               fontWeight: FontWeight.w600,
               fontSize: 17,
             )),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         GestureDetector(
           onTap: () {
             showLocalListDialog(snapshot, "지역");
@@ -351,14 +353,14 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
           child: Container(
             width: double.infinity,
             height: 40,
-            padding: EdgeInsets.only(left: 10),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.only(left: 10),
+            decoration: const BoxDecoration(
                 color: Color(0xffeeeeee),
                 border: Border(
                     bottom: BorderSide(color: Color(0xff5f66f2), width: 1))),
             alignment: Alignment.centerLeft,
             child: _location == null
-                ? Text(
+                ? const Text(
                     '선택',
                     style: TextStyle(
                       color: Color(0xffbdbdbd),
@@ -367,8 +369,8 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                     ),
                   )
                 : Text(
-                    '${_locaion_label}',
-                    style: TextStyle(
+                    '$_locaion_label',
+                    style: const TextStyle(
                       color: Color(0xff333333),
                       fontSize: 16,
                       fontFamily: 'S-CoreDream-4',
@@ -396,7 +398,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                 title = element.data()["title"];
                 break;
               case 2:
-                title = title + ' > ${element.data()["title"]}';
+                title = '$title > ${element.data()["title"]}';
                 _location = element.data()["code"];
                 _locaion_label = title;
                 Navigator.pop(context);
@@ -412,7 +414,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
     switch (_curLocalTier) {
       case 1:
         SimpleDialog dialog =
-            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+            SimpleDialog(title: Text(title), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
@@ -424,7 +426,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
         break;
       case 2:
         SimpleDialog dialog =
-            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+            SimpleDialog(title: Text(title), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
@@ -453,7 +455,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
             },
             selectedItem: _personality),
         Padding(
-          padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
+          padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
           child: ListView.separated(
             shrinkWrap: true,
             itemCount: _personalityItems.length,
@@ -473,7 +475,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                           _personalityItems.removeAt(index);
                           setState(() {});
                         },
-                        icon: Icon(Icons.cancel_outlined))
+                        icon: const Icon(Icons.cancel_outlined))
                   ],
                 ),
               );
