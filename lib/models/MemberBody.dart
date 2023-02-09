@@ -8,6 +8,7 @@ class MemberBody {
   String? age;
   String? capability;
   String? introduction;
+  double? rate;
   String? docId;
 
   MemberBody(
@@ -19,6 +20,7 @@ class MemberBody {
       this.age,
       this.personality,
       this.introduction,
+      this.rate,
       this.docId});
 
   MemberBody.fromJson(Map<String, dynamic> json) {
@@ -30,6 +32,7 @@ class MemberBody {
     age = json['age'];
     personality = json['personality'];
     introduction = json['introduction'];
+    rate = json['rate'];
     docId = json['docId'];
   }
 
@@ -43,6 +46,7 @@ class MemberBody {
     data['age'] = this.age;
     data['personality'] = this.personality;
     data['introduction'] = this.introduction;
+    data['rate'] = this.rate;
     data['docId'] = this.docId;
     return data;
   }

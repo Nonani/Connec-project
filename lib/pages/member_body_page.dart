@@ -27,6 +27,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
   String? _locaion_label;
   String _gender = genderList.first;
   String _age = ageList.first;
+  double _rate = 0;
   String? _introduction;
   int _curWorkTier = 1;
   int _curLocalTier = 1;
@@ -150,6 +151,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                         gender: _gender,
                         career: _career,
                         age: _age,
+                        rate: _rate,
                         docId: (widget.mode == '0')
                             ? uuid.v4()
                             : widget.mode.toString(),

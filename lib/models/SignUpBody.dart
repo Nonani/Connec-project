@@ -13,22 +13,24 @@ class SignUpBody {
   String? gender;
   String? age;
   String? introduction;
+  double? rate;
 
   SignUpBody(
       {this.uid,
-        this.uuid,
-        this.serviceName,
-        this.email,
-        this.password,
-        this.name,
-        this.work,
-        this.workArea,
-        this.personality,
-        this.career,
-        this.location,
-        this.gender,
-        this.age,
-        this.introduction});
+      this.uuid,
+      this.serviceName,
+      this.email,
+      this.password,
+      this.name,
+      this.work,
+      this.workArea,
+      this.personality,
+      this.career,
+      this.location,
+      this.gender,
+      this.age,
+      this.introduction,
+      this.rate});
 
   SignUpBody.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
@@ -45,6 +47,7 @@ class SignUpBody {
     gender = json['gender'];
     age = json['age'];
     introduction = json['introduction'];
+    rate = json['rate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -63,7 +66,7 @@ class SignUpBody {
     data['gender'] = this.gender;
     data['age'] = this.age;
     data['introduction'] = this.introduction;
+    data['rate'] = this.rate;
     return data;
   }
-
 }

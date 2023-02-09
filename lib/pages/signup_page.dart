@@ -34,6 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String _gender = genderList.first;
   String _age = ageList.first;
   String? _introduction;
+  double _rate = 0;
   int _curWorkTier = 1;
   int _curLocalTier = 1;
   String _curWorkParent = "";
@@ -256,6 +257,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         introduction: _introduction,
                         location: _location,
                         password: _password,
+                        rate: _rate,
                         work: _work,
                         workArea: _workAreaCodes,
                         serviceName: "None",
