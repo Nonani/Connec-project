@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/mypage/my_info_page.dart';
 import '../components/custom_dialog.dart';
 import '../components/member_item_widget.dart';
-import 'acquitance_management_page.dart';
+import 'member_management_page.dart';
 import 'member_body_page.dart';
 import 'network_management_page.dart';
 import 'search_page.dart';
