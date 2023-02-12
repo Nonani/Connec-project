@@ -76,256 +76,106 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                 }),
           ],
         ),
-        body: Column(children: [
-          Container(
-              height: 635,
-              width: double.infinity,
-              padding: const EdgeInsets.only(top: 12),
-              child: SingleChildScrollView(
-                  child: Column(children: [
-                    SizedBox(
-                      width: double.infinity,
-                      height: 220,
-                      child: Image.asset(connectionList[connectionCount]),
-                    ),
-                    Column(children: [
-                      Container(
-                        width: 360,
-                        alignment: Alignment.center,
-                        child: Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                setState(() =>
-                                connectionCount = (connectionCount + 1) % 3);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(186, 36),
-                                backgroundColor: const Color(0xfffafafa),
-                                side: const BorderSide(
-                                  color: Color(0xff5f66f2),
-                                  width: 2,
-                                ),
+        body: SingleChildScrollView(
+          child: Column(children: [
+            Container(
+                width: double.infinity,
+                padding: const EdgeInsets.only(top: 12),
+                child: Column(children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 220,
+                    child: Image.asset(connectionList[connectionCount]),
+                  ),
+                  Column(children: [
+                    Container(
+                      width: 360,
+                      alignment: Alignment.center,
+                      child: Padding(
+                          padding: EdgeInsets.only(top: 5, bottom: 5),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() =>
+                              connectionCount = (connectionCount + 1) % 3);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(186, 36),
+                              backgroundColor: const Color(0xfffafafa),
+                              side: const BorderSide(
+                                color: Color(0xff5f66f2),
+                                width: 2,
                               ),
-                              child: Text(
-                                connectionText[connectionCount],
-                                style: const TextStyle(
-                                  color: Color(0xff5f66f2),
-                                  fontSize: 16,
-                                  fontFamily: 'EchoDream',
-                                  fontWeight: FontWeight.w700,
-                                ),
+                            ),
+                            child: Text(
+                              connectionText[connectionCount],
+                              style: const TextStyle(
+                                color: Color(0xff5f66f2),
+                                fontSize: 16,
+                                fontFamily: 'EchoDream',
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          )),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(160, 43),
+                              backgroundColor: const Color(0xff5f66f2),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ExpandNetworkPage(),
+                                  ));
+                            },
+                            child: const Text(
+                              "네트워크 확장",
+                              style: TextStyle(
+                                color: Color(0xfffafafa),
+                                fontSize: 15,
+                                fontFamily: 'EchoDream',
                               ),
                             )),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(160, 43),
-                                backgroundColor: const Color(0xff5f66f2),
+                        const SizedBox(width: 13),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(160, 43),
+                              backgroundColor: const Color(0xff5f66f2),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => NetworkListPage(),
+                                  ));
+                            },
+                            child: const Text(
+                              "네트워크 축소",
+                              style: TextStyle(
+                                color: Color(0xfffafafa),
+                                fontSize: 15,
+                                fontFamily: 'EchoDream',
                               ),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ExpandNetworkPage(),
-                                    ));
-                              },
-                              child: const Text(
-                                "네트워크 확장",
-                                style: TextStyle(
-                                  color: Color(0xfffafafa),
-                                  fontSize: 15,
-                                  fontFamily: 'EchoDream',
-                                ),
-                              )),
-                          const SizedBox(width: 13),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(160, 43),
-                                backgroundColor: const Color(0xff5f66f2),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => NetworkListPage(),
-                                    ));
-                              },
-                              child: const Text(
-                                "네트워크 축소",
-                                style: TextStyle(
-                                  color: Color(0xfffafafa),
-                                  fontSize: 15,
-                                  fontFamily: 'EchoDream',
-                                ),
-                              ))
-                        ],
-                      ),
-                    ]),
-                    FutureBuilder(
-                        future: data(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<dynamic> snapshot) {
-                          if (snapshot.hasData && snapshot.data['count'][connectionCount] != 0) {
-                            return Column(children: [
-                              Container(
-                                padding: EdgeInsets.only(left: 35, top: 10),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "총 지인",
-                                      style: TextStyle(
-                                        color: Color(0xff333333),
-                                        fontSize: 17,
-                                        fontFamily: 'EchoDream',
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 18, height: 0),
-                                    Text(
-                                      "${snapshot.data['count'][connectionCount]
-                                          .toString()}명",
-                                      style: const TextStyle(
-                                        color: Color(0xff5f66f2),
-                                        fontSize: 17,
-                                        fontFamily: 'EchoDream',
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(
-                                    left: 35, top: 10, bottom: 26.5),
-                                decoration: const BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                        color: Color(0xff5f66f2),
-                                        width: 2,
-                                      )),
-                                ),
-                              ),
-                              ListView.builder(
-                                primary: false,
-                                shrinkWrap: true,
-                                itemCount: snapshot
-                                    .data['data'][connectionCount].keys.length,
-                                itemBuilder: (BuildContext context, int fIdx) {
-                                  var fKeys = snapshot
-                                      .data['data'][connectionCount].keys
-                                      .toList();
-                                  return Padding(
-                                      padding: EdgeInsets.only(bottom: 0),
-                                      child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment
-                                              .start,
-                                          children: [
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  left: 35, bottom: 10),
-                                              child: Text(
-                                                snapshot
-                                                    .data['dict'][connectionCount][fKeys[fIdx]],
-                                                style: const TextStyle(
-                                                  color: Color(0xff333333),
-                                                  fontSize: 16,
-                                                  fontFamily: 'EchoDream',
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              height: 0,
-                                              margin: const EdgeInsets.only(
-                                                  left: 35,
-                                                  right: 30,
-                                                  bottom: 16),
-                                              decoration: const BoxDecoration(
-                                                border: Border(
-                                                    bottom: BorderSide(
-                                                      color: Color(0xff5f66f2),
-                                                      width: 2,
-                                                    )),
-                                              ),
-                                            ),
-                                            ListView.builder(
-                                                shrinkWrap: true,
-                                                itemCount: snapshot
-                                                    .data['data'][connectionCount][
-                                                snapshot
-                                                    .data['data'][connectionCount]
-                                                    .keys
-                                                    .toList()[fIdx]]
-                                                    .length,
-                                                itemBuilder:
-                                                    (BuildContext context,
-                                                    int sIdx) {
-                                                  logger.w(snapshot
-                                                      .data['data'][connectionCount][
-                                                  snapshot
-                                                      .data['data']
-                                                  [connectionCount]
-                                                      .keys
-                                                      .toList()[fIdx]]);
-                                                  var sKeys = snapshot
-                                                      .data['data'][connectionCount][
-                                                  snapshot
-                                                      .data['data']
-                                                  [connectionCount]
-                                                      .keys
-                                                      .toList()[fIdx]];
-                                                  return Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Container(
-                                                          margin: const EdgeInsets
-                                                              .only(left: 40, right: 40,
-                                                              bottom: 10),
-                                                          child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                              children: [
-
-                                                            Text(snapshot
-                                                                .data['dict']
-                                                            [connectionCount][sKeys[sIdx]['code']],
-                                                              style: const TextStyle(
-                                                                color: Color(
-                                                                    0xff333333),
-                                                                fontSize: 16,
-                                                                fontFamily: 'EchoDream',
-                                                                fontWeight: FontWeight
-                                                                    .w700,
-                                                              ),),
-                                                            Text("${sKeys[sIdx]['count']}명",
-                                                              style: const TextStyle(
-                                                                color: Color(
-                                                                    0xff333333),
-                                                                fontSize: 16,
-                                                                fontFamily: 'EchoDream',
-                                                                fontWeight: FontWeight
-                                                                    .w700,
-                                                              ),),
-                                                          ]),
-                                                        ),
-                                                      ]);
-                                                })
-                                          ]));
-                                },
-                              )
-                            ]);
-                          }
-                          else {
-                            return Container(
+                            ))
+                      ],
+                    ),
+                  ]),
+                  FutureBuilder(
+                      future: data(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot) {
+                        if (snapshot.hasData && snapshot.data['count'][connectionCount] != 0) {
+                          return Column(children: [
+                            Container(
                               padding: EdgeInsets.only(left: 35, top: 10),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
-                                children: const [
-                                  Text(
+                                children: [
+                                  const Text(
                                     "총 지인",
                                     style: TextStyle(
                                       color: Color(0xff333333),
@@ -334,10 +184,11 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  SizedBox(width: 18, height: 0),
+                                  const SizedBox(width: 18, height: 0),
                                   Text(
-                                    "0명",
-                                    style: TextStyle(
+                                    "${snapshot.data['count'][connectionCount]
+                                        .toString()}명",
+                                    style: const TextStyle(
                                       color: Color(0xff5f66f2),
                                       fontSize: 17,
                                       fontFamily: 'EchoDream',
@@ -346,11 +197,160 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                                   )
                                 ],
                               ),
-                            );
-                          }
-                        })
-                  ]))),
-        ]),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                  left: 35, top: 10, bottom: 26.5),
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(
+                                      color: Color(0xff5f66f2),
+                                      width: 2,
+                                    )),
+                              ),
+                            ),
+                            ListView.builder(
+                              primary: false,
+                              shrinkWrap: true,
+                              itemCount: snapshot
+                                  .data['data'][connectionCount].keys.length,
+                              itemBuilder: (BuildContext context, int fIdx) {
+                                var fKeys = snapshot
+                                    .data['data'][connectionCount].keys
+                                    .toList();
+                                return Padding(
+                                    padding: EdgeInsets.only(bottom: 0),
+                                    child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start,
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.only(
+                                                left: 35, bottom: 10),
+                                            child: Text(
+                                              snapshot
+                                                  .data['dict'][connectionCount][fKeys[fIdx]],
+                                              style: const TextStyle(
+                                                color: Color(0xff333333),
+                                                fontSize: 16,
+                                                fontFamily: 'EchoDream',
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 0,
+                                            margin: const EdgeInsets.only(
+                                                left: 35,
+                                                right: 30,
+                                                bottom: 16),
+                                            decoration: const BoxDecoration(
+                                              border: Border(
+                                                  bottom: BorderSide(
+                                                    color: Color(0xff5f66f2),
+                                                    width: 2,
+                                                  )),
+                                            ),
+                                          ),
+                                          ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: snapshot
+                                                  .data['data'][connectionCount][
+                                              snapshot
+                                                  .data['data'][connectionCount]
+                                                  .keys
+                                                  .toList()[fIdx]]
+                                                  .length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                  int sIdx) {
+                                                logger.w(snapshot
+                                                    .data['data'][connectionCount][
+                                                snapshot
+                                                    .data['data']
+                                                [connectionCount]
+                                                    .keys
+                                                    .toList()[fIdx]]);
+                                                var sKeys = snapshot
+                                                    .data['data'][connectionCount][
+                                                snapshot
+                                                    .data['data']
+                                                [connectionCount]
+                                                    .keys
+                                                    .toList()[fIdx]];
+                                                return Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Container(
+                                                        margin: const EdgeInsets
+                                                            .only(left: 40, right: 40,
+                                                            bottom: 10),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: [
+
+                                                          Text(snapshot
+                                                              .data['dict']
+                                                          [connectionCount][sKeys[sIdx]['code']],
+                                                            style: const TextStyle(
+                                                              color: Color(
+                                                                  0xff333333),
+                                                              fontSize: 16,
+                                                              fontFamily: 'EchoDream',
+                                                              fontWeight: FontWeight
+                                                                  .w700,
+                                                            ),),
+                                                          Text("${sKeys[sIdx]['count']}명",
+                                                            style: const TextStyle(
+                                                              color: Color(
+                                                                  0xff333333),
+                                                              fontSize: 16,
+                                                              fontFamily: 'EchoDream',
+                                                              fontWeight: FontWeight
+                                                                  .w700,
+                                                            ),),
+                                                        ]),
+                                                      ),
+                                                    ]);
+                                              })
+                                        ]));
+                              },
+                            )
+                          ]);
+                        }
+                        else {
+                          return Container(
+                            padding: EdgeInsets.only(left: 35, top: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  "총 지인",
+                                  style: TextStyle(
+                                    color: Color(0xff333333),
+                                    fontSize: 17,
+                                    fontFamily: 'EchoDream',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(width: 18, height: 0),
+                                Text(
+                                  "0명",
+                                  style: TextStyle(
+                                    color: Color(0xff5f66f2),
+                                    fontSize: 17,
+                                    fontFamily: 'EchoDream',
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        }
+                      })
+                ])),
+          ]),
+        ),
         bottomNavigationBar: SizedBox(
           height: 65,
           child: BottomNavigationBar(
