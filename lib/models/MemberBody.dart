@@ -2,7 +2,7 @@ class MemberBody {
   String? uid;
   List<String>? workArea;
   List<String>? personality;
-  String? career;
+  List<String>? career;
   String? location;
   String? gender;
   String? age;

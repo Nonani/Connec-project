@@ -22,7 +22,6 @@ class MemberBodyPage extends StatefulWidget {
 
 class _MemberBodyPageState extends State<MemberBodyPage> {
   final _formKey = GlobalKey<FormState>();
-  String _career = careerList.first;
   String? _location;
   String? _locaion_label;
   String _gender = genderList.first;
@@ -37,9 +36,11 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
   List<String> _personalityItems = [];
   List<String> _workAreaItems = [];
   List<String> _workAreaCodes = [];
+  List<String> _careerItems = [];
   int _modeIdx = 0;
   List<String> _modeTitleString = ["지인 등록", "지인 수정"];
   List<String> _modeButtonString = ["등록하기", "수정하기"];
+
 
   @override
   Widget build(BuildContext context) {
@@ -79,18 +80,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                     child: Column(
                       children: [
                         buildWorkContainer(snapshot),
-                        CustomDropdownButton(
-                          label: "경력",
-                          itemList: careerList,
-                          selectedItem: _career,
-                          onChanged: (value) {
-                            setState(
-                              () {
-                                _career = value;
-                              },
-                            );
-                          },
-                        ),
+
                         buildLocalContainer(snapshot),
                         buildPersonalityContainer(snapshot),
                         CustomDropdownButton(
@@ -149,7 +139,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                         personality: _personalityItems,
                         introduction: _introduction,
                         gender: _gender,
-                        career: _career,
+                        career: _careerItems,
                         age: _age,
                         rate: _rate,
                         docId: (widget.mode == '0')
@@ -196,50 +186,40 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
       width: double.infinity,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("전문분야",
-                style: TextStyle(
-                  fontFamily: "EchoDream",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 17,
-                )),
-            SizedBox(
-              width: 15,
+            Row(
+              children: [
+                Text("전문분야",
+                    style: TextStyle(
+                      fontFamily: "EchoDream",
+                      fontWeight: FontWeight.w600,
+                      fontSize: 17,
+                    )),
+                SizedBox(
+                  width: 15,
+                ),
+                Text(
+                  '최대 5개까지 등록 가능',
+                  style: TextStyle(
+                      color: Color(0xffbdbdbd),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400),
+                ),
+              ],
             ),
-            Text(
-              '최대 5개까지 등록 가능',
-              style: TextStyle(
-                  color: Color(0xffbdbdbd),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400),
-            ),
+            IconButton(
+                onPressed: () {
+                  if (_workAreaItems.length < 5)
+                    showWorkListDialog(snapshot, "전문분야");
+                },
+                icon: Icon(
+                  Icons.add_circle,
+                  color: Colors.blue,
+                ))
           ],
         ),
-        const SizedBox(height: 10),
-        GestureDetector(
-          onTap: () {
-            if (_workAreaItems.length < 5) showWorkListDialog(snapshot, "전문분야");
-          },
-          child: Container(
-            width: double.infinity,
-            height: 40,
-            padding: const EdgeInsets.only(left: 10),
-            decoration: const BoxDecoration(
-                color: Color(0xffeeeeee),
-                border: Border(
-                    bottom: BorderSide(color: Color(0xff5f66f2), width: 1))),
-            alignment: Alignment.centerLeft,
-            child: const Text(
-              '선택',
-              style: TextStyle(
-                color: Color(0xffbdbdbd),
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(
+        SizedBox(
           height: 5,
         ),
         ListView.separated(
@@ -248,28 +228,85 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
           separatorBuilder: (_, __) => const Divider(),
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                      child: Text(
-                    _workAreaItems[index],
-                    overflow: TextOverflow.ellipsis,
-                  )),
-                  IconButton(
-                      onPressed: () {
-                        _workAreaItems.removeAt(index);
-                        _workAreaCodes.removeAt(index);
-                        setState(() {});
-                      },
-                      icon: const Icon(Icons.cancel_outlined))
-                ],
+              contentPadding: EdgeInsets.zero,
+              title: Container(
+                padding:
+                EdgeInsets.only(left: 10, right: 5, top: 5, bottom: 10),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color(0xffeeeeee),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            child: Text(
+                              _workAreaItems[index],
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                        IconButton(
+                            onPressed: () {
+                              _workAreaItems.removeAt(index);
+                              _workAreaCodes.removeAt(index);
+                              _careerItems.remove(index);
+                              setState(() {});
+                            },
+                            icon: Icon(Icons.cancel_outlined))
+                      ],
+                    ),
+                    Text(
+                      '경력  ${_careerItems[index]}',
+                      style: TextStyle(
+                        color: Color(0xff999999),
+                        fontSize: 12,
+                        fontFamily: 'S-CoreDream-5',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },
         ),
       ]),
     );
+  }
+
+  void showCareerListDialog(String code, String title) {
+    SimpleDialog dialog = SimpleDialog(
+        title: Text('해당 분야 경력'),
+        children: List<Widget>.generate(careerList.length - 1 , (index) {
+          return SimpleDialogOption(
+              child: Text(careerList.sublist(1, careerList.length)[index]),
+              onPressed: () {
+                if (_workAreaItems
+                    .where((element) => element == title)
+                    .isEmpty &&
+                    _workAreaCodes
+                        .where((element) => element == code)
+                        .isEmpty) {
+                  _workAreaItems.add(title);
+                  _workAreaCodes.add(code);
+                  _careerItems.add(careerList.sublist(1, careerList.length)[index]);
+                }
+                Navigator.pop(context);
+              });
+        }));
+    showDialog(
+        context: context,
+        builder: (context) {
+          return dialog;
+        }).then((value) {
+      Navigator.pop(context);
+      setState(() {
+        _curWorkTier = 1;
+        _curWorkParent = "";
+      });
+    });
   }
 
   void showWorkListDialog(AsyncSnapshot snapshot, String title) {
@@ -286,51 +323,62 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
             switch (_curWorkTier) {
               case 1:
                 title = element.data()["title"];
+                _curWorkTier += 1;
+                _curWorkParent = element.data()["code"];
+                showWorkListDialog(snapshot, title);
                 break;
               case 2:
-                title = '$title > ${element.data()["title"]}';
-                _workAreaItems.remove(title);
-                _workAreaCodes.remove(element.data()["code"]);
+                title = title + ' > ${element.data()["title"]}';
 
-                _workAreaItems.add(title);
-                _workAreaCodes.add(element.data()["code"]);
-                Navigator.pop(context);
-                setState() {
-                  _curWorkTier = 1;
-                  _curWorkParent = "";
-                }
-                return;
+                _curWorkTier += 1;
+                _curWorkParent = element.data()["code"];
+
+                showCareerListDialog(element.data()["code"], title);
             }
-            _curWorkTier += 1;
-            _curWorkParent = element.data()["code"];
-            showWorkListDialog(snapshot, title);
           },
         ));
       }
     });
     switch (_curWorkTier) {
       case 1:
-        SimpleDialog dialog =
-            SimpleDialog(title: Text(title), children: dialogWidgetList);
+        SimpleDialog dialog = SimpleDialog(
+            title: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('${title}'),
+                  ],
+                )),
+            children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
               return dialog;
             }).then((value) => setState(() {
-              _curWorkTier = 1;
-              _curWorkParent = "";
-            }));
+          _curWorkTier = 1;
+          _curWorkParent = "";
+        }));
         break;
       case 2:
-        SimpleDialog dialog =
-            SimpleDialog(title: Text(title), children: dialogWidgetList);
+        SimpleDialog dialog = SimpleDialog(
+            title: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('${title}'),
+                  ],
+                )),
+            children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
               return dialog;
             }).then((value) {
           Navigator.pop(context);
-          setState(() {});
+          setState(() {
+            _curWorkTier = 1;
+            _curWorkParent = "";
+          });
         });
         break;
     }

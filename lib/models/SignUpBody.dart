@@ -8,7 +8,7 @@ class SignUpBody {
   String? work;
   List<String>? workArea;
   List<String>? personality;
-  String? career;
+  List<String>? career;
   String? location;
   String? gender;
   String? age;

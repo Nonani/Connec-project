@@ -28,7 +28,6 @@ class _SignUpPageState extends State<SignUpPage> {
   String? _password;
   String? _name;
   String _work = workList.first;
-  String _career = careerList.first;
   String? _locaion_label;
   String? _location;
   String _gender = genderList.first;
@@ -43,6 +42,7 @@ class _SignUpPageState extends State<SignUpPage> {
   List<String> _personalityItems = [];
   List<String> _workAreaItems = [];
   List<String> _workAreaCodes = [];
+  List<String> _careerItems = [];
 
   bool _checkboxValue1 = false;
   bool _checkboxValue2 = false;
@@ -128,18 +128,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                 selectedItem: _work),
                             buildWorkContainer(snapshot),
                             buildPersonalityContainer(snapshot),
-                            CustomDropdownButton(
-                              label: "경력",
-                              itemList: careerList,
-                              selectedItem: _career,
-                              onChanged: (value) {
-                                setState(
-                                  () {
-                                    _career = value;
-                                  },
-                                );
-                              },
-                            ),
                             buildLocalContainer(snapshot),
                             CustomDropdownButton(
                               label: "성별",
@@ -165,7 +153,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                 );
                               },
                             ),
-
                             SignUpEditTextForm(
                               label: "소개",
                               hint: "소개를 입력해주세요",
@@ -227,8 +214,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 56,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff5f66f2)
-                  ),
+                      backgroundColor: const Color(0xff5f66f2)),
                   child: const Text(
                     '회원가입',
                     style: TextStyle(
@@ -251,7 +237,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         name: _name,
                         age: _age,
                         personality: _personalityItems,
-                        career: _career,
+                        career: _careerItems,
                         email: _email,
                         gender: _gender,
                         introduction: _introduction,
@@ -296,48 +282,38 @@ class _SignUpPageState extends State<SignUpPage> {
       width: double.infinity,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("전문분야",
-                style: TextStyle(
-                  fontFamily: "EchoDream",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 17,
-                )),
-            SizedBox(
-              width: 15,
+            Row(
+              children: [
+                Text("전문분야",
+                    style: TextStyle(
+                      fontFamily: "EchoDream",
+                      fontWeight: FontWeight.w600,
+                      fontSize: 17,
+                    )),
+                SizedBox(
+                  width: 15,
+                ),
+                Text(
+                  '최대 5개까지 등록 가능',
+                  style: TextStyle(
+                      color: Color(0xffbdbdbd),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400),
+                ),
+              ],
             ),
-            Text(
-              '최대 5개까지 등록 가능',
-              style: TextStyle(
-                  color: Color(0xffbdbdbd),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400),
-            ),
+            IconButton(
+                onPressed: () {
+                  if (_workAreaItems.length < 5)
+                    showWorkListDialog(snapshot, "전문분야");
+                },
+                icon: Icon(
+                  Icons.add_circle,
+                  color: Colors.blue,
+                ))
           ],
-        ),
-        SizedBox(height: 10),
-        GestureDetector(
-          onTap: () {
-            if (_workAreaItems.length < 5) showWorkListDialog(snapshot, "전문분야");
-          },
-          child: Container(
-            width: double.infinity,
-            height: 40,
-            padding: EdgeInsets.only(left: 10),
-            decoration: BoxDecoration(
-                color: Color(0xffeeeeee),
-                border: Border(
-                    bottom: BorderSide(color: Color(0xff5f66f2), width: 1))),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              '선택',
-              style: TextStyle(
-                color: Color(0xffbdbdbd),
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-              ),
-            ),
-          ),
         ),
         SizedBox(
           height: 5,
@@ -348,28 +324,85 @@ class _SignUpPageState extends State<SignUpPage> {
           separatorBuilder: (_, __) => const Divider(),
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                      child: Text(
-                    _workAreaItems[index],
-                    overflow: TextOverflow.ellipsis,
-                  )),
-                  IconButton(
-                      onPressed: () {
-                        _workAreaItems.removeAt(index);
-                        _workAreaCodes.removeAt(index);
-                        setState(() {});
-                      },
-                      icon: Icon(Icons.cancel_outlined))
-                ],
+              contentPadding: EdgeInsets.zero,
+              title: Container(
+                padding:
+                    EdgeInsets.only(left: 10, right: 5, top: 5, bottom: 10),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color(0xffeeeeee),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            child: Text(
+                          _workAreaItems[index],
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                        IconButton(
+                            onPressed: () {
+                              _workAreaItems.removeAt(index);
+                              _workAreaCodes.removeAt(index);
+                              _careerItems.remove(index);
+                              setState(() {});
+                            },
+                            icon: Icon(Icons.cancel_outlined))
+                      ],
+                    ),
+                    Text(
+                      '경력  ${_careerItems[index]}',
+                      style: TextStyle(
+                        color: Color(0xff999999),
+                        fontSize: 12,
+                        fontFamily: 'S-CoreDream-5',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },
         ),
       ]),
     );
+  }
+
+  void showCareerListDialog(String code, String title) {
+    SimpleDialog dialog = SimpleDialog(
+        title: Text('해당 분야 경력'),
+        children: List<Widget>.generate(careerList.length - 1 , (index) {
+          return SimpleDialogOption(
+              child: Text(careerList.sublist(1, careerList.length)[index]),
+              onPressed: () {
+                if (_workAreaItems
+                        .where((element) => element == title)
+                        .isEmpty &&
+                    _workAreaCodes
+                        .where((element) => element == code)
+                        .isEmpty) {
+                  _workAreaItems.add(title);
+                  _workAreaCodes.add(code);
+                  _careerItems.add(careerList.sublist(1, careerList.length)[index]);
+                }
+                Navigator.pop(context);
+              });
+        }));
+    showDialog(
+        context: context,
+        builder: (context) {
+          return dialog;
+        }).then((value) {
+      Navigator.pop(context);
+      setState(() {
+        _curWorkTier = 1;
+        _curWorkParent = "";
+      });
+    });
   }
 
   void showWorkListDialog(AsyncSnapshot snapshot, String title) {
@@ -386,32 +419,33 @@ class _SignUpPageState extends State<SignUpPage> {
             switch (_curWorkTier) {
               case 1:
                 title = element.data()["title"];
+                _curWorkTier += 1;
+                _curWorkParent = element.data()["code"];
+                showWorkListDialog(snapshot, title);
                 break;
               case 2:
                 title = title + ' > ${element.data()["title"]}';
-                _workAreaItems.remove(title);
-                _workAreaCodes.remove(element.data()["code"]);
 
-                _workAreaItems.add(title);
-                _workAreaCodes.add(element.data()["code"]);
-                Navigator.pop(context);
-                setState() {
-                  _curWorkTier = 1;
-                  _curWorkParent = "";
-                }
-                return;
+                _curWorkTier += 1;
+                _curWorkParent = element.data()["code"];
+
+                showCareerListDialog(element.data()["code"], title);
             }
-            _curWorkTier += 1;
-            _curWorkParent = element.data()["code"];
-            showWorkListDialog(snapshot, title);
           },
         ));
       }
     });
     switch (_curWorkTier) {
       case 1:
-        SimpleDialog dialog =
-            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+        SimpleDialog dialog = SimpleDialog(
+            title: Container(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('${title}'),
+              ],
+            )),
+            children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
@@ -422,29 +456,27 @@ class _SignUpPageState extends State<SignUpPage> {
             }));
         break;
       case 2:
-        SimpleDialog dialog =
-            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+        SimpleDialog dialog = SimpleDialog(
+            title: Container(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('${title}'),
+              ],
+            )),
+            children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
               return dialog;
             }).then((value) {
           Navigator.pop(context);
-          setState(() {});
+          setState(() {
+            _curWorkTier = 1;
+            _curWorkParent = "";
+          });
         });
         break;
-      // case 3:
-      //   SimpleDialog dialog =
-      //       SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
-      //   showDialog(
-      //       context: context,
-      //       builder: (context) {
-      //         return dialog;
-      //       }).then((value) {
-      //     Navigator.pop(context);
-      //     setState(() {});
-      //   });
-      //   break;
     }
   }
 
@@ -561,16 +593,13 @@ class _SignUpPageState extends State<SignUpPage> {
             itemList: personalityList,
             label: "성격",
             onChanged: (value) {
-              if(value != "선택" && _personalityItems.length<5){
+              if (value != "선택" && _personalityItems.length < 5) {
                 _personalityItems.remove(value);
                 _personalityItems.add(value);
-                setState(() {
-
-                });
+                setState(() {});
               }
             },
             selectedItem: _personality),
-
         Padding(
           padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
           child: ListView.separated(

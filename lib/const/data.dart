@@ -25,9 +25,13 @@ const List<String> workList = <String>[
 ];
 const List<String> careerList = <String>[
   '선택',
-  "경험이 있다(1년 미만)",
-  "중심에서 이끌어봤다(1년 이상~3년 미만)",
-  "전문가다(4년 이상)",
+  "3개월 미만",
+  "3~6개월",
+  "6개월~1년",
+  "2년 미만",
+  "3년 미만",
+  "4년 미만",
+  "5년 미만",
 ];
 const List<String> personalityList = <String>[
   "선택",
