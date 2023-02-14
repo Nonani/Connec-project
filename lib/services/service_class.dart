@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
@@ -72,6 +73,7 @@ class ServiceClass extends ChangeNotifier {
           logger.w(data.toJson().toString());
           db.collection("users").doc(data.uid).set(data.toJson());
           db.collection('networks').doc(data.uid).set({'list':[]});
+          getToken();
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
             logger.w('The password provided is too weak.');
@@ -104,6 +106,21 @@ class ServiceClass extends ChangeNotifier {
       logger.w(e);
     }
     return true;
+  }
+  void getToken() async {
+    String deviceToken = "";
+    await FirebaseMessaging.instance.getToken().then((token) => {
+      deviceToken = token!
+    });
+    logger.w(deviceToken);
+    saveToken(deviceToken);
+  }
+
+  void saveToken(String token) async {
+    var database = FirebaseFirestore.instance;
+    var uid = FirebaseAuth.instance.currentUser?.uid;
+    await database.collection('deviceToken').doc(uid).set({'token': token});
+    logger.w(uid);
   }
 }
 class NetworkProvider extends ChangeNotifier{
