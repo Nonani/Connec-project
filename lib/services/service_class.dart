@@ -50,7 +50,8 @@ class ServiceClass extends ChangeNotifier {
         }
         try{
           db.collection("users").doc("${data.uid}").set(data.toJson());
-          db.collection('networks').doc(data.uid).set({'list':[]});
+          db.collection('networks').doc(data.uid).set({'list': []});
+          db.collection('coupons').doc(data.uid).set({'num': 0});
         }catch(e){
           logger.w(e);
           return false;
@@ -72,7 +73,8 @@ class ServiceClass extends ChangeNotifier {
           data.uid = credential.user?.uid;
           logger.w(data.toJson().toString());
           db.collection("users").doc(data.uid).set(data.toJson());
-          db.collection('networks').doc(data.uid).set({'list':[]});
+          db.collection('networks').doc(data.uid).set({'list': []});
+          db.collection('coupons').doc(data.uid).set({'num': 0});
           getToken();
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
