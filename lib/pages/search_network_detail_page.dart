@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/pages/contact_page.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -191,7 +192,9 @@ class SearchNetworkDetailPage extends StatelessWidget {
         bottomNavigationBar: Row(children: [
           Expanded(
             child: ElevatedButton(
-              onPressed: () async {},
+              onPressed: () async {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ContactPage(docID: data['docId'], uid: data['uid']),));
+              },
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff5f66f2),
                   minimumSize: const Size(180, 56),

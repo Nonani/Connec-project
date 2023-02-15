@@ -34,23 +34,57 @@ class _MainPageState extends State<MainPage> {
     return FutureBuilder(
       future: _future(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if(!snapshot.hasData){
+        if (!snapshot.hasData) {
           return CustomLoadingPage();
-        }else{
+        } else {
           return Scaffold(
             appBar: AppBar(
               actions: [
                 IconButton(
                     icon: Icon(Icons.link_sharp),
                     color: Color(0xff5f66f2),
-                    onPressed: () async{
+                    onPressed: () async {
                       final db = FirebaseFirestore.instance;
-                      final result = await db.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get();
+                      final result = await db
+                          .collection("users")
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .get();
                       logger.w(FirebaseAuth.instance.currentUser!.uid);
                       Clipboard.setData(ClipboardData(text: result["uuid"]));
+                      showDialog(
+                        context: context,
+                        builder: (context) => Dialog(
+                          // The background color
+                          backgroundColor: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  '코드가 클립보드에\n복사되었습니다',
+                                  style: TextStyle(
+                                    color: Color(0xff333333),
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(height: 20,),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("확인"))
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
                     }),
               ],
-              shape: const Border(bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
+              shape: const Border(
+                  bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
               backgroundColor: Color(0xfffafafa),
               elevation: 0,
               title: const Text(
@@ -83,7 +117,11 @@ class _MainPageState extends State<MainPage> {
                     height: 41,
                     child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage(),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SearchPage(),
+                              ));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
@@ -173,19 +211,19 @@ class _MainPageState extends State<MainPage> {
                     color: Color(0xffeeeeee),
                   ),
                   child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ListView.builder(
-                          shrinkWrap: true, // 리스트 자식 높이 크기의 합 만큼으로 영역 고정
-                          physics: const NeverScrollableScrollPhysics(), // 스크롤 안되도록 설정하는 옵션 값
-                          itemCount: snapshot.data['list'].length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final notice = snapshot.data['list'][index];
-                            return CustomNoticeItem(notice: notice);
-                          },
-                        ),
-                      ]
-                    ),
+                    child: Column(children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        // 리스트 자식 높이 크기의 합 만큼으로 영역 고정
+                        physics: const NeverScrollableScrollPhysics(),
+                        // 스크롤 안되도록 설정하는 옵션 값
+                        itemCount: snapshot.data['list'].length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final notice = snapshot.data['list'][index];
+                          return CustomNoticeItem(notice: notice);
+                        },
+                      ),
+                    ]),
                   ),
                 ),
               ],
@@ -203,7 +241,7 @@ class _MainPageState extends State<MainPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => list[_currentIndex],
-                      )).then((value) => setState((){}));
+                      )).then((value) => setState(() {}));
                 },
                 type: BottomNavigationBarType.fixed,
                 backgroundColor: Color(0xff5f66f2),
@@ -254,16 +292,16 @@ class _MainPageState extends State<MainPage> {
           );
         }
       },
-
     );
   }
+
   Future _future() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     final result = await db
-        .collection("notification").doc(FirebaseAuth.instance.currentUser!.uid.toString())
+        .collection("notification")
+        .doc(FirebaseAuth.instance.currentUser!.uid.toString())
         .get();
-    if(result.data() == null)
-      return {"list":[]};
+    if (result.data() == null) return {"list": []};
     // result.data()?.forEach((key, value) {
     //   print("${key}\t${value}");
     // });

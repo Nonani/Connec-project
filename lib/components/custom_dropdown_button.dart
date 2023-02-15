@@ -37,6 +37,7 @@ Widget CustomDropdownButton(
           ),
           child: DropdownButtonFormField<String>(
             value: selectedItem,
+            isExpanded: true,
             decoration: InputDecoration(
 
               border: InputBorder.none,

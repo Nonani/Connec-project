@@ -304,15 +304,22 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ],
             ),
-            IconButton(
-                onPressed: () {
-                  if (_workAreaItems.length < 5)
-                    showWorkListDialog(snapshot, "전문분야");
-                },
-                icon: Icon(
-                  Icons.add_circle,
-                  color: Colors.blue,
-                ))
+            (_workAreaItems.length < 5)
+                ? IconButton(
+                    onPressed: () {
+                      if (_workAreaItems.length < 5)
+                        showWorkListDialog(snapshot, "전문분야");
+                    },
+                    icon: Icon(
+                      Icons.add_circle,
+                      color: Colors.blue,
+                    ))
+                : IconButton(
+                    onPressed: null,
+                    icon: Icon(
+                      Icons.add_circle,
+                      color: Colors.grey,
+                    ))
           ],
         ),
         SizedBox(
@@ -320,6 +327,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         ListView.separated(
           shrinkWrap: true,
+          primary: false,
           itemCount: _workAreaItems.length,
           separatorBuilder: (_, __) => const Divider(),
           itemBuilder: (BuildContext context, int index) {
@@ -375,7 +383,7 @@ class _SignUpPageState extends State<SignUpPage> {
   void showCareerListDialog(String code, String title) {
     SimpleDialog dialog = SimpleDialog(
         title: Text('해당 분야 경력'),
-        children: List<Widget>.generate(careerList.length - 1 , (index) {
+        children: List<Widget>.generate(careerList.length - 1, (index) {
           return SimpleDialogOption(
               child: Text(careerList.sublist(1, careerList.length)[index]),
               onPressed: () {
@@ -387,7 +395,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         .isEmpty) {
                   _workAreaItems.add(title);
                   _workAreaCodes.add(code);
-                  _careerItems.add(careerList.sublist(1, careerList.length)[index]);
+                  _careerItems
+                      .add(careerList.sublist(1, careerList.length)[index]);
                 }
                 Navigator.pop(context);
               });
@@ -604,6 +613,7 @@ class _SignUpPageState extends State<SignUpPage> {
           padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
           child: ListView.separated(
             shrinkWrap: true,
+            primary: false,
             itemCount: _personalityItems.length,
             separatorBuilder: (_, __) => const Divider(),
             itemBuilder: (BuildContext context, int index) {
