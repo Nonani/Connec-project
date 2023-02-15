@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_dialog.dart';
+import 'package:connec/pages/In_app_purchase_connec.dart';
 import 'package:connec/pages/mypage/account_setting_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -138,7 +139,14 @@ class _MyInfoPageState extends State<MyInfoPage> {
                     child: ListView(
                       children: [],
                     ),
-                  )
+                  ),
+                  ElevatedButton(onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => IAPConnec(),
+                        )).then((value) => setState((){}));
+                  }, child: Text("결제 페이지"))
                 ],
               ),
             ),

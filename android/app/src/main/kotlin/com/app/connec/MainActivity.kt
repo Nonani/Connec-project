@@ -1,4 +1,4 @@
-package com.example.connec
+package com.app.connec
 
 import io.flutter.embedding.android.FlutterActivity
 
