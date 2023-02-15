@@ -129,7 +129,7 @@ class AcquitanceManagementPage extends StatelessWidget {
                           children: [
                             Text("경력", style: _contextStyleKey),
                             SizedBox(width: 20,),
-                            Text(data['career'],
+                            Text(data['career'][0],
                                 style: _contextStyleValue),
                           ],
                         ),
