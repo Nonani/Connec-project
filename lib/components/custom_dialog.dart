@@ -85,6 +85,36 @@ Widget CustomLoadingPage(){
     )
   );
 }
+Widget MemberCountDialog(){
+  return Dialog(
+    // The background color
+
+    backgroundColor: Colors.white,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          SizedBox(
+            height: 30,
+          ),
+          // Some text
+          Text('지인을 2명이상 추가한 뒤 사용해 주세요',
+            style: TextStyle(
+              color: Color(0xff333333),
+              fontSize: 17,
+              fontFamily: 'S-CoreDream-6',
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+        ],
+      ),
+    ),
+  );
+}
 void showCustomDialog(BuildContext context) {
   showDialog(
     context: context,

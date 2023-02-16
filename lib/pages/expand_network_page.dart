@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import '../components/custom_dialog.dart';
 import '../components/custom_edit_textform.dart';
 import 'package:http/http.dart' as http;
 import '../services/service_class.dart';
@@ -51,9 +52,12 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
           IconButton(
               icon: const Icon(Icons.link_sharp),
               color: const Color(0xff5f66f2),
-              onPressed: () async{
+              onPressed: () async {
                 final db = FirebaseFirestore.instance;
-                final result = await db.collection("users").doc("${FirebaseAuth.instance.currentUser!.uid}").get();
+                final result = await db
+                    .collection("users")
+                    .doc("${FirebaseAuth.instance.currentUser!.uid}")
+                    .get();
                 logger.w(FirebaseAuth.instance.currentUser!.uid);
                 Clipboard.setData(ClipboardData(text: result["uuid"]));
               }),
@@ -95,33 +99,47 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
       ),
       bottomNavigationBar: ElevatedButton(
         onPressed: () async {
-          if (_formKey.currentState!.validate()) {
-            _formKey.currentState!.save();
+          FirebaseFirestore db = FirebaseFirestore.instance;
+          QuerySnapshot<Map<String, dynamic>> memberData = await db
+              .collection('member')
+              .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+              .get();
+          if (memberData.docs.length > 1) {
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState!.save();
 
-            var info = await FirebaseFirestore.instance
-                .collection('users')
-                .doc(FirebaseAuth.instance.currentUser!.uid)
-                .get();
-            var data = info.data();
-            final url =
-            Uri.parse('https://foggy-boundless-avenue.glitch.me/sendReq');
-            try {
-              http.Response response = await http.post(
-                url,
-                headers: <String, String>{
-                  'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: <String, String>{
-                  'to': '$_userCode',
-                  'from': "${data!['uuid']}",
-                },
-              );
-              Navigator.pop(context);
-              logger.w(response.body);
-            } catch (e) {
-              logger.w(info.data());
+              var info = await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .get();
+              var data = info.data();
+              final url =
+                  Uri.parse('https://foggy-boundless-avenue.glitch.me/sendReq');
+              try {
+                http.Response response = await http.post(
+                  url,
+                  headers: <String, String>{
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                  },
+                  body: <String, String>{
+                    'to': '$_userCode',
+                    'from': "${data!['uuid']}",
+                  },
+                );
+                Navigator.pop(context);
+                logger.w(response.body);
+              } catch (e) {
+                logger.w(info.data());
+              }
             }
-
+          }
+          else {
+            Navigator.push(
+                context, DialogRoute(
+              context: context,
+              builder: (context) =>
+                  MemberCountDialog(),
+            ));
           }
         },
         style: ElevatedButton.styleFrom(
