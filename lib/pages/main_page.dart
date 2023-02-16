@@ -73,7 +73,6 @@ class _MainPageState extends State<MainPage> {
                                 ElevatedButton(
                                     onPressed: () {
                                       Navigator.pop(context);
-                                      Navigator.pop(context);
                                     },
                                     child: Text("확인"))
                               ],
@@ -112,7 +111,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 Container(
-                    margin: EdgeInsets.only(left: 17, right: 17),
+                    margin: EdgeInsets.only(left: 17, right: 17, top:10),
                     width: double.infinity,
                     height: 41,
                     child: ElevatedButton(
