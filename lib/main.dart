@@ -105,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) =>
-            (!snapshot.hasData) ? LoginPage() : AddMemberPage());
+            (!snapshot.hasData) ? LoginPage() : MainPage());
   }
 
   void requestPermission() async{
