@@ -600,6 +600,12 @@ class _SignUpPageState extends State<SignUpPage> {
         CustomDropdownButton(
             itemList: personalityList,
             label: "성격",
+            validator: (value) {
+              if(_personalityItems.length < 2){
+                return "2개 이상 선택해주세요";
+              }else
+                return null;
+            },
             onChanged: (value) {
               if (value != "선택" && _personalityItems.length < 5) {
                 _personalityItems.remove(value);
