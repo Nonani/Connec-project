@@ -74,7 +74,7 @@ class AcquitanceManagementPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("평점", style: contextKey),
-                            Text("${data['capability']} / 5.0",
+                            Text("${data['rate']} / 5.0",
                                 style: contextValue),
                           ],
                         ),

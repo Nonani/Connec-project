@@ -135,7 +135,7 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                                     itemStyle: _itemStyle,
                                     field: snapshot.data['list'][index]['title'],
                                     // field: snapshot.data['list'][index]['work'],
-                                    rate: '0',
+                                    rate: snapshot.data['list'][index]['rate'].toString(),
                                     relationship: '한 다리',
                                     capability: snapshot.data['list'][index]
                                         ['personality'][0],
@@ -265,6 +265,7 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
       memberData['location'] = tmp.docs[0]['title'];
       data['list'].add(memberData);
     }
+    logger.w(data);
     return data;
   }
 }
