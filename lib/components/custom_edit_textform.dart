@@ -4,7 +4,8 @@ Widget LoginEditTextForm(
     {required String label,
     bool isSecret = false,
     required String hint,
-    required FormFieldSetter onSaved}) {
+    required FormFieldSetter onSaved,
+    FormFieldValidator? validate}) {
   return Container(
     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
     child: Column(
@@ -18,6 +19,9 @@ Widget LoginEditTextForm(
             )),
         SizedBox(height: 10),
         TextFormField(
+          validator: validate != null ? validate: (value) {
+            return null;
+          },
           obscureText: isSecret,
           decoration: InputDecoration(
             focusedErrorBorder: OutlineInputBorder(

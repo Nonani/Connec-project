@@ -23,6 +23,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
   String? _userCode;
   final _formKey = GlobalKey<FormState>();
   final logger = Logger();
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +77,15 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
                         child: LoginEditTextForm(
                           label: "확장할 지인 코드",
                           hint: "지인의 코드를 입력해 주세요",
+                          validate: (value) {
+                            if(value == ""){
+                              return "빈칸입니다";
+                            }else if(value == FirebaseAuth.instance.currentUser!.uid.toString()){
+                              return "잘못된 입력입니다.";
+                            }else{
+                              return null;
+                            }
+                          },
                           isSecret: false,
                           onSaved: (newValue) => _userCode = newValue,
                         ),
@@ -97,7 +107,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
       ),
       bottomNavigationBar: ElevatedButton(
         onPressed: () async {
-          FirebaseFirestore db = FirebaseFirestore.instance;
+
           QuerySnapshot<Map<String, dynamic>> memberData = await db
               .collection('member')
               .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
@@ -105,7 +115,11 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
           if (memberData.docs.length > 1) {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
-
+              if(await isAlreadyNetwork()){
+                // 이미 네트워크 추가가 된 경우
+                print("이미 네트워크 추가가 된 유저입니다.");
+                return;
+              }
               var info = await FirebaseFirestore.instance
                   .collection('users')
                   .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -146,5 +160,24 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
         ),
       ),
     );
+  }
+
+  Future<bool> isAlreadyNetwork() async {
+    final to_user = await db.collection("users").where("uuid", isEqualTo: _userCode).get();
+    if(to_user.docs.length == 0) {
+      return true;
+    }else{
+      final to_uid = to_user.docs[0].data()['uid'];
+      final cur_user = (await db.collection("networks").doc(FirebaseAuth.instance.currentUser!.uid).get()).data();
+      if(cur_user!["list"].contains(_userCode)) {
+        return true;
+      } else {
+        final my_data = (await db.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get()).data();
+        if(my_data!["uuid"].toString() == _userCode){
+          return true;
+        }
+        return false;
+      }
+    }
   }
 }
