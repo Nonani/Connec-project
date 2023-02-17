@@ -55,7 +55,6 @@ class _ContactPageState extends State<ContactPage> {
             .collection('users')
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .get();
-        var data = info.data();
         final url =
         Uri.parse('https://foggy-boundless-avenue.glitch.me/sendComm');
         try {
