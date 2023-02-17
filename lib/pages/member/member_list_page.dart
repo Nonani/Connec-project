@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/mypage/my_info_page.dart';
-import 'package:connec/style/title.dart';
+import 'package:connec/style/titlestyle.dart';
 import '../../components/custom_dialog.dart';
 import '../../components/member_item_widget.dart';
 import 'member_management_page.dart';

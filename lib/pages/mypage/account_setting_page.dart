@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/mypage/change_email_page.dart';
 import 'package:connec/pages/mypage/change_name_page.dart';
-import 'package:connec/style/title.dart';
+import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';

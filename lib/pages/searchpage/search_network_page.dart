@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/searchpage/search_network_detail_page.dart';
-import 'package:connec/style/title.dart';
+import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';

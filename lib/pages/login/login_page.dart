@@ -4,7 +4,7 @@ import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/login/reset_password_page.dart';
 import 'package:connec/pages/login/social_signup_page.dart';
 import 'package:connec/services/kakao_login.dart';
-import 'package:connec/style/title.dart';
+import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
