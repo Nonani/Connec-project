@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -29,9 +30,8 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
         } else {
           return SentNetworkRequest(widget.notice);
         }
-        break;
       default:
-        return SentNetworkRequest(widget.notice);
+        return Container();
 
     }
   }
@@ -47,7 +47,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(width: 4),
-                Expanded(child: Text("${notice["from"]}님이 요청을 보냈습니다.")),
+                Expanded(child: Text("${notice["from"]}님이 네트워크 요청을 보냈습니다.")),
                 Row(
                   children: [
                     IconButton(
@@ -100,7 +100,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                                       AlertDialog(
                                         title: Text("요청 수락"),
                                         content: Text(
-                                            "${notice["from_uid"]}님의 요청을 수락하였습니다."),
+                                            "${notice["from_uid"]}님의 네트워크 요청을 수락하였습니다."),
                                         actions: [
                                           ElevatedButton(
                                               onPressed: () {
@@ -132,20 +132,74 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
   }
 
   Widget SentNetworkRequest(Map<String, dynamic> notice) {
+    final db = FirebaseFirestore.instance;
     Logger logger = Logger();
     try {
       switch (notice["state"]) {
         case "waiting":
           return Container(
-            child: Text("${notice["to"]}님이 요청을 확인중입니다."),
+            child: Text("${notice["to"]}님이 네트워크 요청을 확인중입니다."),
           );
         case "rejected":
           return Container(
-            child: Text("${notice["to"]}님이 요청을 거절하였습니다."),
+            child: Text("${notice["to"]}님이 네트워크 요청을 거절하였습니다."),
           );
         case "accepted":
           return Container(
-            child: Text("${notice["to"]}님이 요청을 수락하였습니다."),
+            decoration: BoxDecoration(
+              color: Color(0xffeeeeee),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 15, ),
+                  child: Text('${notice["to"]}이 네트워크 요청을 거절했습니다.',
+                    style: TextStyle(
+                      color: Color(0xff333333),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () async{
+                    await db
+                        .collection('notification')
+                        .doc(notice["from_uid"])
+                        .update({
+                      'list': FieldValue.arrayRemove([notice])
+                    });
+                    notice['state'] = 'confirmed';
+                    await db
+                        .collection('notification')
+                        .doc(notice["from_uid"])
+                        .update({
+                      'list': FieldValue.arrayUnion([notice])
+                    });
+                    //db에서 case network -> checked_network
+                    setState(() {
+
+                    });
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 10, top: 15, right: 5),
+                    padding: EdgeInsets.fromLTRB(8, 5, 8, 5),
+                    decoration: BoxDecoration(
+                      color: Color(0xff5f66f2),
+                      borderRadius: BorderRadius.circular(13),
+                    ),
+                    child: Text('확인완료',
+                      style: TextStyle(
+                        color: Color(0xfffafafa),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+
+            ),
           );
         default:
           return Container();
