@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_dialog.dart';
+import 'package:connec/style/buttonstyle.dart';
 import 'package:logger/logger.dart';
 import 'package:uuid/uuid.dart';
 
@@ -54,11 +55,11 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
               child: Center(
             child: CircularProgressIndicator(),
           ));
-        }else{
+        } else {
           return Scaffold(
             appBar: AppBar(
-                shape:
-                Border(bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
+                shape: Border(
+                    bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
                 backgroundColor: Color(0xfffafafa),
                 elevation: 0,
                 leading: BackButton(color: Color(0xff5f66f2))),
@@ -79,7 +80,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                           label: "직업",
                           onChanged: (value) {
                             setState(
-                                  () {
+                              () {
                                 _work = value;
                               },
                             );
@@ -87,7 +88,6 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                           selectedItem: _work),
                       buildWorkContainer(snapshot),
                       buildPersonalityContainer(snapshot),
-
                       buildLocalContainer(snapshot),
                       CustomDropdownButton(
                         label: "성별",
@@ -95,7 +95,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                         selectedItem: _gender,
                         onChanged: (value) {
                           setState(
-                                () {
+                            () {
                               _gender = value;
                             },
                           );
@@ -107,7 +107,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                         selectedItem: _age,
                         onChanged: (value) {
                           setState(
-                                () {
+                            () {
                               _age = value;
                             },
                           );
@@ -171,15 +171,15 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
             bottomNavigationBar: Container(
               height: 56,
               child: ElevatedButton(
-                child: Text("회원가입"),
+                style: featureButton,
+                child: Text("회원가입", style: buttonText),
                 onPressed: () async {
-
                   if (_formKey.currentState!.validate() &&
                       _checkboxValue1 &&
                       _checkboxValue2 &&
                       _workAreaCodes.isNotEmpty &&
                       _personalityItems.length >= 2 &&
-                      _location != null){
+                      _location != null) {
                     _formKey.currentState!.save();
                     showCustomDialog(context);
                     await provider.postSignUpBody(SignUpBody(
@@ -196,11 +196,11 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                       workArea: _workAreaCodes,
                       serviceName: widget.serviceName.toString(),
                     ));
-                    if(provider.isComplete){
+                    if (provider.isComplete) {
                       Navigator.pop(context);
                       Navigator.pop(context);
                     }
-                  }else{
+                  } else {
                     print(_formKey.currentState!.validate());
                   }
                 },
@@ -211,7 +211,6 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
       },
     );
   }
-
 
   Future _future() async {
     Logger logger = Logger();
@@ -278,7 +277,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
               contentPadding: EdgeInsets.zero,
               title: Container(
                 padding:
-                EdgeInsets.only(left: 10, right: 5, top: 5, bottom: 10),
+                    EdgeInsets.only(left: 10, right: 5, top: 5, bottom: 10),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Color(0xffeeeeee),
@@ -291,9 +290,9 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                       children: [
                         Expanded(
                             child: Text(
-                              _workAreaItems[index],
-                              overflow: TextOverflow.ellipsis,
-                            )),
+                          _workAreaItems[index],
+                          overflow: TextOverflow.ellipsis,
+                        )),
                         IconButton(
                             onPressed: () {
                               _workAreaItems.removeAt(index);
@@ -326,19 +325,20 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
   void showCareerListDialog(String code, String title) {
     SimpleDialog dialog = SimpleDialog(
         title: Text('해당 분야 경력'),
-        children: List<Widget>.generate(careerList.length - 1 , (index) {
+        children: List<Widget>.generate(careerList.length - 1, (index) {
           return SimpleDialogOption(
               child: Text(careerList.sublist(1, careerList.length)[index]),
               onPressed: () {
                 if (_workAreaItems
-                    .where((element) => element == title)
-                    .isEmpty &&
+                        .where((element) => element == title)
+                        .isEmpty &&
                     _workAreaCodes
                         .where((element) => element == code)
                         .isEmpty) {
                   _workAreaItems.add(title);
                   _workAreaCodes.add(code);
-                  _careerItems.add(careerList.sublist(1, careerList.length)[index]);
+                  _careerItems
+                      .add(careerList.sublist(1, careerList.length)[index]);
                 }
                 Navigator.pop(context);
               });
@@ -391,30 +391,30 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
         SimpleDialog dialog = SimpleDialog(
             title: Container(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('${title}'),
-                  ],
-                )),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('${title}'),
+              ],
+            )),
             children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
               return dialog;
             }).then((value) => setState(() {
-          _curWorkTier = 1;
-          _curWorkParent = "";
-        }));
+              _curWorkTier = 1;
+              _curWorkParent = "";
+            }));
         break;
       case 2:
         SimpleDialog dialog = SimpleDialog(
             title: Container(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('${title}'),
-                  ],
-                )),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('${title}'),
+              ],
+            )),
             children: dialogWidgetList);
         showDialog(
             context: context,
@@ -458,21 +458,21 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
             alignment: Alignment.centerLeft,
             child: _location == null
                 ? Text(
-              '선택',
-              style: TextStyle(
-                color: Color(0xffbdbdbd),
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-              ),
-            )
+                    '선택',
+                    style: TextStyle(
+                      color: Color(0xffbdbdbd),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                    ),
+                  )
                 : Text(
-              '${_locaion_label}',
-              style: TextStyle(
-                color: Color(0xff333333),
-                fontSize: 16,
-                fontFamily: 'S-CoreDream-4',
-              ),
-            ),
+                    '${_locaion_label}',
+                    style: TextStyle(
+                      color: Color(0xff333333),
+                      fontSize: 16,
+                      fontFamily: 'S-CoreDream-4',
+                    ),
+                  ),
           ),
         ),
       ]),
@@ -511,19 +511,19 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
     switch (_curLocalTier) {
       case 1:
         SimpleDialog dialog =
-        SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
               return dialog;
             }).then((value) => setState(() {
-          _curLocalTier = 1;
-          _curLocalParent = "";
-        }));
+              _curLocalTier = 1;
+              _curLocalParent = "";
+            }));
         break;
       case 2:
         SimpleDialog dialog =
-        SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
         showDialog(
             context: context,
             builder: (context) {
@@ -544,22 +544,19 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
             itemList: personalityList,
             label: "성격",
             validator: (value) {
-              if(_personalityItems.length < 2){
+              if (_personalityItems.length < 2) {
                 return "2개 이상 선택해주세요";
-              }else
+              } else
                 return null;
             },
             onChanged: (value) {
-              if(value != "선택" && _personalityItems.length<5){
+              if (value != "선택" && _personalityItems.length < 5) {
                 _personalityItems.remove(value);
                 _personalityItems.add(value);
-                setState(() {
-
-                });
+                setState(() {});
               }
             },
             selectedItem: _personality),
-
         Padding(
           padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
           child: ListView.separated(
@@ -573,9 +570,9 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                   children: [
                     Expanded(
                         child: Text(
-                          _personalityItems[index],
-                          overflow: TextOverflow.ellipsis,
-                        )),
+                      _personalityItems[index],
+                      overflow: TextOverflow.ellipsis,
+                    )),
                     IconButton(
                         onPressed: () {
                           _personalityItems.removeAt(index);

@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/style/buttonstyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+
+import '../../style/contextstyle.dart';
 
 class NetworkReductionPage extends StatelessWidget {
   String uid = "";
@@ -11,24 +14,6 @@ class NetworkReductionPage extends StatelessWidget {
       : super(key: key);
 
   final logger = Logger();
-  // final TextStyle _nameStyle = const TextStyle(
-  //   color: Color(0xff333333),
-  //   fontSize: 19,
-  //   fontFamily: 'S-CoreDream-6Bold',
-  //   fontWeight: FontWeight.w500,
-  // );
-  final TextStyle _contextStyleKey = const TextStyle(
-    color: Color(0xffafafaf),
-    fontSize: 13,
-    fontFamily: 'EchoDream',
-    fontWeight: FontWeight.w200,
-  );
-  final TextStyle _contextStyleValue = const TextStyle(
-    color: Color(0x33333333),
-    fontSize: 13,
-    fontFamily: 'EchoDream',
-    fontWeight: FontWeight.w200,
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -118,10 +103,10 @@ class NetworkReductionPage extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                              "지인 평점", style: _contextStyleKey),
-                                          Text("지인 수", style: _contextStyleKey),
+                                              "지인 평점", style: contextKey),
+                                          Text("지인 수", style: contextKey),
                                           Text("지인 대표 분야",
-                                              style: _contextStyleKey)
+                                              style: contextKey)
                                         ],
                                       ),
                                       Column(
@@ -129,11 +114,11 @@ class NetworkReductionPage extends StatelessWidget {
                                             .end,
                                         children: [
                                           Text("${snapshot.data['rate']}/5.0",
-                                              style: _contextStyleValue),
+                                              style: contextValue),
                                           Text(acquitances.toString(),
-                                              style: _contextStyleValue),
+                                              style: contextValue),
                                           Text(snapshot.data['personality'][0],
-                                              style: _contextStyleValue)
+                                              style: contextValue)
                                         ],
                                       )
                                     ],
@@ -170,14 +155,14 @@ class NetworkReductionPage extends StatelessWidget {
                                         crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                         children: [
-                                          Text("이름", style: _contextStyleKey),
+                                          Text("이름", style: contextKey),
                                           Text(
-                                              "직군/직무", style: _contextStyleKey),
-                                          Text("경력", style: _contextStyleKey),
-                                          Text("활동지", style: _contextStyleKey),
-                                          Text("성별", style: _contextStyleKey),
-                                          Text("나이", style: _contextStyleKey),
-                                          Text("능력", style: _contextStyleKey),
+                                              "직군/직무", style: contextKey),
+                                          Text("경력", style: contextKey),
+                                          Text("활동지", style: contextKey),
+                                          Text("성별", style: contextKey),
+                                          Text("나이", style: contextKey),
+                                          Text("능력", style: contextKey),
                                         ],
                                       ),
                                       Column(
@@ -185,19 +170,19 @@ class NetworkReductionPage extends StatelessWidget {
                                             .end,
                                         children: [
                                           Text(snapshot.data['name'],
-                                              style: _contextStyleValue),
+                                              style: contextValue),
                                           Text(snapshot.data['personality'][0],
-                                              style: _contextStyleValue),
+                                              style: contextValue),
                                           Text(snapshot.data['work'],
-                                              style: _contextStyleValue),
+                                              style: contextValue),
                                           Text(snapshot.data['location'],
-                                              style: _contextStyleValue),
+                                              style: contextValue),
                                           Text(snapshot.data['gender'],
-                                              style: _contextStyleValue),
+                                              style: contextValue),
                                           Text(snapshot.data['age'],
-                                              style: _contextStyleValue),
+                                              style: contextValue),
                                           Text(snapshot.data['introduction'],
-                                              style: _contextStyleValue),
+                                              style: contextValue),
                                         ],
                                       )
                                     ],
@@ -224,17 +209,9 @@ class NetworkReductionPage extends StatelessWidget {
                   });
                   Navigator.of(context).pop();
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff5f66f2),
-                  minimumSize: const Size(100, 56),
-                ),
-                child: const Text(
-                  '삭제하기',
-                  style: TextStyle(
-                    color: Color(0xfffafafa),
-                    fontSize: 20,
-                    fontFamily: 'EchoDream',
-                  ),
+                style: featureButton,
+                child: Text('삭제하기',
+                  style: buttonText,
                 ),
               ),
             );

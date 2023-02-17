@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/style/buttonstyle.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
+import '../../style/contextstyle.dart';
 import 'member_body_page.dart';
 
 class AcquitanceManagementPage extends StatelessWidget {
@@ -11,18 +13,6 @@ class AcquitanceManagementPage extends StatelessWidget {
 
   final logger = Logger();
 
-  final TextStyle _contextStyleKey = const TextStyle(
-    color: Color(0xffafafaf),
-    fontSize: 13,
-    fontFamily: 'EchoDream',
-    fontWeight: FontWeight.w200,
-  );
-  final TextStyle _contextStyleValue = const TextStyle(
-    color: Color(0xff666666),
-    fontSize: 13,
-    fontFamily: 'EchoDream',
-    fontWeight: FontWeight.w200,
-  );
 
   @override
   build(BuildContext context) {
@@ -52,14 +42,8 @@ class AcquitanceManagementPage extends StatelessWidget {
                     child: Column(children: [
                   Container(
                     padding: EdgeInsets.only(top: 13, bottom: 13),
-                    child: Text(
-                      data['title'],
-                      style: const TextStyle(
-                        color: Color(0xff333333),
-                        fontSize: 21,
-                        fontFamily: 'EchoDream',
-                        fontWeight: FontWeight.w600,
-                      ),
+                    child: Text(data['title'],
+                      style: contextTitle
                     ),
                   ),
                   Container(
@@ -81,17 +65,17 @@ class AcquitanceManagementPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("관계", style: _contextStyleKey),
-                            Text('한 다리', style: _contextStyleValue),
+                            Text("관계", style: contextKey),
+                            Text('한 다리', style: contextValue),
                           ],
                         ),
                         SizedBox(height: 10,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("평점", style: _contextStyleKey),
+                            Text("평점", style: contextKey),
                             Text("${data['capability']} / 5.0",
-                                style: _contextStyleValue),
+                                style: contextValue),
                           ],
                         ),
                         SizedBox(height: 10,),
@@ -100,7 +84,7 @@ class AcquitanceManagementPage extends StatelessWidget {
                           children: [
                             Text(
                               "전문분야",
-                              style: _contextStyleKey,
+                              style: contextKey,
                             ),
                             SizedBox(width: 20,),
                             FutureBuilder(
@@ -110,14 +94,14 @@ class AcquitanceManagementPage extends StatelessWidget {
                                   return Expanded(
                                     child: Text(
                                       snapshot.data!,
-                                      style: _contextStyleValue,
+                                      style: contextValue,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   );
                                 } else {
                                   return Text("불러오는 중",
-                                      style: _contextStyleValue);
+                                      style: contextValue);
                                 }
                               },
                             ),
@@ -127,54 +111,54 @@ class AcquitanceManagementPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("경력", style: _contextStyleKey),
-                            SizedBox(width: 20,),
+                            Text("경력", style: contextKey),
+                            SizedBox(width: 20),
                             Text(data['career'][0],
-                                style: _contextStyleValue),
+                                style: contextValue),
                           ],
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("지역", style: _contextStyleKey),
+                            Text("지역", style: contextKey),
                             Text(data['location'],
-                                style: _contextStyleValue),
+                                style: contextValue),
                           ],
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("성별", style: _contextStyleKey),
+                            Text("성별", style: contextKey),
                             Text(data['gender'],
-                                style: _contextStyleValue),
+                                style: contextValue),
                           ],
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("나이", style: _contextStyleKey),
-                            Text(data['age'], style: _contextStyleValue),
+                            Text("나이", style: contextKey),
+                            Text(data['age'], style: contextValue),
                           ],
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("성격", style: _contextStyleKey),
+                            Text("성격", style: contextKey),
                             Text(data['personality'][0],
-                                style: _contextStyleValue),
+                                style: contextValue),
                           ],
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("소개", style: _contextStyleKey),
+                            Text("소개", style: contextKey),
                             Text(data['introduction'],
-                                style: _contextStyleValue),
+                                style: contextValue),
                           ],
                         ),
                       ],
@@ -193,19 +177,9 @@ class AcquitanceManagementPage extends StatelessWidget {
                       builder: (context) => MemberBodyPage(mode: data['docId'],),
                     ));
               },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff5f66f2),
-                  minimumSize: const Size(180, 56),
-                  shape:
-                      RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                  elevation: 0),
-              child: const Text(
-                '수정',
-                style: TextStyle(
-                  color: Color(0xfffafafa),
-                  fontSize: 20,
-                  fontFamily: 'EchoDream',
-                ),
+              style: memberMangeButton,
+              child: Text('수정',
+                style: buttonText
               ),
             ),
           ),
@@ -216,19 +190,9 @@ class AcquitanceManagementPage extends StatelessWidget {
                 await db.collection('member').doc(data['docId']).delete();
                 Navigator.of(context).pop();
               },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff5f66f2),
-                  minimumSize: const Size(180, 56),
-                  shape:
-                      RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                  elevation: 0),
-              child: const Text(
-                '삭제',
-                style: TextStyle(
-                  color: Color(0xfffafafa),
-                  fontSize: 20,
-                  fontFamily: 'EchoDream',
-                ),
+              style: memberMangeButton,
+              child: Text('삭제',
+                style: buttonText
               ),
             ),
           ),

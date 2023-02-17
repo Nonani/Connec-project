@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
+import '../../style/contextstyle.dart';
 import 'expand_network_page.dart';
 
 class NetworkListPage extends StatefulWidget {
@@ -103,8 +104,6 @@ class _NetworkListPageState extends State<NetworkListPage> {
                                   width: 360,
                                   height: 120,
                                   child: NetworkItemWidget(
-                                    nameStyle: _nameStyle,
-                                    contextStyle: _contextStyle,
                                     name: snapshot.data['users'][index]['name'],
                                     rate: snapshot.data['users'][index]['rate'].toString(),
                                     number: snapshot.data['users'][index]['acquaintances'].toString(),

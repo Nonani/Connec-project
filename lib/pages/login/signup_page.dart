@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/style/buttonstyle.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:logger/logger.dart';
 
@@ -212,15 +213,9 @@ class _SignUpPageState extends State<SignUpPage> {
               bottomNavigationBar: Container(
                 height: 56,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff5f66f2)),
-                  child: const Text(
-                    '회원가입',
-                    style: TextStyle(
-                        color: Color(0xfffafafa),
-                        fontSize: 20,
-                        fontFamily: 'EchoDream',
-                        fontWeight: FontWeight.w400),
+                  style: featureButton,
+                  child: Text('회원가입',
+                    style: buttonText,
                   ),
                   onPressed: () async {
                     _formKey.currentState!.save();
