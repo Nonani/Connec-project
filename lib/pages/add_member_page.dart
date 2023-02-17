@@ -1,23 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/member/member_body_page.dart';
-import 'package:connec/pages/searchpage/search_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 import 'main_page.dart';
-import 'member/member_list_page.dart';
-import 'mypage/my_info_page.dart';
-import 'network/network_management_page.dart';
-int _currentIndex = 0;
 
-List<Widget> list = [
-  NetworkManagementPage(),
-  AcquitanceListPage(),
-  SearchPage(),
-  MyInfoPage(),
-];
 class AddMemberPage extends StatefulWidget {
   const AddMemberPage({Key? key}) : super(key: key);
 
@@ -48,8 +37,9 @@ class _AddMemberPageState extends State<AddMemberPage> {
                       Icons.arrow_back,
                       color: Color(0xfffafafa),
                     ),
-                    onPressed: () async =>
-                        await FirebaseAuth.instance.signOut(),
+                    onPressed: () {
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                    }
                   ),
                 ),
                 body: Center(
@@ -126,69 +116,6 @@ class _AddMemberPageState extends State<AddMemberPage> {
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                bottomNavigationBar: SizedBox(
-                  height: 65,
-                  child: BottomNavigationBar(
-                    currentIndex: _currentIndex,
-                    onTap: (index) {
-                      print('index test : ${index}');
-                      if (_currentIndex != index) {
-                        setState(() {
-                          _currentIndex = index;
-                        });
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => list[_currentIndex],
-                            )).then((value) => setState(() {}));
-                      }
-                    },
-                    type: BottomNavigationBarType.fixed,
-                    backgroundColor: Color(0xff5f66f2),
-                    showSelectedLabels: true,
-                    fixedColor: Colors.white,
-                    unselectedItemColor: Colors.white,
-                    selectedFontSize: 12,
-                    unselectedFontSize: 12,
-                    items: [
-                      BottomNavigationBarItem(
-                          icon: Image.asset(
-                            "assets/images/navigation_icon_1.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                          label: "네트워크"),
-                      BottomNavigationBarItem(
-                          icon: Image.asset(
-                            "assets/images/navigation_icon_2.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                          label: "지인관리"),
-                      BottomNavigationBarItem(
-                          icon: Image.asset(
-                            "assets/images/navigation_icon_3.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                          label: "검색"),
-                      // BottomNavigationBarItem(
-                      //     icon: Image.asset(
-                      //       "assets/images/navigation_icon_4.png",
-                      //       height: 30,
-                      //       width: 30,
-                      //     ),
-                      //     label: "구인장터"),
-                      BottomNavigationBarItem(
-                          icon: Image.asset(
-                            "assets/images/navigation_icon_5.png",
-                            height: 30,
-                            width: 30,
-                          ),
-                          label: "마이페이지"),
                     ],
                   ),
                 ),

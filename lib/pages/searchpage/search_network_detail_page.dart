@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/pages/add_member_page.dart';
 import 'package:connec/pages/searchpage/contact_page.dart';
 import 'package:connec/style/buttonstyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -216,10 +217,9 @@ class SearchNetworkDetailPage extends StatelessWidget {
                 }
                 else {
                   Navigator.push(
-                      context, DialogRoute(
-                        context: context,
+                      context, MaterialPageRoute(
                         builder: (context) =>
-                            MemberCountDialog(),
+                            AddMemberPage(),
                       ));
                 }
               },

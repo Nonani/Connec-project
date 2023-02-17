@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/pages/add_member_page.dart';
 import 'package:connec/style/buttonstyle.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -133,10 +134,9 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
           }
           else {
             Navigator.push(
-                context, DialogRoute(
-              context: context,
+                context, MaterialPageRoute(
               builder: (context) =>
-                  MemberCountDialog(),
+                  AddMemberPage(),
             ));
           }
         },
