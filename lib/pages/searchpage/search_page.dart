@@ -1,15 +1,15 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connec/pages/member_list_page.dart';
-import 'package:connec/pages/network_management_page.dart';
-import 'package:connec/pages/search_network_page.dart';
+import 'package:connec/pages/member/member_list_page.dart';
+import 'package:connec/pages/network/network_management_page.dart';
+import 'package:connec/pages/searchpage/search_network_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 
-import '../components/custom_dialog.dart';
-import 'mypage/my_info_page.dart';
+import '../../components/custom_dialog.dart';
+import '../mypage/my_info_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);

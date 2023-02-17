@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connec/pages/contact_page.dart';
+import 'package:connec/pages/searchpage/contact_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-import '../components/custom_dialog.dart';
+import '../../components/custom_dialog.dart';
 
 class SearchNetworkDetailPage extends StatelessWidget {
   Map<String, dynamic> data;

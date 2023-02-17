@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_dialog.dart';
-import 'package:connec/pages/search_network_detail_page.dart';
+import 'package:connec/pages/searchpage/search_network_detail_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-import '../components/member_item_widget.dart';
+import '../../components/member_item_widget.dart';
 
 class SearchNetworkPage extends StatelessWidget {
   const SearchNetworkPage(this.code, {Key? key}) : super(key: key);

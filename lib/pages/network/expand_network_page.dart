@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import '../components/custom_dialog.dart';
-import '../components/custom_edit_textform.dart';
+import '../../components/custom_dialog.dart';
+import '../../components/custom_edit_textform.dart';
 import 'package:http/http.dart' as http;
-import '../services/service_class.dart';
+import '../../services/service_class.dart';
 
 class ExpandNetworkPage extends StatefulWidget {
   const ExpandNetworkPage({Key? key}) : super(key: key);

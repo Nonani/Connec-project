@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 
-import '../components/custom_dialog.dart';
-import '../components/custom_dropdown_button.dart';
-import '../const/data.dart';
-import '../models/SignUpBody.dart';
+import '../../components/custom_dialog.dart';
+import '../../components/custom_dropdown_button.dart';
+import '../../const/data.dart';
+import '../../models/SignUpBody.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../components/custom_edit_textform.dart';
-import '../services/service_class.dart';
+import '../../components/custom_edit_textform.dart';
+import '../../services/service_class.dart';
 import 'package:uuid/uuid.dart';
 
 class SignUpPage extends StatefulWidget {

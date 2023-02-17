@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/add_member_page.dart';
-import 'package:connec/pages/login_page.dart';
+import 'package:connec/pages/login/login_page.dart';
 import 'package:connec/pages/main_page.dart';
 import 'package:connec/services/service_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';

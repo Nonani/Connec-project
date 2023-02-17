@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_dialog.dart';
-import 'package:connec/pages/member_body_page.dart';
-import 'package:connec/pages/search_page.dart';
+import 'package:connec/pages/member/member_body_page.dart';
+import 'package:connec/pages/searchpage/search_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 import 'main_page.dart';
-import 'member_list_page.dart';
+import 'member/member_list_page.dart';
 import 'mypage/my_info_page.dart';
-import 'network_management_page.dart';
+import 'network/network_management_page.dart';
 int _currentIndex = 0;
 
 List<Widget> list = [

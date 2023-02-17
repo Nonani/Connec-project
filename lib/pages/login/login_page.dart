@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_dialog.dart';
-import 'package:connec/pages/reset_password_page.dart';
-import 'package:connec/pages/social_signup_page.dart';
+import 'package:connec/pages/login/reset_password_page.dart';
+import 'package:connec/pages/login/social_signup_page.dart';
 import 'package:connec/services/kakao_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -11,8 +11,8 @@ import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as kakao;
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 
-import '../components/login_icon_button.dart';
-import '../components/custom_edit_textform.dart';
+import '../../components/login_icon_button.dart';
+import '../../components/custom_edit_textform.dart';
 import 'signup_page.dart';
 
 class LoginPage extends StatefulWidget {
