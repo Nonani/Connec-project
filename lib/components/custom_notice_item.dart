@@ -14,11 +14,26 @@ class CustomNoticeItem extends StatefulWidget {
 class _CustomNoticeItemState extends State<CustomNoticeItem> {
   @override
   Widget build(BuildContext context) {
-    if (widget.notice["from_uid"] !=
-        FirebaseAuth.instance.currentUser!.uid.toString())
-      return ReceiveNetworkRequest(widget.notice);
-    else
-      return SentNetworkRequest(widget.notice);
+    switch (widget.notice["case"]) {
+      case "network":
+        if (widget.notice["from_uid"] !=
+            FirebaseAuth.instance.currentUser!.uid.toString()) {
+          return ReceiveNetworkRequest(widget.notice);
+        } else {
+          return SentNetworkRequest(widget.notice);
+        }
+      case "contact":
+        if (widget.notice["from_uid"] !=
+            FirebaseAuth.instance.currentUser!.uid.toString()) {
+          return ReceiveNetworkRequest(widget.notice);
+        } else {
+          return SentNetworkRequest(widget.notice);
+        }
+        break;
+      default:
+        return SentNetworkRequest(widget.notice);
+
+    }
   }
 
   Widget ReceiveNetworkRequest(Map<String, dynamic> notice) {
@@ -26,7 +41,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
     Logger logger = Logger();
 
     try {
-      switch (notice["case"]) {
+      switch (notice["state"]) {
         case "waiting":
           return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,7 +96,8 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                               context,
                               DialogRoute(
                                   context: context,
-                                  builder: (context) => AlertDialog(
+                                  builder: (context) =>
+                                      AlertDialog(
                                         title: Text("요청 수락"),
                                         content: Text(
                                             "${notice["from_uid"]}님의 요청을 수락하였습니다."),
@@ -118,7 +134,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
   Widget SentNetworkRequest(Map<String, dynamic> notice) {
     Logger logger = Logger();
     try {
-      switch (notice["case"]) {
+      switch (notice["state"]) {
         case "waiting":
           return Container(
             child: Text("${notice["to"]}님이 요청을 확인중입니다."),

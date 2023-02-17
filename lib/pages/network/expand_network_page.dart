@@ -118,6 +118,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
                     'Content-Type': 'application/x-www-form-urlencoded',
                   },
                   body: <String, String>{
+                    'case': 'network',
                     'to': '$_userCode',
                     'from': "${data!['uuid']}",
                   },
