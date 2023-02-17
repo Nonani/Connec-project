@@ -152,7 +152,9 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => MemberBodyPage( mode: '0'),
-                          ));
+                          )).then((value) => setState(() {
+
+                          },));
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(247.3, 55.9),
