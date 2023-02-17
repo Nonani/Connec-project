@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/models/MemberBody.dart';
+import 'package:connec/style/buttonstyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -11,6 +12,7 @@ import '../../components/custom_dropdown_button.dart';
 import '../../components/custom_edit_textform.dart';
 import '../../const/data.dart';
 import '../../services/service_class.dart';
+import '../../style/titlestyle.dart';
 
 class MemberBodyPage extends StatefulWidget {
   MemberBodyPage({required this.mode, Key? key}) : super(key: key);
@@ -67,10 +69,8 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                 elevation: 0,
                 leading: BackButton(color: Color(0xff5f66f2)),
                 title: Text(_modeTitleString[_modeIdx],
-                    style: TextStyle(
-                        fontFamily: "EchoDream",
-                        fontSize: 20,
-                        color: Colors.black)),
+                    style: featureTitle
+                ),
                 centerTitle: true,
               ),
               body: SafeArea(
@@ -121,9 +121,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
               bottomNavigationBar: SizedBox(
                 height: 56,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff5f66f2)
-                  ),
+                  style: featureButton,
                   onPressed: () async {
                     if (_formKey.currentState!.validate() &&
                         _workAreaCodes.isNotEmpty &&

@@ -1,25 +1,20 @@
+import 'package:connec/style/contextstyle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NetworkItemWidget extends StatelessWidget {
   const NetworkItemWidget({
     Key? key,
-    required TextStyle nameStyle,
-    required TextStyle contextStyle,
     required String name,
     required String rate,
     required String number,
     required String representative,
-  })  : _nameStyle = nameStyle,
-        _contextStyle = contextStyle,
-        _name = name,
+  })  : _name = name,
         _rate = rate,
         _number = number,
         _representative = representative,
         super(key: key);
 
-  final TextStyle _nameStyle;
-  final TextStyle _contextStyle;
 
   final String _name;
   final String _rate;
@@ -45,7 +40,7 @@ class NetworkItemWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(_name, style: _nameStyle),
+                  Text(_name, style: contextTitle),
                   Container(
                     height: 0,
                     margin: const EdgeInsets.only(top: 7.5, bottom: 10.5),
@@ -62,17 +57,17 @@ class NetworkItemWidget extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("지인 평점", style: _contextStyle),
-                          Text("지인 수", style: _contextStyle),
-                          Text("지인 대표 분야", style: _contextStyle)
+                          Text("지인 평점", style: contextKey),
+                          Text("지인 수", style: contextKey),
+                          Text("지인 대표 분야", style: contextKey)
                         ],
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text("$_rate/5.0", style: _contextStyle),
-                          Text(_number, style: _contextStyle),
-                          Text(_representative, style: _contextStyle)
+                          Text("$_rate/5.0", style: contextValue),
+                          Text(_number, style: contextValue),
+                          Text(_representative, style: contextValue)
                         ],
                       )
                     ],

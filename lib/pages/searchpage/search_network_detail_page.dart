@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/searchpage/contact_page.dart';
+import 'package:connec/style/buttonstyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 import '../../components/custom_dialog.dart';
+import '../../style/contextstyle.dart';
 
 class SearchNetworkDetailPage extends StatelessWidget {
   Map<String, dynamic> data;
@@ -13,24 +15,6 @@ class SearchNetworkDetailPage extends StatelessWidget {
 
   final logger = Logger();
 
-  // final TextStyle _nameStyle = const TextStyle(
-  //   color: Color(0xff333333),
-  //   fontSize: 19,
-  //   fontFamily: 'S-CoreDream-6Bold',
-  //   fontWeight: FontWeight.w500,
-  // );
-  final TextStyle _contextStyleKey = const TextStyle(
-    color: Color(0xffafafaf),
-    fontSize: 13,
-    fontFamily: 'EchoDream',
-    fontWeight: FontWeight.w200,
-  );
-  final TextStyle _contextStyleValue = const TextStyle(
-    color: Color(0xff666666),
-    fontSize: 13,
-    fontFamily: 'EchoDream',
-    fontWeight: FontWeight.w200,
-  );
 
   @override
   build(BuildContext context) {
@@ -94,8 +78,8 @@ class SearchNetworkDetailPage extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("관계", style: _contextStyleKey),
-                              Text('한 다리', style: _contextStyleValue),
+                              Text("관계", style: contextKey),
+                              Text('한 다리', style: contextValue),
                             ],
                           ),
                           SizedBox(
@@ -104,9 +88,9 @@ class SearchNetworkDetailPage extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("평점", style: _contextStyleKey),
+                              Text("평점", style: contextKey),
                               Text("${data['rate']} / 5.0",
-                                  style: _contextStyleValue),
+                                  style: contextValue),
                             ],
                           ),
                           SizedBox(
@@ -117,7 +101,7 @@ class SearchNetworkDetailPage extends StatelessWidget {
                             children: [
                               Text(
                                 "직군/직무",
-                                style: _contextStyleKey,
+                                style: contextKey,
                               ),
                               SizedBox(
                                 width: 20,
@@ -129,14 +113,14 @@ class SearchNetworkDetailPage extends StatelessWidget {
                                     return Expanded(
                                       child: Text(
                                         snapshot.data!,
-                                        style: _contextStyleValue,
+                                        style: contextValue,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     );
                                   } else {
                                     return Text("불러오는 중",
-                                        style: _contextStyleValue);
+                                        style: contextValue);
                                   }
                                 },
                               ),
@@ -148,12 +132,12 @@ class SearchNetworkDetailPage extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("경력", style: _contextStyleKey),
+                              Text("경력", style: contextKey),
                               SizedBox(
                                 width: 20,
                               ),
                               Text(data['career'][0],
-                                  style: _contextStyleValue),
+                                  style: contextValue),
                             ],
                           ),
                           SizedBox(
@@ -162,8 +146,8 @@ class SearchNetworkDetailPage extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("지역", style: _contextStyleKey),
-                              Text(data['location'], style: _contextStyleValue),
+                              Text("지역", style: contextKey),
+                              Text(data['location'], style: contextValue),
                             ],
                           ),
                           SizedBox(
@@ -172,8 +156,8 @@ class SearchNetworkDetailPage extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("성별", style: _contextStyleKey),
-                              Text(data['gender'], style: _contextStyleValue),
+                              Text("성별", style: contextKey),
+                              Text(data['gender'], style: contextValue),
                             ],
                           ),
                           SizedBox(
@@ -182,8 +166,8 @@ class SearchNetworkDetailPage extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("나이", style: _contextStyleKey),
-                              Text(data['age'], style: _contextStyleValue),
+                              Text("나이", style: contextKey),
+                              Text(data['age'], style: contextValue),
                             ],
                           ),
                           SizedBox(
@@ -192,9 +176,9 @@ class SearchNetworkDetailPage extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("성격", style: _contextStyleKey),
+                              Text("성격", style: contextKey),
                               Text(data['personality'][0],
-                                  style: _contextStyleValue),
+                                  style: contextValue),
                             ],
                           ),
                           SizedBox(
@@ -203,9 +187,9 @@ class SearchNetworkDetailPage extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("소개", style: _contextStyleKey),
+                              Text("소개", style: contextKey),
                               Text(data['introduction'],
-                                  style: _contextStyleValue),
+                                  style: contextValue),
                             ],
                           ),
                         ],
@@ -239,19 +223,9 @@ class SearchNetworkDetailPage extends StatelessWidget {
                       ));
                 }
               },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff5f66f2),
-                  minimumSize: const Size(180, 56),
-                  shape:
-                      RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                  elevation: 0),
-              child: const Text(
-                '연락하기',
-                style: TextStyle(
-                  color: Color(0xfffafafa),
-                  fontSize: 20,
-                  fontFamily: 'EchoDream',
-                ),
+              style: featureButton,
+              child:Text('연락하기',
+                style: buttonText,
               ),
             ),
           ),

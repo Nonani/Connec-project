@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/style/buttonstyle.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -138,17 +139,9 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
             ));
           }
         },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xff5f66f2),
-          minimumSize: const Size(100, 56),
-        ),
-        child: const Text(
-          '확장하기',
-          style: TextStyle(
-            color: Color(0xfffafafa),
-            fontSize: 20,
-            fontFamily: 'S-CoreDream-4',
-          ),
+        style: featureButton,
+        child: Text('확장하기',
+          style: buttonText,
         ),
       ),
     );
