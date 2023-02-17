@@ -66,7 +66,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                               .update({
                             'list': FieldValue.arrayRemove([notice])
                           });
-                          notice["case"] = "accepted";
+                          notice["state"] = "accepted";
                           //수정된 값 인덱스 추가
                           db
                               .collection('notification')
