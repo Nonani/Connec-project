@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/style/title.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -24,13 +25,9 @@ class _ContactPageState extends State<ContactPage> {
             bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
         backgroundColor: Color(0xfffafafa),
         elevation: 0,
-        title: const Text(
+        title: Text(
           'CONNEC',
-          style: TextStyle(
-            color: Color(0xff5f66f2),
-            fontSize: 25,
-            fontWeight: FontWeight.w900,
-          ),
+          style: connecTitle,
         ),
         centerTitle: true,
       ),

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_item_widget.dart';
 import 'package:connec/pages/network/network_reduction_page.dart';
+import 'package:connec/style/title.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -58,13 +59,9 @@ class _NetworkListPageState extends State<NetworkListPage> {
                     ),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
-                  title: const Text(
+                  title: Text(
                     'CONNEC',
-                    style: TextStyle(
-                      color: Color(0xff5f66f2),
-                      fontSize: 25,
-                      fontWeight: FontWeight.w900,
-                    ),
+                    style: connecTitle,
                   ),
                   centerTitle: true,
                   actions: [

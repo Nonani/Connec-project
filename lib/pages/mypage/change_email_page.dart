@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/style/title.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -32,13 +33,9 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
+        title: Text(
           '이메일 변경',
-          style: TextStyle(
-            color: Color(0xff333333),
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
+          style: featureTitle,
         ),
         centerTitle: true,
       ),

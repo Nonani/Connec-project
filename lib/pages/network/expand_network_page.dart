@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/style/title.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,14 +39,9 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
+        title: Text(
           "네트워크 확장",
-          style: TextStyle(
-            color: Color(0xff333333),
-            fontSize: 20,
-            fontFamily: 'EchoDream',
-            fontWeight: FontWeight.w500,
-          ),
+          style: featureTitle,
         ),
         centerTitle: true,
         actions: [

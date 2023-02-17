@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/mypage/account_setting_page.dart';
+import 'package:connec/style/title.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -37,14 +38,9 @@ class _MyInfoPageState extends State<MyInfoPage> {
                 ),
                 onPressed: () => Navigator.of(context).pop(),
               ),
-              title: const Text(
+              title: Text(
                 '마이페이지',
-                style: TextStyle(
-                  color: Color(0xff333333),
-                  fontSize: 20,
-                  fontFamily: 'S-CoreDream-5Medium',
-                  fontWeight: FontWeight.w500,
-                ),
+                style: featureTitle,
               ),
               centerTitle: true,
             ),

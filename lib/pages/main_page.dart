@@ -3,6 +3,7 @@ import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/member/member_list_page.dart';
 import 'package:connec/pages/network/network_management_page.dart';
 import 'package:connec/pages/searchpage/search_page.dart';
+import 'package:connec/style/title.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -86,13 +87,9 @@ class _MainPageState extends State<MainPage> {
                   bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
               backgroundColor: Color(0xfffafafa),
               elevation: 0,
-              title: const Text(
+              title: Text(
                 'CONNEC',
-                style: TextStyle(
-                  color: Color(0xff5f66f2),
-                  fontSize: 25,
-                  fontWeight: FontWeight.w900,
-                ),
+                style: connecTitle,
               ),
               centerTitle: true,
             ),

@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/style/title.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -185,13 +186,9 @@ class _IAPConnecState extends State<IAPConnec> {
             ),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          title: const Text(
+          title: Text(
             '쿠폰 구매',
-            style: TextStyle(
-              color: Color(0xff333333),
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-            ),
+            style: featureTitle,
           ),
           centerTitle: true,
         ),

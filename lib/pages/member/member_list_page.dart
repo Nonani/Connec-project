@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/mypage/my_info_page.dart';
+import 'package:connec/style/title.dart';
 import '../../components/custom_dialog.dart';
 import '../../components/member_item_widget.dart';
 import 'member_management_page.dart';
@@ -80,13 +81,9 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                     ),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
-                  title: const Text(
+                  title: Text(
                     'CONNEC',
-                    style: TextStyle(
-                      color: Color(0xff5f66f2),
-                      fontSize: 25,
-                      fontWeight: FontWeight.w900,
-                    ),
+                    style: connecTitle,
                   ),
                   centerTitle: true,
                   actions: [

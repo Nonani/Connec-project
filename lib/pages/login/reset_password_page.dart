@@ -1,4 +1,5 @@
 
+import 'package:connec/style/title.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -41,13 +42,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>{
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text("비밀번호 찾기",
-          style: TextStyle(
-            color: Color(0xff333333),
-            fontSize: 20,
-            fontFamily: 'EchoDream',
-            fontWeight: FontWeight.w500,
-          ),
+        title: Text("비밀번호 찾기",
+          style: featureTitle,
         ),
       ),
 

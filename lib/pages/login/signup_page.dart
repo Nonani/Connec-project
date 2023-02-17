@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/style/title.dart';
 import 'package:logger/logger.dart';
 
 import '../../components/custom_dialog.dart';
@@ -68,10 +69,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 elevation: 0,
                 leading: BackButton(color: Color(0xff5f66f2)),
                 title: Text("회원가입",
-                    style: TextStyle(
-                        fontFamily: "EchoDream",
-                        fontSize: 20,
-                        color: Colors.black)),
+                    style: featureTitle
+                ),
                 centerTitle: true,
               ),
               body: Consumer<ServiceClass>(
