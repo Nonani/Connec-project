@@ -32,7 +32,6 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     NetworkManagementPage(),
     AcquitanceListPage(),
     SearchPage(),
-    // ExpandNetworkPage(),
     MyInfoPage(),
   ];
 
@@ -68,7 +67,6 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                       .collection("users")
                       .doc("${FirebaseAuth.instance.currentUser!.uid}")
                       .get();
-                  logger.w(FirebaseAuth.instance.currentUser!.uid);
                   Clipboard.setData(ClipboardData(text: result["uuid"]));
                 }),
           ],
@@ -261,13 +259,6 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                                               itemBuilder:
                                                   (BuildContext context,
                                                   int sIdx) {
-                                                logger.w(snapshot
-                                                    .data['data'][connectionCount][
-                                                snapshot
-                                                    .data['data']
-                                                [connectionCount]
-                                                    .keys
-                                                    .toList()[fIdx]]);
                                                 var sKeys = snapshot
                                                     .data['data'][connectionCount][
                                                 snapshot
@@ -438,7 +429,6 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     try {
       secondData = await secondQueryData(firstData['networkData']);
       parsedData = await parseWork(secondData['relationData'], secondData['networkUserData']);
-      logger.w(parsedData);
       result['count'][1] = secondData['count'];
       result['data'].add(parsedData[0]);
       result['dict'].add(parsedData[1]);
@@ -455,7 +445,6 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
       logger.w(e);
     }
     //hl
-    logger.w(result);
     return result;
   }
 
@@ -584,7 +573,8 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
       for (String user in firstNetworkData) {
         networkList['list'].remove(user);
       }
-      for (String user in secondNetworkData['networkData']) {
+      for (String user in secondNetworkData) {
+
         networkList['list'].remove(user);
       }
       lastNetworkQuery = lastNetworkQuery + networkList['list'];
