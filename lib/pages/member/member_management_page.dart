@@ -58,6 +58,7 @@ class AcquitanceManagementPage extends StatelessWidget {
                     ),
                   ),
                   Container(
+                    width: double.infinity,
                     padding: const EdgeInsets.only(left: 17.5, right: 17.5),
                     child: Column(
                       children: [
@@ -86,18 +87,15 @@ class AcquitanceManagementPage extends StatelessWidget {
                               "전문분야",
                               style: contextKey,
                             ),
-                            SizedBox(width: 20,),
                             FutureBuilder(
                               future: workString(data['workArea']),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
-                                  return Expanded(
-                                    child: Text(
-                                      snapshot.data!,
-                                      style: contextValue,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                  return Text(
+                                    snapshot.data!,
+                                    style: contextValue,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   );
                                 } else {
                                   return Text("불러오는 중",
@@ -211,14 +209,8 @@ class AcquitanceManagementPage extends StatelessWidget {
           .collection('workData')
           .where('code', isEqualTo: data.docs[0]['parent'])
           .get();
-      ret = "> ${data.docs[0]['title']}" + ret;
-      data = await db
-          .collection('workData')
-          .where('code', isEqualTo: data.docs[0]['parent'])
-          .get();
-      ret = data.docs[0]['title'] + ret;
+      ret = "${data.docs[0]['title']}" + ret;
     }
-    logger.w(ret);
     return ret;
   }
 }
