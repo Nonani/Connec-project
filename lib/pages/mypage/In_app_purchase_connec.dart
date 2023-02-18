@@ -20,10 +20,10 @@ import 'package:logger/logger.dart';
 // To try without auto-consume on another platform, change `true` to `false` here.
 final bool _kAutoConsume = true;
 
-const String _onceConsumable = '1_ticket';
-const String _fifthTimesConsumable = '5_ticket';
-const String _tenTimesConsumable = '10_ticket';
-const String _twentyTimesConsumable = '20_ticket';
+const String _onceConsumable = 'coupon_1';
+const String _fifthTimesConsumable = 'coupon_5';
+const String _tenTimesConsumable = 'coupon_10';
+const String _twentyTimesConsumable = 'coupon_20';
 const Map<String, int> _productMap = {
   _onceConsumable: 1,
   _fifthTimesConsumable: 5,
@@ -299,7 +299,7 @@ class _IAPConnecState extends State<IAPConnec> {
               color: Color(0xff5f66f2),
             ),
             title: Text(
-              productDetails.title.substring(0, 10),
+              productDetails.title,
               style: const TextStyle(
                 color: Color(0xff333333),
                 fontSize: 17,
