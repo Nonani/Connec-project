@@ -72,7 +72,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${snapshot.data['name']} 님',
+                                  '${snapshot.data['user']['name']} 님',
                                   style: TextStyle(
                                     color: Color(0xff333333),
                                     fontSize: 17,
@@ -180,8 +180,11 @@ class _MyInfoPageState extends State<MyInfoPage> {
                                       fontWeight: FontWeight.w200,
                                     ),
                                   ),
-                                  SizedBox(width: 10,),
-                                  Text('0개',
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    snapshot.data['couponCnt'].toString(),
                                     style: TextStyle(
                                       color: Color(0xff5f66f2),
                                       fontSize: 13,
@@ -196,7 +199,11 @@ class _MyInfoPageState extends State<MyInfoPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => IAPConnec(),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => IAPConnec(),
+                              ));
                         },
                         child: Container(
                           padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
@@ -471,11 +478,17 @@ class _MyInfoPageState extends State<MyInfoPage> {
   Future _future() async {
     Logger logger = Logger();
     FirebaseFirestore db = FirebaseFirestore.instance;
-    final result = await db
+    Map<String, dynamic> result = {};
+    DocumentSnapshot<Map<String, dynamic>> user = await db
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid.toString())
         .get();
-    logger.w(result.data());
+    DocumentSnapshot<Map<String, dynamic>> couponCnt = await db
+        .collection('coupons')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    result['user'] = user.data();
+    result['couponCnt'] = couponCnt['num'];
     return result;
   }
 }
