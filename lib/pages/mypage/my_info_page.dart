@@ -478,6 +478,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
   Future _future() async {
     Logger logger = Logger();
     FirebaseFirestore db = FirebaseFirestore.instance;
+
     Map<String, dynamic> result = {};
     DocumentSnapshot<Map<String, dynamic>> user = await db
         .collection("users")
@@ -487,6 +488,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
         .collection('coupons')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
+
     result['user'] = user.data();
     result['couponCnt'] = couponCnt['num'];
     return result;
