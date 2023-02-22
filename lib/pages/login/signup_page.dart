@@ -248,6 +248,18 @@ class _SignUpPageState extends State<SignUpPage> {
                         Navigator.pop(context);
                       }
                     }
+                    else if(_workAreaCodes.isEmpty){
+                      showDialog(
+                          context: context,
+                          builder: (context) => workValidationDialog()
+                      );
+                    }
+                    else if(_location == null){
+                      showDialog(
+                          context: context,
+                          builder: (context) => areaValidationDialog()
+                      );
+                    }
                   },
                 ),
               ));

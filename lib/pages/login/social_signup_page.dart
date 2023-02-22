@@ -200,6 +200,18 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                       Navigator.pop(context);
                       Navigator.pop(context);
                     }
+                  }
+                  else if(_workAreaCodes.isEmpty){
+                    showDialog(
+                        context: context,
+                        builder: (context) => workValidationDialog()
+                    );
+                  }
+                  else if(_location == null){
+                    showDialog(
+                        context: context,
+                        builder: (context) => areaValidationDialog()
+                    );
                   } else {
                     print(_formKey.currentState!.validate());
                   }

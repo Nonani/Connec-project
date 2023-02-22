@@ -149,6 +149,18 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                         Navigator.pop(context);
                       }
                     }
+                    else if(_workAreaCodes.isEmpty){
+                      showDialog(
+                          context: context,
+                          builder: (context) => workValidationDialog()
+                      );
+                    }
+                    else if(_location == null){
+                      showDialog(
+                          context: context,
+                          builder: (context) => areaValidationDialog()
+                      );
+                    }
                   },
                   child: Text(
                     _modeButtonString[_modeIdx],

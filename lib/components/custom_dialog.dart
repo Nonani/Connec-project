@@ -36,6 +36,52 @@ Widget CustomLoadingDialog(){
     ),
   );
 }
+Widget workValidationDialog(){
+  return Dialog(
+    // The background color
+    backgroundColor: Colors.white,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          Text('전문분야를 등록해주세요',
+            style: TextStyle(
+              color: Color(0xff333333),
+              fontSize: 20,
+              fontFamily: 'EchoDream',
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget areaValidationDialog(){
+  return Dialog(
+    // The background color
+    backgroundColor: Colors.white,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          Text('지역을 등록해주세요',
+            style: TextStyle(
+              color: Color(0xff333333),
+              fontSize: 20,
+              fontFamily: 'EchoDream',
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 Widget CustomLoadingPage(){
   return Scaffold(
     appBar: AppBar(
