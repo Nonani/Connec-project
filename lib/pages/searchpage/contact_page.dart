@@ -1,8 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/components/custom_dropdown_button.dart';
+import 'package:connec/components/custom_edit_textform.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import '../../const/data.dart';
+
 class ContactPage extends StatefulWidget {
   const ContactPage({required this.uid, required this.docID, Key? key})
       : super(key: key);
@@ -16,6 +21,10 @@ class ContactPage extends StatefulWidget {
 
 class _ContactPageState extends State<ContactPage> {
   String inputText = '';
+  String contactText = '';
+  String OpenTalkUrl = '';
+  final _formKey = GlobalKey<FormState>();
+  String offer = offerItemList.first;
 
   @override
   Widget build(BuildContext context) {
@@ -31,44 +40,84 @@ class _ContactPageState extends State<ContactPage> {
         ),
         centerTitle: true,
       ),
-      body: Center(
-        child: TextField(
-          maxLines: 20,
-          onChanged: ((value) {
-            setState(() {
-              inputText = value;
-            });
-          }),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(children: [
+            CustomDropdownButton(itemList: offerItemList,
+                label: "제안 목적",
+                onChanged: (value) {
+                  offer = value;
+                  setState(() {
+
+                  });
+                },
+                selectedItem: offer),
+            SignUpEditTextForm(
+              label: "제안 내용",
+              hint: "인재가 관심을 가질 조건을 제안해주세요",
+              onSaved: (newValue) => contactText = newValue,
+            ),
+            SignUpEditTextForm(
+              label: "카카오톡 오픈채팅방 링크",
+              hint: "오픈채팅방 링크를 입력해주세요",
+              onSaved: (newValue) => OpenTalkUrl = newValue,
+            )
+            // TextField(
+            //   maxLines: 20,
+            //   onChanged: ((value) {
+            //     setState(() {
+            //       inputText = value;
+            //     });
+            //   }),
+            // ),
+          ]),
         ),
       ),
-      bottomNavigationBar:
-      ElevatedButton(child: Text("연락 보내기"), onPressed: () async{
-        if(widget.docID == null){
+      bottomNavigationBar: ElevatedButton(
+          child: Text("제안 보내기"),
+          onPressed: () async {
+            if (_formKey.currentState!.validate()){
+              _formKey.currentState!.save();
+              print(OpenTalkUrl);
+              print(contactText);
+              print(offer);
+              if (widget.docID.isEmpty) {
+                //유저인 경우
+                print(1);
+              } else {
+                //  지인인 경우
+                var info = await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .get();
+                final url =
+                Uri.parse('https://foggy-boundless-avenue.glitch.me/sendComm');
+                try {
+                  http.Response response = await http.post(
+                    url,
+                    headers: <String, String>{
+                      'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: <String, String>{
+                      'to': '${widget.uid}',
+                      'from': "${FirebaseAuth.instance.currentUser!.uid}",
+                      'type': "member",
+                      'docId': '${widget.docID}',
+                      'purpose':offer,
+                      'context':contactText,
+                      'chatLink':OpenTalkUrl
+                    },
+                  );
+                  print(response.body);
+                } catch (e) {
+                  print(e);
+                }
+              }
+            }
 
-        }else{
 
-        }
-        var info = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .get();
-        final url =
-        Uri.parse('https://foggy-boundless-avenue.glitch.me/sendComm');
-        try {
-          http.Response response = await http.post(
-            url,
-            headers: <String, String>{
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: <String, String>{
-              'to': '${widget.uid}',
-              'from': "${FirebaseAuth.instance.currentUser!.uid}",
-
-            },
-          );
-        }catch (e) {
-        }
-      }),
+          }),
     );
   }
 }

@@ -19,9 +19,11 @@ Widget LoginEditTextForm(
             )),
         SizedBox(height: 10),
         TextFormField(
-          validator: validate != null ? validate: (value) {
-            return null;
-          },
+          validator: validate != null
+              ? validate
+              : (value) {
+                  return null;
+                },
           obscureText: isSecret,
           decoration: InputDecoration(
             focusedErrorBorder: OutlineInputBorder(
@@ -73,7 +75,7 @@ Widget SignUpEditTextForm(
             )),
         SizedBox(height: 10),
         TextFormField(
-          maxLines: label == "소개" ? 5 : 1,
+          maxLines: label == "소개" || label == "제안 내용" ? 5 : 1,
           obscureText: isSecret,
           decoration: InputDecoration(
               hintText: hint,

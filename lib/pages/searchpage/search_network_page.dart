@@ -123,10 +123,14 @@ class SearchNetworkPage extends StatelessWidget {
     Logger logger = Logger();
     final db = FirebaseFirestore.instance;
 
-    var user =
-        await db.collection("users").where("workArea", arrayContains: code).get();
-    var member =
-        await db.collection("member").where("workArea", arrayContains: code).get();
+    var user = await db
+        .collection("users")
+        .where("workArea", arrayContains: code)
+        .get();
+    var member = await db
+        .collection("member")
+        .where("workArea", arrayContains: code)
+        .get();
     Map<String, dynamic> data = {};
     data['list'] = List.empty(growable: true);
 
@@ -143,9 +147,9 @@ class SearchNetworkPage extends StatelessWidget {
           .where('code', isEqualTo: elementData['location'])
           .get();
       elementData['location'] = tmp.docs[0]['title'];
-      data['list'].add(elementData);
-      if (element["uid"] == FirebaseAuth.instance.currentUser!.uid) {
-      } else {
+
+      if (element["uid"] != FirebaseAuth.instance.currentUser!.uid) {
+        data['list'].add(elementData);
         user_cnt++;
       }
     }
@@ -162,9 +166,9 @@ class SearchNetworkPage extends StatelessWidget {
           .where('code', isEqualTo: elementData['location'])
           .get();
       elementData['location'] = tmp.docs[0]['title'];
-      data['list'].add(elementData);
-      if (element["uid"] == FirebaseAuth.instance.currentUser!.uid) {
-      } else {
+
+      if (element["uid"] != FirebaseAuth.instance.currentUser!.uid) {
+        data['list'].add(elementData);
         member_cnt++;
       }
     }

@@ -69,8 +69,20 @@ Widget CustomDropdownButton({
             onChanged: onChanged,
             items: itemList.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
+
                 value: value,
-                child: Text(value),
+
+                child: Text(value, style: value == "선택"
+                    ? const TextStyle(
+                  color: Color(0xffbdbdbd),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                )
+                    : const TextStyle(
+                  color: Color(0xff333333),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),),
               );
             }).toList(),
           ),

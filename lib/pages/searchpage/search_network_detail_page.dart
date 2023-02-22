@@ -208,11 +208,13 @@ class SearchNetworkDetailPage extends StatelessWidget {
                 QuerySnapshot<Map<String, dynamic>>memberData = await db.collection('member').where('uid',
                     isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
                 if (memberData.docs.length > 1) {
+                  logger.w(data);
+                  logger.w(data['uid']);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          ContactPage(docID: data['docId'], uid: data['uid']),
+                          ContactPage(docID: data['docId'] ?? "", uid: data['uid']),
                     ));
                 }
                 else {
