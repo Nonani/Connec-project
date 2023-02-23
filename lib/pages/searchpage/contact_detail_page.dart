@@ -7,8 +7,10 @@ import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 
 class ContactDetailPage extends StatefulWidget {
-  const ContactDetailPage({Key? key, required this.notice}) : super(key: key);
+  const ContactDetailPage({Key? key, required this.notice, required this.type})
+      : super(key: key);
   final Map<String, dynamic> notice;
+  final String type;
 
   @override
   State<ContactDetailPage> createState() => _ContactDetailPageState();
@@ -17,6 +19,7 @@ class ContactDetailPage extends StatefulWidget {
 class _ContactDetailPageState extends State<ContactDetailPage> {
   Logger logger = Logger();
   FirebaseFirestore db = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +74,6 @@ class _ContactDetailPageState extends State<ContactDetailPage> {
                 top: 7,
                 left: 26,
                 right: 26,
-
               ),
               decoration: BoxDecoration(
                 color: Color(0xffeeeeee),
@@ -97,7 +99,8 @@ class _ContactDetailPageState extends State<ContactDetailPage> {
                   } else {
                     return Container(
                       width: double.infinity,
-                      padding: EdgeInsets.only(top: 15, left: 76, right: 76, bottom: 30),
+                      padding: EdgeInsets.only(
+                          top: 15, left: 76, right: 76, bottom: 30),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -250,14 +253,23 @@ class _ContactDetailPageState extends State<ContactDetailPage> {
             ),
             Container(
               margin: EdgeInsets.only(left: 26, top: 30),
-              child: Text(
-                '오픈채팅방 링크를 지인에게 공유해주세요',
-                style: TextStyle(
-                  color: Color(0xff333333),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              child: widget.type == "member"
+                  ? Text(
+                      '오픈채팅방 링크를 지인에게 공유해주세요',
+                      style: TextStyle(
+                        color: Color(0xff333333),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    )
+                  : Text(
+                      '수락 후 아래의 오픈채팅방 링크로 연락하세요',
+                      style: TextStyle(
+                        color: Color(0xff333333),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
             ),
             Container(
               padding: EdgeInsets.all(18),
@@ -282,7 +294,8 @@ class _ContactDetailPageState extends State<ContactDetailPage> {
               child: Center(
                 child: TextButton(
                   onPressed: () {
-                    Clipboard.setData(ClipboardData(text: '${widget.notice["chatLink"]}'));
+                    Clipboard.setData(
+                        ClipboardData(text: '${widget.notice["chatLink"]}'));
                     showDialog(
                       context: context,
                       builder: (context) => Dialog(
@@ -301,7 +314,9 @@ class _ContactDetailPageState extends State<ContactDetailPage> {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              SizedBox(height: 20,),
+                              SizedBox(
+                                height: 20,
+                              ),
                               ElevatedButton(
                                   onPressed: () {
                                     Navigator.pop(context);
@@ -381,67 +396,43 @@ class _ContactDetailPageState extends State<ContactDetailPage> {
   }
 
   Future _future() async {
-
     final result =
         await db.collection("member").doc(widget.notice["member_id"]).get();
     logger.w(result.data);
     logger.w(widget.notice);
     return result.data();
   }
-  void contactAccept(Map<String, dynamic> notice){
-    db
-        .collection('notification')
-        .doc(notice["from_uid"])
-        .update({
+
+  void contactAccept(Map<String, dynamic> notice) {
+    db.collection('notification').doc(notice["from_uid"]).update({
       'list': FieldValue.arrayRemove([notice])
     });
-    db
-        .collection('notification')
-        .doc(notice["to_uid"])
-        .update({
+    db.collection('notification').doc(notice["to_uid"]).update({
       'list': FieldValue.arrayRemove([notice])
     });
     notice["state"] = "accepted";
     //수정된 값 인덱스 추가
-    db
-        .collection('notification')
-        .doc(notice["from_uid"])
-        .update({
+    db.collection('notification').doc(notice["from_uid"]).update({
       'list': FieldValue.arrayUnion([notice])
     });
-    db
-        .collection('notification')
-        .doc(notice["to_uid"])
-        .update({
+    db.collection('notification').doc(notice["to_uid"]).update({
       'list': FieldValue.arrayUnion([notice])
     });
   }
 
-  void contactReject(Map<String, dynamic> notice){
-    db
-        .collection('notification')
-        .doc(notice["from_uid"])
-        .update({
+  void contactReject(Map<String, dynamic> notice) {
+    db.collection('notification').doc(notice["from_uid"]).update({
       'list': FieldValue.arrayRemove([notice])
     });
-    db
-        .collection('notification')
-        .doc(notice["to_uid"])
-        .update({
+    db.collection('notification').doc(notice["to_uid"]).update({
       'list': FieldValue.arrayRemove([notice])
     });
     notice["state"] = "rejected";
     //수정된 값 인덱스 추가
-    db
-        .collection('notification')
-        .doc(notice["from_uid"])
-        .update({
+    db.collection('notification').doc(notice["from_uid"]).update({
       'list': FieldValue.arrayUnion([notice])
     });
-    db
-        .collection('notification')
-        .doc(notice["to_uid"])
-        .update({
+    db.collection('notification').doc(notice["to_uid"]).update({
       'list': FieldValue.arrayUnion([notice])
     });
   }

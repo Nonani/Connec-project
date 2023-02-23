@@ -15,6 +15,7 @@ class CustomNoticeItem extends StatefulWidget {
 
 class _CustomNoticeItemState extends State<CustomNoticeItem> {
   final db = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
     //알림창 리스트 안에 들어갈 아이템 위젯을 관리하는 클래스
@@ -29,14 +30,13 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
       case "contact":
         if (widget.notice["from_uid"] !=
             FirebaseAuth.instance.currentUser!.uid.toString()) {
-          return ReceiveContactRequest(widget.notice);
+          return ReceiveContactMemberRequest(widget.notice);
         } else {
-          return Container();
+          return ReceiveContactUserRequest(widget.notice);
           // return SentContactRequest(widget.notice);
         }
       default:
         return Container();
-
     }
   }
 
@@ -99,8 +99,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                               context,
                               DialogRoute(
                                   context: context,
-                                  builder: (context) =>
-                                      AlertDialog(
+                                  builder: (context) => AlertDialog(
                                         title: Text("요청 수락"),
                                         content: Text(
                                             "${notice["from_uid"]}님의 네트워크 요청을 수락하였습니다."),
@@ -147,8 +146,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                               context,
                               DialogRoute(
                                   context: context,
-                                  builder: (context) =>
-                                      AlertDialog(
+                                  builder: (context) => AlertDialog(
                                         title: Text("요청 거절"),
                                         content: Text(
                                             "${notice["from_uid"]}님의 네트워크 요청을 거절하였습니다."),
@@ -179,7 +177,6 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
   }
 
   Widget SentNetworkRequest(Map<String, dynamic> notice) {
-
     Logger logger = Logger();
     try {
       switch (notice["state"]) {
@@ -199,17 +196,20 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
                 Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 15, ),
-                  child: Text('${notice["to"]}이 네트워크 요청을 거절했습니다.',
+                  padding: const EdgeInsets.only(
+                    left: 10,
+                    top: 15,
+                  ),
+                  child: Text(
+                    '${notice["to"]}이 네트워크 요청을 거절했습니다.',
                     style: TextStyle(
                       color: Color(0xff333333),
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap: () async{
+                  onTap: () async {
                     await db
                         .collection('notification')
                         .doc(notice["from_uid"])
@@ -224,9 +224,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                       'list': FieldValue.arrayUnion([notice])
                     });
                     //db에서 case network -> checked_network
-                    setState(() {
-
-                    });
+                    setState(() {});
                   },
                   child: Container(
                     margin: const EdgeInsets.only(left: 10, top: 15, right: 5),
@@ -235,7 +233,8 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                       color: Color(0xff5f66f2),
                       borderRadius: BorderRadius.circular(13),
                     ),
-                    child: Text('확인완료',
+                    child: Text(
+                      '확인완료',
                       style: TextStyle(
                         color: Color(0xfffafafa),
                         fontSize: 12,
@@ -245,7 +244,6 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                   ),
                 ),
               ],
-
             ),
           );
         default:
@@ -257,7 +255,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
     }
   }
 
-  Widget ReceiveContactRequest(Map<String, dynamic> notice) {
+  Widget ReceiveContactMemberRequest(Map<String, dynamic> notice) {
     Logger logger = Logger();
 
     try {
@@ -267,15 +265,72 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(width: 4),
-                Expanded(child: Text("${notice["from"]}님이 ${notice["to"]}님의 지인에 대한 요청을 하였습니다.")),
+                Expanded(
+                    child: Text(
+                        "${notice["from"]}님이 ${notice["to"]}님의 지인에 대한 제안 요청을 하였습니다.")),
                 Row(
                   children: [
                     IconButton(
                         iconSize: 8,
                         onPressed: () {
                           // 기존 값 인덱스 삭제
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => ContactDetailPage(notice: notice,),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ContactDetailPage(
+                                  notice: notice,
+                                  type: "member",
+                                ),
+                              ));
+                        },
+                        icon: Image.asset("assets/images/accept_btn.png")),
+                    IconButton(
+                        iconSize: 8,
+                        onPressed: () {},
+                        icon: Image.asset("assets/images/reject_btn.png")),
+                  ],
+                ),
+              ]);
+        case "rejected":
+          return Container();
+        case "accepted":
+          return Container();
+        default:
+          return Container();
+      }
+    } catch (e) {
+      logger.w(e);
+      return Container();
+    }
+  }
 
+  Widget ReceiveContactUserRequest(Map<String, dynamic> notice) {
+    Logger logger = Logger();
+
+    try {
+      switch (notice["state"]) {
+        case "waiting":
+          return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(width: 4),
+                Expanded(
+                    child: Text(
+                        "${notice["from"]}님이 ${notice["to"]}에게 제안 요청을 하였습니다.")),
+                Row(
+                  children: [
+                    IconButton(
+                        iconSize: 8,
+                        onPressed: () {
+                          // 기존 값 인덱스 삭제
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ContactDetailPage(
+                                  notice: notice,
+                                  type: "user"
+                                ),
+                              ));
                         },
                         icon: Image.asset("assets/images/accept_btn.png")),
                     IconButton(
