@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../../components/custom_dialog.dart';
 import '../../const/data.dart';
 
 class ContactPage extends StatefulWidget {
@@ -82,6 +83,7 @@ class _ContactPageState extends State<ContactPage> {
               print(OpenTalkUrl);
               print(contactText);
               print(offer);
+              showCustomDialog(context);
               if (widget.docID.isEmpty) {
                 //유저인 경우
                 print(1);
@@ -109,6 +111,8 @@ class _ContactPageState extends State<ContactPage> {
                       'chatLink':OpenTalkUrl
                     },
                   );
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                   print(response.body);
                 } catch (e) {
                   print(e);

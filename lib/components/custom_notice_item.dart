@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/main.dart';
+import 'package:connec/pages/searchpage/contact_detail_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -13,8 +14,10 @@ class CustomNoticeItem extends StatefulWidget {
 }
 
 class _CustomNoticeItemState extends State<CustomNoticeItem> {
+  final db = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
+    //알림창 리스트 안에 들어갈 아이템 위젯을 관리하는 클래스
     switch (widget.notice["case"]) {
       case "network":
         if (widget.notice["from_uid"] !=
@@ -26,9 +29,10 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
       case "contact":
         if (widget.notice["from_uid"] !=
             FirebaseAuth.instance.currentUser!.uid.toString()) {
-          return ReceiveNetworkRequest(widget.notice);
+          return ReceiveContactRequest(widget.notice);
         } else {
-          return SentNetworkRequest(widget.notice);
+          return Container();
+          // return SentContactRequest(widget.notice);
         }
       default:
         return Container();
@@ -37,7 +41,6 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
   }
 
   Widget ReceiveNetworkRequest(Map<String, dynamic> notice) {
-    final db = FirebaseFirestore.instance;
     Logger logger = Logger();
 
     try {
@@ -113,7 +116,51 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                         icon: Image.asset("assets/images/accept_btn.png")),
                     IconButton(
                         iconSize: 10,
-                        onPressed: () {},
+                        onPressed: () {
+                          db
+                              .collection('notification')
+                              .doc(notice["from_uid"])
+                              .update({
+                            'list': FieldValue.arrayRemove([notice])
+                          });
+                          db
+                              .collection('notification')
+                              .doc(notice["to_uid"])
+                              .update({
+                            'list': FieldValue.arrayRemove([notice])
+                          });
+                          notice["state"] = "rejected";
+                          //수정된 값 인덱스 추가
+                          db
+                              .collection('notification')
+                              .doc(notice["from_uid"])
+                              .update({
+                            'list': FieldValue.arrayUnion([notice])
+                          });
+                          db
+                              .collection('notification')
+                              .doc(notice["to_uid"])
+                              .update({
+                            'list': FieldValue.arrayUnion([notice])
+                          });
+                          Navigator.push(
+                              context,
+                              DialogRoute(
+                                  context: context,
+                                  builder: (context) =>
+                                      AlertDialog(
+                                        title: Text("요청 거절"),
+                                        content: Text(
+                                            "${notice["from_uid"]}님의 네트워크 요청을 거절하였습니다."),
+                                        actions: [
+                                          ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text("Close")),
+                                        ],
+                                      ))).then((value) => setState(() {}));
+                        },
                         icon: Image.asset("assets/images/reject_btn.png")),
                   ],
                 ),
@@ -132,7 +179,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
   }
 
   Widget SentNetworkRequest(Map<String, dynamic> notice) {
-    final db = FirebaseFirestore.instance;
+
     Logger logger = Logger();
     try {
       switch (notice["state"]) {
@@ -201,6 +248,47 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
 
             ),
           );
+        default:
+          return Container();
+      }
+    } catch (e) {
+      logger.w(e);
+      return Container();
+    }
+  }
+
+  Widget ReceiveContactRequest(Map<String, dynamic> notice) {
+    Logger logger = Logger();
+
+    try {
+      switch (notice["state"]) {
+        case "waiting":
+          return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(width: 4),
+                Expanded(child: Text("${notice["from"]}님이 ${notice["to"]}님의 지인에 대한 요청을 하였습니다.")),
+                Row(
+                  children: [
+                    IconButton(
+                        iconSize: 8,
+                        onPressed: () {
+                          // 기존 값 인덱스 삭제
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ContactDetailPage(notice: notice,),));
+
+                        },
+                        icon: Image.asset("assets/images/accept_btn.png")),
+                    IconButton(
+                        iconSize: 8,
+                        onPressed: () {},
+                        icon: Image.asset("assets/images/reject_btn.png")),
+                  ],
+                ),
+              ]);
+        case "rejected":
+          return Container();
+        case "accepted":
+          return Container();
         default:
           return Container();
       }
