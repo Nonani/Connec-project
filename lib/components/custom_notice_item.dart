@@ -21,6 +21,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
     //알림창 리스트 안에 들어갈 아이템 위젯을 관리하는 클래스
     switch (widget.notice["case"]) {
       case "network":
+      //네크워크 확장 관련 알림인 경우
         if (widget.notice["from_uid"] !=
             FirebaseAuth.instance.currentUser!.uid.toString()) {
           return ReceiveNetworkRequest(widget.notice);
@@ -28,16 +29,15 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
           return SentNetworkRequest(widget.notice);
         }
       case "contact":
+      //제안하기 관련 알림인 경우
         if (widget.notice["from_uid"] !=
             FirebaseAuth.instance.currentUser!.uid.toString()) {
           //보낸 사람
-
           return (widget.notice["member_id"] == '')
               ? ReceiveContactUserRequest(widget.notice)
               : ReceiveContactMemberRequest(widget.notice);
         } else {
           return Container();
-          // return ReceiveContactUserRequest(widget.notice);
           // return SentContactRequest(widget.notice);
         }
       default:
@@ -323,9 +323,9 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                               DialogRoute(
                                   context: context,
                                   builder: (context) => AlertDialog(
-                                        title: Text("요청 거절"),
+                                        title: Text("제안 거절"),
                                         content: Text(
-                                            "${notice["from_uid"]}님의 네트워크 요청을 거절하였습니다."),
+                                            "${notice["from_uid"]}님의 제안 요청을 거절하였습니다."),
                                         actions: [
                                           ElevatedButton(
                                               onPressed: () {
@@ -413,9 +413,9 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                               DialogRoute(
                                   context: context,
                                   builder: (context) => AlertDialog(
-                                        title: Text("요청 거절"),
+                                        title: Text("제안 거절"),
                                         content: Text(
-                                            "${notice["from_uid"]}님의 네트워크 요청을 거절하였습니다."),
+                                            "${notice["from_uid"]}님의 제안 요청을 거절하였습니다."),
                                         actions: [
                                           ElevatedButton(
                                               onPressed: () {

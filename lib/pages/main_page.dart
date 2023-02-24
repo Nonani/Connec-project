@@ -70,7 +70,9 @@ class _MainPageState extends State<MainPage> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                SizedBox(height: 20,),
+                                SizedBox(
+                                  height: 20,
+                                ),
                                 ElevatedButton(
                                     onPressed: () {
                                       Navigator.pop(context);
@@ -108,7 +110,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 Container(
-                    margin: EdgeInsets.only(left: 17, right: 17, top:10),
+                    margin: EdgeInsets.only(left: 17, right: 17, top: 10),
                     width: double.infinity,
                     height: 41,
                     child: ElevatedButton(
@@ -298,9 +300,15 @@ class _MainPageState extends State<MainPage> {
         .doc(FirebaseAuth.instance.currentUser!.uid.toString())
         .get();
     if (result.data() == null) return {"list": []};
-    // result.data()?.forEach((key, value) {
-    //   print("${key}\t${value}");
-    // });
-    return result;
+
+    List list = [];
+    for (int i = 0; i < result.data()!['list'].length; i++) {
+      if (result.data()!['list'][i]['to_uid'] ==
+              FirebaseAuth.instance.currentUser!.uid.toString() &&
+          result.data()!['list'][i]['state'] == "waiting") {
+        list.add(result.data()!['list'][i]);
+      }
+    }
+    return {"list": list};
   }
 }
