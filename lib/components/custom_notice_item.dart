@@ -30,9 +30,14 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
       case "contact":
         if (widget.notice["from_uid"] !=
             FirebaseAuth.instance.currentUser!.uid.toString()) {
-          return ReceiveContactMemberRequest(widget.notice);
+          //보낸 사람
+
+          return (widget.notice["member_id"] == '')
+              ? ReceiveContactUserRequest(widget.notice)
+              : ReceiveContactMemberRequest(widget.notice);
         } else {
-          return ReceiveContactUserRequest(widget.notice);
+          return Container();
+          // return ReceiveContactUserRequest(widget.notice);
           // return SentContactRequest(widget.notice);
         }
       default:
@@ -327,9 +332,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ContactDetailPage(
-                                  notice: notice,
-                                  type: "user"
-                                ),
+                                    notice: notice, type: "user"),
                               ));
                         },
                         icon: Image.asset("assets/images/accept_btn.png")),

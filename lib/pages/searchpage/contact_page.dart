@@ -86,7 +86,34 @@ class _ContactPageState extends State<ContactPage> {
               showCustomDialog(context);
               if (widget.docID.isEmpty) {
                 //유저인 경우
-                print(1);
+                var info = await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .get();
+                final url =
+                Uri.parse('https://foggy-boundless-avenue.glitch.me/sendComm');
+                try {
+                  http.Response response = await http.post(
+                    url,
+                    headers: <String, String>{
+                      'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: <String, String>{
+                      'to': '${widget.uid}',
+                      'from': "${FirebaseAuth.instance.currentUser!.uid}",
+                      'type': "user",
+                      'docId': '',
+                      'purpose':offer,
+                      'context':contactText,
+                      'chatLink':OpenTalkUrl
+                    },
+                  );
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  print(response.body);
+                } catch (e) {
+                  print(e);
+                }
               } else {
                 //  지인인 경우
                 var info = await FirebaseFirestore.instance
