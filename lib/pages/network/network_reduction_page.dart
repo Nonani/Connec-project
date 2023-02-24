@@ -184,8 +184,8 @@ class NetworkReductionPage extends StatelessWidget {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("관계", style: contextKey),
-                                          Text('한 다리', style: contextValue),
+                                          Text("이름", style: contextKey),
+                                          Text(snapshot.data['name'], style: contextValue),
                                         ],
                                       ),
                                       SizedBox(
@@ -203,16 +203,8 @@ class NetworkReductionPage extends StatelessWidget {
                                       ),
                                     ]),
                                     Column(children: workSection(snapshot.data['workArea'])),
+                                    Column(children: careerSection(snapshot.data['career'])),
                                     Column(children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("경력", style: contextKey),
-                                          SizedBox(width: 20),
-                                          Text(snapshot.data['career'][0], style: contextValue),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
@@ -242,6 +234,14 @@ class NetworkReductionPage extends StatelessWidget {
                                         children: [
                                           Text("성격", style: contextKey),
                                           Text(snapshot.data['personality'][0], style: contextValue),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("", style: contextKey),
+                                          Text(snapshot.data['personality'][1], style: contextValue),
                                         ],
                                       ),
                                       SizedBox(height: 10),
@@ -286,6 +286,31 @@ class NetworkReductionPage extends StatelessWidget {
         });
   }
 
+  List<Widget> careerSection(List<dynamic> career){
+    List<Widget> result = [];
+    for (int index = 0; index < career.length; index++) {
+      String text = index > 0 ? "" : "경력";
+      result.add(
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(
+              text,
+              style: contextKey,
+            ),
+            Text(
+              career[index],
+              style: contextValue,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            )
+          ]));
+      result.add(
+        SizedBox(
+          height: 10,
+        ),
+      );
+    }
+    return result;
+  }
   List<Widget> workSection(List<String> workArea) {
     List<Widget> result = [];
     for (int index = 0; index < workArea.length; index++) {

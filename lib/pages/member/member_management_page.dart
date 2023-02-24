@@ -119,16 +119,8 @@ class AcquitanceManagementPage extends StatelessWidget {
                         }
                       },
                     ),
+                    Column(children: careerSection(data['career'])),
                     Column(children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("경력", style: contextKey),
-                          SizedBox(width: 20),
-                          Text(data['career'][0], style: contextValue),
-                        ],
-                      ),
-                      SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -158,6 +150,14 @@ class AcquitanceManagementPage extends StatelessWidget {
                         children: [
                           Text("성격", style: contextKey),
                           Text(data['personality'][0], style: contextValue),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("", style: contextKey),
+                          Text(data['personality'][1], style: contextValue),
                         ],
                       ),
                       SizedBox(height: 10),
@@ -205,6 +205,31 @@ class AcquitanceManagementPage extends StatelessWidget {
         ]));
   }
 
+  List<Widget> careerSection(List<dynamic> career){
+    List<Widget> result = [];
+    for (int index = 0; index < career.length; index++) {
+      String text = index > 0 ? "" : "경력";
+      result.add(
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(
+              text,
+              style: contextKey,
+            ),
+            Text(
+              career[index],
+              style: contextValue,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            )
+          ]));
+      result.add(
+        SizedBox(
+          height: 10,
+        ),
+      );
+    }
+    return result;
+  }
   List<Widget> workSection(List<String> workArea) {
     List<Widget> result = [];
     for (int index = 0; index < workArea.length; index++) {
