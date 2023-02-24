@@ -70,7 +70,9 @@ class _MainPageState extends State<MainPage> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                SizedBox(height: 20,),
+                                SizedBox(
+                                  height: 20,
+                                ),
                                 ElevatedButton(
                                     onPressed: () {
                                       Navigator.pop(context);
@@ -108,7 +110,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 Container(
-                    margin: EdgeInsets.only(left: 17, right: 17, top:10),
+                    margin: EdgeInsets.only(left: 17, right: 17, top: 10),
                     width: double.infinity,
                     height: 41,
                     child: ElevatedButton(
@@ -206,21 +208,32 @@ class _MainPageState extends State<MainPage> {
                     ),
                     color: Color(0xffeeeeee),
                   ),
-                  child: SingleChildScrollView(
-                    child: Column(children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-                        // 리스트 자식 높이 크기의 합 만큼으로 영역 고정
-                        physics: const NeverScrollableScrollPhysics(),
-                        // 스크롤 안되도록 설정하는 옵션 값
-                        itemCount: snapshot.data['list'].length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final notice = snapshot.data['list'][index];
-                          return CustomNoticeItem(notice: notice);
-                        },
-                      ),
-                    ]),
-                  ),
+                  child: snapshot.data['list'].length == 0
+                      ? Center(
+                          child: Text(
+                            '새로운 알림이 없습니다',
+                            style: TextStyle(
+                              color: Color(0xff333333),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        )
+                      : SingleChildScrollView(
+                          child: Column(children: [
+                            ListView.builder(
+                              shrinkWrap: true,
+                              // 리스트 자식 높이 크기의 합 만큼으로 영역 고정
+                              physics: const NeverScrollableScrollPhysics(),
+                              // 스크롤 안되도록 설정하는 옵션 값
+                              itemCount: snapshot.data['list'].length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final notice = snapshot.data['list'][index];
+                                return CustomNoticeItem(notice: notice);
+                              },
+                            ),
+                          ]),
+                        ),
                 ),
               ],
             ),
@@ -298,9 +311,15 @@ class _MainPageState extends State<MainPage> {
         .doc(FirebaseAuth.instance.currentUser!.uid.toString())
         .get();
     if (result.data() == null) return {"list": []};
-    // result.data()?.forEach((key, value) {
-    //   print("${key}\t${value}");
-    // });
-    return result;
+
+    List list = [];
+    for (int i = 0; i < result.data()!['list'].length; i++) {
+      if (result.data()!['list'][i]['to_uid'] ==
+              FirebaseAuth.instance.currentUser!.uid.toString() &&
+          result.data()!['list'][i]['state'] == "waiting") {
+        list.add(result.data()!['list'][i]);
+      }
+    }
+    return {"list": list};
   }
 }
