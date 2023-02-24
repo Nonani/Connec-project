@@ -102,7 +102,7 @@ class AcquitanceManagementPage extends StatelessWidget {
                       future: workString(data['workArea']),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return Column(children: workSection(snapshot.data!));
+                          return Column(children: workSection(snapshot.data!, data['career']));
                         } else {
                           return Column(children: [
                             Row(
@@ -119,7 +119,6 @@ class AcquitanceManagementPage extends StatelessWidget {
                         }
                       },
                     ),
-                    Column(children: careerSection(data['career'])),
                     Column(children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -205,35 +204,11 @@ class AcquitanceManagementPage extends StatelessWidget {
         ]));
   }
 
-  List<Widget> careerSection(List<dynamic> career){
+  List<Widget> workSection(List<String> workArea, List<dynamic> career) {
     List<Widget> result = [];
-    for (int index = 0; index < career.length; index++) {
-      String text = index > 0 ? "" : "경력";
-      result.add(
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(
-              text,
-              style: contextKey,
-            ),
-            Text(
-              career[index],
-              style: contextValue,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            )
-          ]));
-      result.add(
-        SizedBox(
-          height: 10,
-        ),
-      );
-    }
-    return result;
-  }
-  List<Widget> workSection(List<String> workArea) {
-    List<Widget> result = [];
-    for (int index = 0; index < workArea.length; index++) {
+    for (int index = 0; index < workArea.length * 2; index++) {
       String text = index > 0 ? "" : "전문분야";
+      String data = index % 2 == 0? workArea[index ~/ 2]: career[index ~/ 2];
       result.add(
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Text(
@@ -241,7 +216,7 @@ class AcquitanceManagementPage extends StatelessWidget {
           style: contextKey,
         ),
         Text(
-          workArea[index],
+          data,
           style: contextValue,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
