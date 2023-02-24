@@ -15,7 +15,9 @@ const List<String> workList = <String>[
   '선택',
   "대표",
   "임원",
-  "전문직",
+  "인사 담당자",
+  "팀장",
+  "사원",
   "프리랜서",
   "교수",
   "박사",
@@ -76,4 +78,4 @@ const List<String> personalityList = <String>[
   "감성적인"
 ];
 const List<String> genderList = <String>['선택', "남성", "여성"];
-const List<String> offerItemList= ["선택", "정규직 채용", "계약직 채용", "프로젝트 외주", "자문"];
+const List<String> offerItemList = ["선택", "정규직 채용", "계약직 채용", "프로젝트 외주", "자문"];
