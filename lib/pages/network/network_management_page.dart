@@ -435,15 +435,16 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     }catch(e){
       logger.w(e);
     }
-    try{
+    // try{
       thirdData = thirdQueryData(firstData['networkData'], secondData['networkData']);
       parsedData = await parseWork(thirdData['relationData'], thirdData['networkUserData']);
       result['count'][2] = thirdData['count'];
+      logger.w(thirdData['count']);
       result['data'].add(parsedData[0]);
       result['dict'].add(parsedData[1]);
-    } catch (e) {
-      logger.w(e);
-    }
+    // } catch (e) {
+    //   logger.w(e);
+    // }
     //hl
     return result;
   }

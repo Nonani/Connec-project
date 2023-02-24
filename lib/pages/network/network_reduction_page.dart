@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/components/custom_expansion_tile.dart';
 import 'package:connec/style/buttonstyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -44,27 +45,27 @@ class NetworkReductionPage extends StatelessWidget {
               body: Center(
                 child: Column(children: [
                   Container(
-                      width: double.infinity,
-                      height: 250,
-                      child: Image.network("")),
-                  Container(
-                      height: 450,
+                      height: 724,
                       width: 330,
                       margin: const EdgeInsets.only(top: 13, bottom: 10.5),
                       child: SingleChildScrollView(
                           child: Column(children: [
                             Container(
-                              padding: EdgeInsets.only(top: 13, bottom: 13),
-                              child: Text(
-                                snapshot.data['name'],
-                                style: const TextStyle(
-                                  color: Color(0xff333333),
-                                  fontSize: 21,
-                                  fontFamily: 'EchoDream',
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
+                                padding: EdgeInsets.only(top: 13, bottom: 13),
+                                height: 224,
+                                child: Column(children: [
+                                  SizedBox(height: 121),
+                                  Text(
+                                    snapshot.data['name'],
+                                    style: const TextStyle(
+                                      color: Color(0xff333333),
+                                      fontSize: 27,
+                                      fontFamily: 'EchoDream',
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(height: 26),
+                                ])),
                             Container(
                               width: 336,
                               height: 0,
@@ -97,28 +98,56 @@ class NetworkReductionPage extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
                                     children: [
                                       Column(
                                         crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                              "지인 평점", style: contextKey),
-                                          Text("지인 수", style: contextKey),
-                                          Text("지인 대표 분야",
-                                              style: contextKey)
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                                "지인 평점", style: contextKey),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                                "지인 수", style: contextKey),
+                                          ),
+                                          Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: 10),
+                                              child:
+                                              Text("지인 성격", style: contextKey)),
                                         ],
                                       ),
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment
                                             .end,
                                         children: [
-                                          Text("${snapshot.data['rate']}/5.0",
-                                              style: contextValue),
-                                          Text(acquitances.toString(),
-                                              style: contextValue),
-                                          Text(snapshot.data['personality'][0],
-                                              style: contextValue)
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                                "${snapshot.data['rate']}/5.0",
+                                                style: contextValue),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(acquitances.toString(),
+                                                style: contextValue),
+                                          ),
+                                          Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: 10),
+                                              child: Text(
+                                                  snapshot
+                                                      .data['personality'][0],
+                                                  style: contextValue)),
                                         ],
                                       )
                                     ],
@@ -150,40 +179,115 @@ class NetworkReductionPage extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
                                     children: [
                                       Column(
                                         crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                         children: [
-                                          Text("이름", style: contextKey),
-                                          Text(
-                                              "직군/직무", style: contextKey),
-                                          Text("경력", style: contextKey),
-                                          Text("활동지", style: contextKey),
-                                          Text("성별", style: contextKey),
-                                          Text("나이", style: contextKey),
-                                          Text("능력", style: contextKey),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                                "이름", style: contextKey),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                                "직업", style: contextKey),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                                "경력", style: contextKey),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                                "활동지", style: contextKey),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                                "성별", style: contextKey),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                                "나이", style: contextKey),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                                "성격", style: contextKey),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                                "직군/직무", style: contextKey),
+                                          ),
                                         ],
                                       ),
                                       Column(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .start,
                                         crossAxisAlignment: CrossAxisAlignment
                                             .end,
                                         children: [
-                                          Text(snapshot.data['name'],
-                                              style: contextValue),
-                                          Text(snapshot.data['personality'][0],
-                                              style: contextValue),
-                                          Text(snapshot.data['work'],
-                                              style: contextValue),
-                                          Text(snapshot.data['location'],
-                                              style: contextValue),
-                                          Text(snapshot.data['gender'],
-                                              style: contextValue),
-                                          Text(snapshot.data['age'],
-                                              style: contextValue),
-                                          Text(snapshot.data['introduction'],
-                                              style: contextValue),
-                                        ],
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(snapshot.data['name'],
+                                                style: contextValue),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(snapshot.data['work'],
+                                                style: contextValue),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                                snapshot.data['career'][0],
+                                                style: contextValue),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                                snapshot.data['location'],
+                                                style: contextValue),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(snapshot.data['gender'],
+                                                style: contextValue),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(snapshot.data['age'],
+                                                style: contextValue),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                                snapshot.data['personality'][0],
+                                                style: contextValue),
+                                          ),
+                                        ] + workSection(snapshot.data['workArea']),
                                       )
                                     ],
                                   ),
@@ -199,18 +303,18 @@ class NetworkReductionPage extends StatelessWidget {
                   db
                       .collection('networks')
                       .doc(FirebaseAuth.instance.currentUser!.uid)
-                      .update({'list': FieldValue.arrayRemove([uid])});
-                  db
-                      .collection('networks')
-                      .doc(uid)
                       .update({
+                    'list': FieldValue.arrayRemove([uid])
+                  });
+                  db.collection('networks').doc(uid).update({
                     'list': FieldValue.arrayRemove(
                         [FirebaseAuth.instance.currentUser!.uid])
                   });
                   Navigator.of(context).pop();
                 },
                 style: featureButton,
-                child: Text('삭제하기',
+                child: Text(
+                  '삭제하기',
                   style: buttonText,
                 ),
               ),
@@ -219,11 +323,48 @@ class NetworkReductionPage extends StatelessWidget {
         });
   }
 
+  List<Padding> workSection(List<String> workArea) {
+    List<Padding> result = [];
+    for (String element in workArea) {
+      String data = element != "null" ? element : "";
+      result.add(Padding(
+        padding: EdgeInsets.only(bottom: 10),
+        child: Text(
+            element,
+            style: contextValue),
+      ));
+    }
+    return result;
+  }
+
   Future _future() async {
-    logger.w(uid);
     FirebaseFirestore db = FirebaseFirestore.instance;
     var user = await db.collection('users').doc(uid).get();
-    var result = user.data();
+    Map<String, dynamic>? result = user.data();
+    String location = ((await db
+        .collection('localData')
+        .where('code', isEqualTo: result!['location'])
+        .get())
+        .docs[0])
+        .data()['title'];
+    result!['location'] = location;
+    List<dynamic> workArea = await parseWork(result!['workArea']);
+    result['workArea'] = workArea;
+    logger.w(workArea);
+    return result;
+  }
+
+  Future<List<String>> parseWork(List<dynamic> data) async {
+    List<String> result = [];
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    for (String element in data) {
+      String primary =
+      (await db.collection('workData').doc('${element[0]}00').get())
+          .data()!['title'];
+      String secondary =
+      (await db.collection('workData').doc(element).get()).data()!['title'];
+      result.add("$primary > $secondary");
+    }
     return result;
   }
 }

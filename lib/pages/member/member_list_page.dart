@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 
-
 class AcquitanceListPage extends StatefulWidget {
   const AcquitanceListPage({Key? key}) : super(key: key);
 
@@ -118,7 +117,7 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                               onTap: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                      logger.w(snapshot.data);
+                                  logger.w(snapshot.data);
                                   return AcquitanceManagementPage(
                                       snapshot.data!['list'][index]);
                                 }));
@@ -129,17 +128,20 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                                   width: 360,
                                   height: 130,
                                   child: MemberItemWidget(
-                                    nameStyle: _nameStyle,
-                                    classStyle: _classStyle,
-                                    contextStyle: _contextStyle,
-                                    itemStyle: _itemStyle,
-                                    field: snapshot.data['list'][index]['title'],
-                                    // field: snapshot.data['list'][index]['work'],
-                                    rate: snapshot.data['list'][index]['rate'].toString(),
-                                    relationship: '한 다리',
-                                    capability: snapshot.data['list'][index]
-                                        ['personality'][0],
-                                  ),
+                                      nameStyle: _nameStyle,
+                                      classStyle: _classStyle,
+                                      contextStyle: _contextStyle,
+                                      itemStyle: _itemStyle,
+                                      field: snapshot.data['list'][index]
+                                          ['title'],
+                                      // field: snapshot.data['list'][index]['work'],
+                                      rate: snapshot.data['list'][index]['rate']
+                                          .toString(),
+                                      relationship: '한 다리',
+                                      pCapability: snapshot.data['list'][index]
+                                          ['personality'][0],
+                                      sCapability: snapshot.data['list'][index]
+                                          ['personality'][1]),
                                 ),
                               ),
                             );
@@ -151,10 +153,10 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => MemberBodyPage( mode: '0'),
-                          )).then((value) => setState(() {
-
-                          },));
+                            builder: (context) => MemberBodyPage(mode: '0'),
+                          )).then((value) => setState(
+                            () {},
+                          ));
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(247.3, 55.9),

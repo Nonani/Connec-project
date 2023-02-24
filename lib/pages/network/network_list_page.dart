@@ -107,7 +107,7 @@ class _NetworkListPageState extends State<NetworkListPage> {
                                     name: snapshot.data['users'][index]['name'],
                                     rate: snapshot.data['users'][index]['rate'].toString(),
                                     number: snapshot.data['users'][index]['acquaintances'].toString(),
-                                    representative: snapshot.data['users'][index]['personality'][0],
+                                    representative: snapshot.data['users'][index]['personality'],
                                   ),
                                 ),
                               ),

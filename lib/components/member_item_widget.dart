@@ -10,14 +10,16 @@ class MemberItemWidget extends StatelessWidget {
     required String field,
     required String rate,
     required String relationship,
-    required String capability,
+    required String pCapability,
+    required String sCapability,
   })  : _nameStyle = nameStyle,
         _classStyle = classStyle,
         _sectionStyle = contextStyle,
         _field = field,
         _rate = rate,
         _relationship = relationship,
-        _capability = capability,
+        _pCapability = pCapability,
+        _sCapability = sCapability,
         super(key: key);
 
   final TextStyle _nameStyle;
@@ -27,50 +29,49 @@ class MemberItemWidget extends StatelessWidget {
   final String _field;
   final String _rate;
   final String _relationship;
-  final String _capability;
+  final String _pCapability;
+  final String _sCapability;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Row(
         children: [
-          SizedBox(
-            width: 130,
-            height: 153,
-            child: Image.network("",
-                width: 130, height: 153, fit: BoxFit.fitHeight),
-          ),
           Padding(
             padding: const EdgeInsets.only(top: 7, left: 8),
             child: SizedBox(
-              width: 199,
+              width: 360,
               height: 130,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(_field, style: _nameStyle),
-                  Text(_field, style: _classStyle),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(_field, style: _nameStyle),
+                      SizedBox(width: 10),
+                      Text(_field, style: _classStyle),
+                    ],
+                  ),
                   Padding(
-                      padding: EdgeInsets.only(left: 7),
+                      padding: EdgeInsets.only(left: 160),
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(right: 7 ),
+                            padding: EdgeInsets.only(right: 21),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
                                     padding: EdgeInsets.only(top: 7),
-                                    child: Text("관계", style: _sectionStyle)
-                                ),
+                                    child: Text("관계", style: _sectionStyle)),
                                 Padding(
                                     padding: EdgeInsets.only(top: 7),
-                                    child: Text("평점", style: _sectionStyle)
-                                ),
+                                    child: Text("평점", style: _sectionStyle)),
                                 Padding(
                                     padding: EdgeInsets.only(top: 7),
-                                    child: Text("성격", style: _sectionStyle)
-                                ),
+                                    child: Text("성격", style: _sectionStyle)),
                               ],
                             ),
                           ),
@@ -79,16 +80,20 @@ class MemberItemWidget extends StatelessWidget {
                             children: [
                               Padding(
                                   padding: EdgeInsets.only(top: 7),
-                                  child: Text(_relationship, style: _sectionStyle)
-                              ),
+                                  child: Text(_relationship,
+                                      style: _sectionStyle)),
                               Padding(
                                   padding: EdgeInsets.only(top: 7),
-                                  child: Text("${_rate}/5.0", style: _sectionStyle)
-                              ),
+                                  child: Text("${_rate} / 5.0",
+                                      style: _sectionStyle)),
                               Padding(
                                   padding: EdgeInsets.only(top: 7),
-                                  child: Text(_capability, style: _sectionStyle)
-                              ),
+                                  child:
+                                      Text(_pCapability, style: _sectionStyle)),
+                              Padding(
+                                  padding: EdgeInsets.only(top: 4),
+                                  child:
+                                  Text(_sCapability, style: _sectionStyle)),
                             ],
                           )
                         ],

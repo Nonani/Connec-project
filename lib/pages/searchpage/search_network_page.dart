@@ -94,18 +94,19 @@ class SearchNetworkPage extends StatelessWidget {
                                     width: 360,
                                     height: 130,
                                     child: MemberItemWidget(
-                                      nameStyle: _nameStyle,
-                                      classStyle: _classStyle,
-                                      contextStyle: _contextStyle,
-                                      itemStyle: _itemStyle,
-                                      field: snapshot.data['list'][index]
-                                          ['title'],
-                                      // field: snapshot.data['list'][index]['work'],
-                                      rate: '0',
-                                      relationship: '한 다리',
-                                      capability: snapshot.data['list'][index]
-                                          ['personality'][0],
-                                    ),
+                                        nameStyle: _nameStyle,
+                                        classStyle: _classStyle,
+                                        contextStyle: _contextStyle,
+                                        itemStyle: _itemStyle,
+                                        field: snapshot.data['list'][index]
+                                            ['title'],
+                                        // field: snapshot.data['list'][index]['work'],
+                                        rate: '0',
+                                        relationship: '한 다리',
+                                        pCapability: snapshot.data['list']
+                                            [index]['personality'][0],
+                                        sCapability: snapshot.data['list']
+                                            [index]['personality'][1]),
                                   ),
                                 ),
                               );
