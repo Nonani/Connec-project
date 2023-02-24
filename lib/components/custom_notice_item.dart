@@ -323,17 +323,17 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                               DialogRoute(
                                   context: context,
                                   builder: (context) => AlertDialog(
-                                    title: Text("요청 거절"),
-                                    content: Text(
-                                        "${notice["from_uid"]}님의 네트워크 요청을 거절하였습니다."),
-                                    actions: [
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text("Close")),
-                                    ],
-                                  ))).then((value) => setState(() {}));
+                                        title: Text("요청 거절"),
+                                        content: Text(
+                                            "${notice["from_uid"]}님의 네트워크 요청을 거절하였습니다."),
+                                        actions: [
+                                          ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text("Close")),
+                                        ],
+                                      ))).then((value) => setState(() {}));
                         },
                         icon: Image.asset("assets/images/reject_btn.png")),
                   ],
@@ -376,7 +376,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                               MaterialPageRoute(
                                 builder: (context) => ContactDetailPage(
                                     notice: notice, type: "user"),
-                              ));
+                              )).then((value) => setState(() {}));
                         },
                         icon: Image.asset("assets/images/accept_btn.png")),
                     IconButton(
@@ -413,17 +413,17 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                               DialogRoute(
                                   context: context,
                                   builder: (context) => AlertDialog(
-                                    title: Text("요청 거절"),
-                                    content: Text(
-                                        "${notice["from_uid"]}님의 네트워크 요청을 거절하였습니다."),
-                                    actions: [
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text("Close")),
-                                    ],
-                                  ))).then((value) => setState(() {}));
+                                        title: Text("요청 거절"),
+                                        content: Text(
+                                            "${notice["from_uid"]}님의 네트워크 요청을 거절하였습니다."),
+                                        actions: [
+                                          ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text("Close")),
+                                        ],
+                                      ))).then((value) => setState(() {}));
                         },
                         icon: Image.asset("assets/images/reject_btn.png")),
                   ],
