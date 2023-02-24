@@ -102,10 +102,20 @@ class AcquitanceManagementPage extends StatelessWidget {
                       future: workString(data['workArea']),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return Column(
-                              children: workSection(snapshot.data!));
+                          return Column(children: workSection(snapshot.data!));
                         } else {
-                          return Text("불러오는 중", style: contextValue);
+                          return Column(children: [
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("전문분야", style: contextKey),
+                                  Text("불러오는 중", style: contextValue)
+                                ]),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ]);
                         }
                       },
                     ),

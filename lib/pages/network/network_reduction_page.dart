@@ -176,121 +176,84 @@ class NetworkReductionPage extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .start,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  Column(children: [
+                                    Column(children: [
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(
-                                                "이름", style: contextKey),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(
-                                                "직업", style: contextKey),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(
-                                                "경력", style: contextKey),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(
-                                                "활동지", style: contextKey),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(
-                                                "성별", style: contextKey),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(
-                                                "나이", style: contextKey),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(
-                                                "성격", style: contextKey),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(
-                                                "직군/직무", style: contextKey),
-                                          ),
+                                          Text("관계", style: contextKey),
+                                          Text('한 다리', style: contextValue),
                                         ],
                                       ),
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .start,
-                                        crossAxisAlignment: CrossAxisAlignment
-                                            .end,
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(snapshot.data['name'],
-                                                style: contextValue),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(snapshot.data['work'],
-                                                style: contextValue),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(
-                                                snapshot.data['career'][0],
-                                                style: contextValue),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(
-                                                snapshot.data['location'],
-                                                style: contextValue),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(snapshot.data['gender'],
-                                                style: contextValue),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(snapshot.data['age'],
-                                                style: contextValue),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Text(
-                                                snapshot.data['personality'][0],
-                                                style: contextValue),
-                                          ),
-                                        ] + workSection(snapshot.data['workArea']),
-                                      )
-                                    ],
-                                  ),
+                                          Text("평점", style: contextKey),
+                                          Text("${snapshot.data['rate']} / 5.0", style: contextValue),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                    ]),
+                                    Column(children: workSection(snapshot.data['workArea'])),
+                                    Column(children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("경력", style: contextKey),
+                                          SizedBox(width: 20),
+                                          Text(snapshot.data['career'][0], style: contextValue),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("지역", style: contextKey),
+                                          Text(snapshot.data['location'], style: contextValue),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("성별", style: contextKey),
+                                          Text(snapshot.data['gender'], style: contextValue),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("나이", style: contextKey),
+                                          Text(snapshot.data['age'], style: contextValue),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("성격", style: contextKey),
+                                          Text(snapshot.data['personality'][0], style: contextValue),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("소개", style: contextKey),
+                                          Text(snapshot.data['introduction'], style: contextValue),
+                                        ],
+                                      ),
+                                    ]),
+                                  ]),
                                 ],
                               ),
                             ),
@@ -323,16 +286,28 @@ class NetworkReductionPage extends StatelessWidget {
         });
   }
 
-  List<Padding> workSection(List<String> workArea) {
-    List<Padding> result = [];
-    for (String element in workArea) {
-      String data = element != "null" ? element : "";
-      result.add(Padding(
-        padding: EdgeInsets.only(bottom: 10),
-        child: Text(
-            element,
-            style: contextValue),
-      ));
+  List<Widget> workSection(List<String> workArea) {
+    List<Widget> result = [];
+    for (int index = 0; index < workArea.length; index++) {
+      String text = index > 0 ? "" : "전문분야";
+      result.add(
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(
+              text,
+              style: contextKey,
+            ),
+            Text(
+              workArea[index],
+              style: contextValue,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            )
+          ]));
+      result.add(
+        SizedBox(
+          height: 10,
+        ),
+      );
     }
     return result;
   }
