@@ -132,8 +132,10 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                                       classStyle: _classStyle,
                                       contextStyle: _contextStyle,
                                       itemStyle: _itemStyle,
-                                      field: snapshot.data['list'][index]
-                                          ['title'],
+                                      mainField: snapshot.data['list'][index]
+                                          ['bTitle'],
+                                      subField: snapshot.data['list'][index]
+                                      ['lTitle'],
                                       // field: snapshot.data['list'][index]['work'],
                                       rate: snapshot.data['list'][index]['rate']
                                           .toString(),
@@ -259,7 +261,12 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
           .collection('workData')
           .where('code', isEqualTo: memberData['workArea'][0])
           .get();
-      memberData['title'] = tmp.docs[0]['title'];
+      memberData['lTitle'] = tmp.docs[0]['title'];
+      tmp = await db
+          .collection('workData')
+          .where('code', isEqualTo: '${memberData['workArea'][0][0]}00')
+          .get();
+      memberData['bTitle'] = tmp.docs[0]['title'];
       tmp = await db
           .collection('localData')
           .where('code', isEqualTo: memberData['location'])

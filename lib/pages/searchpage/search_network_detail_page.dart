@@ -36,170 +36,142 @@ class SearchNetworkDetailPage extends StatelessWidget {
         body: Center(
           child: SingleChildScrollView(
             child: Column(children: [
+              Column(children: [
+                SizedBox(height: 121),
+                Text(data['bTitle'], style: contextTitle),
+                SizedBox(height: 26),
+                FutureBuilder(
+                  future: workString(data['workArea']),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(
+                        snapshot.data![0],
+                        style: contextValue,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      );
+                    } else {
+                      return Text("불러오는 중", style: contextValue);
+                    }
+                  },
+                ),
+                SizedBox(height: 23)
+              ]),
               Container(
-                  width: double.infinity,
-                  height: 250,
-                  child: Image.network("")),
+                width: 336,
+                height: 0,
+                margin: const EdgeInsets.only(top: 7.5, bottom: 10.5),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const Color(0xff5f66f2),
+                    width: 1,
+                  ),
+                ),
+              ),
               Container(
-                  height: 450,
-                  width: 330,
-                  margin: const EdgeInsets.only(top: 13, bottom: 10.5),
-                  child: SingleChildScrollView(
-                      child: Column(children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 13, bottom: 13),
-                      child: Text(
-                        data['title'],
-                        style: const TextStyle(
-                          color: Color(0xff333333),
-                          fontSize: 21,
-                          fontFamily: 'EchoDream',
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                width: double.infinity,
+                padding: const EdgeInsets.only(left: 17.5, right: 17.5),
+                child: Column(children: [
+                  Column(children: [
+                    SizedBox(
+                      height: 10,
                     ),
-                    Container(
-                      width: 336,
-                      height: 0,
-                      margin: const EdgeInsets.only(top: 7.5, bottom: 10.5),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color(0xff5f66f2),
-                          width: 1,
-                        ),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("관계", style: contextKey),
+                        Text('한 다리', style: contextValue),
+                      ],
                     ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 17.5, right: 17.5),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("관계", style: contextKey),
-                              Text('한 다리', style: contextValue),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("평점", style: contextKey),
-                              Text("${data['rate']} / 5.0",
-                                  style: contextValue),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "직군/직무",
-                                style: contextKey,
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              FutureBuilder(
-                                future: workString(data['workArea']),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    return Expanded(
-                                      child: Text(
-                                        snapshot.data!,
-                                        style: contextValue,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    );
-                                  } else {
-                                    return Text("불러오는 중",
-                                        style: contextValue);
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("경력", style: contextKey),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(data['career'][0],
-                                  style: contextValue),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("지역", style: contextKey),
-                              Text(data['location'], style: contextValue),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("성별", style: contextKey),
-                              Text(data['gender'], style: contextValue),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("나이", style: contextKey),
-                              Text(data['age'], style: contextValue),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("성격", style: contextKey),
-                              Text(data['personality'][0],
-                                  style: contextValue),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("소개", style: contextKey),
-                              Text(data['introduction'],
-                                  style: contextValue),
-                            ],
-                          ),
-                        ],
-                      ),
+                    SizedBox(
+                      height: 10,
                     ),
-                  ]))),
-            ]),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("평점", style: contextKey),
+                        Text("${data['rate']} / 5.0", style: contextValue),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ]),
+                  FutureBuilder(
+                    future: workString(data['workArea']),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(children: workSection(snapshot.data!, data['career']));
+                      } else {
+                        return Column(children: [
+                          Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("전문분야", style: contextKey),
+                                Text("불러오는 중", style: contextValue)
+                              ]),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ]);
+                      }
+                    },
+                  ),
+                  Column(children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("지역", style: contextKey),
+                        Text(data['location'], style: contextValue),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("성별", style: contextKey),
+                        Text(data['gender'], style: contextValue),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("나이", style: contextKey),
+                        Text(data['age'], style: contextValue),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("성격", style: contextKey),
+                        Text(data['personality'][0], style: contextValue),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("", style: contextKey),
+                        Text(data['personality'][1], style: contextValue),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("소개", style: contextKey),
+                        Text(data['introduction'], style: contextValue),
+                      ],
+                    ),
+                  ]),
+                ]),
+              ),
+            ])
           ),
-        ),
+          ),
         bottomNavigationBar: Row(children: [
           Expanded(
             child: ElevatedButton(
@@ -233,27 +205,49 @@ class SearchNetworkDetailPage extends StatelessWidget {
           ),
         ]));
   }
-
-  Future<String> workString(List<dynamic> workData) async {
-    logger.w(workData);
-    String ret = "";
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    for (String code in workData) {
-      QuerySnapshot<Map<String, dynamic>> data =
-          await db.collection('workData').where('code', isEqualTo: code).get();
-      ret = "> ${data.docs[0]['title']}";
-      data = await db
-          .collection('workData')
-          .where('code', isEqualTo: data.docs[0]['parent'])
-          .get();
-      ret = "> ${data.docs[0]['title']}" + ret;
-      data = await db
-          .collection('workData')
-          .where('code', isEqualTo: data.docs[0]['parent'])
-          .get();
-      ret = data.docs[0]['title'] + ret;
+  List<Widget> workSection(List<String> workArea, List<dynamic> career) {
+    List<Widget> result = [];
+    for (int index = 0; index < workArea.length * 2; index++) {
+      String text = index > 0 ? "" : "전문분야";
+      String data = index % 2 == 0? workArea[index ~/ 2]: career[index ~/ 2];
+      result.add(
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(
+              text,
+              style: contextKey,
+            ),
+            Text(
+              data,
+              style: contextValue,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            )
+          ]));
+      result.add(
+        SizedBox(
+          height: 10,
+        ),
+      );
     }
-    logger.w(ret);
+    return result;
+  }
+  Future<List<String>> workString(List<dynamic> workArea) async {
+    List<String> ret = [];
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    for (String code in workArea) {
+      String primary = (await db
+          .collection('workData')
+          .where('code', isEqualTo: '${code[0]}00')
+          .get())
+          .docs[0]
+          .data()['title'];
+
+      String secondary =
+      (await db.collection('workData').where('code', isEqualTo: code).get())
+          .docs[0]
+          .data()['title'];
+      ret.add('$primary > $secondary');
+    }
     return ret;
   }
 }

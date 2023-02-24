@@ -39,7 +39,7 @@ class AcquitanceManagementPage extends StatelessWidget {
                   child: Column(children: [
                 Column(children: [
                   SizedBox(height: 121),
-                  Text(data['title'], style: contextTitle),
+                  Text(data['bTitle'], style: contextTitle),
                   SizedBox(height: 26),
                   FutureBuilder(
                     future: workString(data['workArea']),

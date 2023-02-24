@@ -98,8 +98,10 @@ class SearchNetworkPage extends StatelessWidget {
                                         classStyle: _classStyle,
                                         contextStyle: _contextStyle,
                                         itemStyle: _itemStyle,
-                                        field: snapshot.data['list'][index]
-                                            ['title'],
+                                        mainField: snapshot.data['list'][index]
+                                            ['bTitle'],
+                                        subField: snapshot.data['list'][index]
+                                        ['lTitle'],
                                         // field: snapshot.data['list'][index]['work'],
                                         rate: '0',
                                         relationship: '한 다리',
@@ -161,7 +163,12 @@ class SearchNetworkPage extends StatelessWidget {
           .collection('workData')
           .where('code', isEqualTo: elementData['workArea'][0])
           .get();
-      elementData['title'] = tmp.docs[0]['title'];
+      elementData['lTitle'] = tmp.docs[0]['title'];
+      tmp = await db
+          .collection('workData')
+          .where('code', isEqualTo: '${elementData['workArea'][0][0]}00')
+          .get();
+      elementData['bTitle'] = tmp.docs[0]['title'];
       tmp = await db
           .collection('localData')
           .where('code', isEqualTo: elementData['location'])

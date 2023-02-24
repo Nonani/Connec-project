@@ -7,7 +7,8 @@ class MemberItemWidget extends StatelessWidget {
     required TextStyle classStyle,
     required TextStyle contextStyle,
     required TextStyle itemStyle,
-    required String field,
+    required String mainField,
+    required String subField,
     required String rate,
     required String relationship,
     required String pCapability,
@@ -15,7 +16,8 @@ class MemberItemWidget extends StatelessWidget {
   })  : _nameStyle = nameStyle,
         _classStyle = classStyle,
         _sectionStyle = contextStyle,
-        _field = field,
+        _mainField = mainField,
+        _subField = subField,
         _rate = rate,
         _relationship = relationship,
         _pCapability = pCapability,
@@ -26,7 +28,8 @@ class MemberItemWidget extends StatelessWidget {
   final TextStyle _classStyle;
   final TextStyle _sectionStyle;
 
-  final String _field;
+  final String _mainField;
+  final String _subField;
   final String _rate;
   final String _relationship;
   final String _pCapability;
@@ -48,9 +51,9 @@ class MemberItemWidget extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(_field, style: _nameStyle),
+                      Text(_mainField, style: _nameStyle),
                       SizedBox(width: 10),
-                      Text(_field, style: _classStyle),
+                      Text(_subField, style: _classStyle),
                     ],
                   ),
                   Padding(
