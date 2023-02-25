@@ -113,9 +113,6 @@ class _ContactPageState extends State<ContactPage> {
                       'chatLink': OpenTalkUrl
                     },
                   );
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  print(response.body);
                 } catch (e) {
                   print(e);
                 }
@@ -143,13 +140,17 @@ class _ContactPageState extends State<ContactPage> {
                       'chatLink': OpenTalkUrl
                     },
                   );
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  print(response.body);
+
+
                 } catch (e) {
                   print(e);
                 }
               }
+              Navigator.pop(context);
+              Navigator.pop(context);
+              await consume();
+            }else{
+              print(couponNum);
             }
           }),
     );
