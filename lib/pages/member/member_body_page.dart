@@ -234,6 +234,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
         ),
         ListView.separated(
           shrinkWrap: true,
+          primary: false,
           itemCount: _workAreaItems.length,
           separatorBuilder: (_, __) => const Divider(),
           itemBuilder: (BuildContext context, int index) {
@@ -272,7 +273,6 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
                       style: TextStyle(
                         color: Color(0xff999999),
                         fontSize: 12,
-                        fontFamily: 'S-CoreDream-5',
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -524,6 +524,7 @@ class _MemberBodyPageState extends State<MemberBodyPage> {
           padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
           child: ListView.separated(
             shrinkWrap: true,
+            primary: false,
             itemCount: _personalityItems.length,
             separatorBuilder: (_, __) => const Divider(),
             itemBuilder: (BuildContext context, int index) {

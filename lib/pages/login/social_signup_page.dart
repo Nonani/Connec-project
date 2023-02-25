@@ -281,6 +281,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
           height: 5,
         ),
         ListView.separated(
+          primary: false,
           shrinkWrap: true,
           itemCount: _workAreaItems.length,
           separatorBuilder: (_, __) => const Divider(),
@@ -573,6 +574,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
           padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
           child: ListView.separated(
             shrinkWrap: true,
+            primary: false,
             itemCount: _personalityItems.length,
             separatorBuilder: (_, __) => const Divider(),
             itemBuilder: (BuildContext context, int index) {
