@@ -334,7 +334,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                                   builder: (context) => AlertDialog(
                                         title: Text("제안 거절"),
                                         content: Text(
-                                            "${notice["from_uid"]}님의 제안 요청을 거절하였습니다."),
+                                            "${notice["from"]}님의 제안 요청을 거절하였습니다."),
                                         actions: [
                                           ElevatedButton(
                                               onPressed: () {
@@ -390,7 +390,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                         icon: Image.asset("assets/images/accept_btn.png")),
                     IconButton(
                         iconSize: 8,
-                        onPressed: () {
+                        onPressed: () async {
                           db
                               .collection('notification')
                               .doc(notice["from_uid"])
@@ -417,6 +417,11 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                               .update({
                             'list': FieldValue.arrayUnion([notice])
                           });
+                          String from = (await db
+                              .collection('users')
+                              .doc(notice["from_uid"])
+                              .get())
+                              .data()!['name'];
                           Navigator.push(
                               context,
                               DialogRoute(
@@ -424,7 +429,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                                   builder: (context) => AlertDialog(
                                         title: Text("제안 거절"),
                                         content: Text(
-                                            "${notice["from_uid"]}님의 제안 요청을 거절하였습니다."),
+                                            "$from님의 제안 요청을 거절하였습니다."),
                                         actions: [
                                           ElevatedButton(
                                               onPressed: () {
