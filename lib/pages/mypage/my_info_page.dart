@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/mypage/account_setting_page.dart';
+import 'package:connec/pages/mypage/notification_list_page.dart';
 import 'package:connec/pages/mypage/purchase_history.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -207,7 +208,9 @@ class _MyInfoPageState extends State<MyInfoPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => IAPConnec(),
-                              ));
+                              )).then((value) => setState(() {
+                                
+                              },));
                         },
                         child: Container(
                           padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
@@ -243,7 +246,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          print("test");
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => NoticeListPage(),));
                         },
                         child: Container(
                           padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
