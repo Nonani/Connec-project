@@ -208,7 +208,9 @@ class _MyInfoPageState extends State<MyInfoPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => IAPConnec(),
-                              ));
+                              )).then((value) => setState(() {
+                                
+                              },));
                         },
                         child: Container(
                           padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
