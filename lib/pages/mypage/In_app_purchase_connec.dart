@@ -15,26 +15,31 @@ import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:logger/logger.dart';
 
-
 // Auto-consume must be true on iOS.
 // To try without auto-consume on another platform, change `true` to `false` here.
 final bool _kAutoConsume = true;
 
 const String _onceConsumable = 'coupon_1';
-const String _fifthTimesConsumable = 'coupon_5';
+const String _twoTimesConsumable = 'coupon_2';
 const String _tenTimesConsumable = 'coupon_10';
-const String _twentyTimesConsumable = 'coupon_20';
+const String _fiftyTimesConsumable = 'coupon_50';
+const Map<String, int> _priceMap = {
+  _onceConsumable: 4850,
+  _twoTimesConsumable: 9900,
+  _tenTimesConsumable: 44900,
+  _fiftyTimesConsumable: 209900
+};
 const Map<String, int> _productMap = {
   _onceConsumable: 1,
-  _fifthTimesConsumable: 5,
+  _twoTimesConsumable: 2,
   _tenTimesConsumable: 10,
-  _twentyTimesConsumable: 20
+  _fiftyTimesConsumable: 50
 };
 const List<String> _consumableProductIds = <String>[
   _onceConsumable,
-  _fifthTimesConsumable,
+  _twoTimesConsumable,
   _tenTimesConsumable,
-  _twentyTimesConsumable
+  _fiftyTimesConsumable
 ];
 
 class IAPConnec extends StatefulWidget {
@@ -229,7 +234,7 @@ class _IAPConnecState extends State<IAPConnec> {
                         style: const TextStyle(
                           color: Color(0xff333333),
                           fontSize: 17,
-                          fontFamily: 'S-CoreDream-6Bold',
+                          fontFamily: 'EchoDream',
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -241,7 +246,7 @@ class _IAPConnecState extends State<IAPConnec> {
                               style: TextStyle(
                                 color: Color(0xffbdbdbd),
                                 fontSize: 16,
-                                fontFamily: 'S-CoreDream-4Regular',
+                                fontFamily: 'EchoDream',
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -250,7 +255,7 @@ class _IAPConnecState extends State<IAPConnec> {
                               style: const TextStyle(
                                 color: Color(0xffbdbdbd),
                                 fontSize: 16,
-                                fontFamily: 'S-CoreDream-4Regular',
+                                fontFamily: 'EchoDream',
                                 fontWeight: FontWeight.w700,
                               ),
                             )
@@ -289,6 +294,7 @@ class _IAPConnecState extends State<IAPConnec> {
     // This loading previous purchases code is just a demo. Please do not use this as it is.
     // In your app you should always verify the purchase data using the `verificationData` inside the [PurchaseDetails] object before trusting it.
     // We recommend that you use your own server to verify the purchase data.
+    _products.sort((a, b) => a.title.compareTo(b.title));
     productList.addAll(_products.map(
       (ProductDetails productDetails) {
         return GestureDetector(
@@ -300,7 +306,7 @@ class _IAPConnecState extends State<IAPConnec> {
               color: Color(0xff5f66f2),
             ),
             title: Text(
-              productDetails.title,
+              productDetails.title.substring(3),
               style: const TextStyle(
                 color: Color(0xff333333),
                 fontSize: 17,
@@ -362,23 +368,6 @@ class _IAPConnecState extends State<IAPConnec> {
     return ret;
   }
 
-  Future<bool> consume(String id) async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    DocumentSnapshot<Map<String, dynamic>> data = await db
-        .collection('coupons')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-    if (data.data()!['num']) {
-      await db
-          .collection('coupons')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .set({'num': data.data()!['num'] - 1});
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   void showPendingUI() {
     setState(() {
       _purchasePending = true;
@@ -398,6 +387,18 @@ class _IAPConnecState extends State<IAPConnec> {
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .set({
         'num': data.data()!['num'] + _productMap[purchaseDetails.productID]
+      });
+      await db
+          .collection('couponLog')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({
+        'purchase': FieldValue.arrayUnion([
+          {
+            'time': DateTime.now().toString(),
+            'num': _productMap[purchaseDetails.productID],
+            'price': _priceMap[purchaseDetails.productID]
+          }
+        ])
       });
       setState(() {
         _purchasePending = false;

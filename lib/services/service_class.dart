@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,27 +31,31 @@ class ServiceClass extends ChangeNotifier {
       case 'kakao':
         //백엔드 요청보내고 계정 생성 성공 응답을 받으면
         // firestore에 signupbody를 넣어
-        final url = Uri.parse('https://foggy-boundless-avenue.glitch.me/signup');
-        try{
+        final url =
+            Uri.parse('https://foggy-boundless-avenue.glitch.me/signup');
+        try {
           http.Response response = await http.post(
             url,
-            headers: <String, String> {
+            headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: <String, String> {
+            body: <String, String>{
               'uid': '${data.uid}',
             },
           );
           logger.w(response.body);
-        }catch(e){
+        } catch (e) {
           logger.w(e);
           return false;
         }
-        try{
+        try {
           db.collection("users").doc("${data.uid}").set(data.toJson());
           db.collection('networks').doc(data.uid).set({'list': []});
           db.collection('coupons').doc(data.uid).set({'num': 0});
-        }catch(e){
+          db.collection('couponLog')
+              .doc(data.uid)
+              .set({'purchase': [], 'consume': []});
+        } catch (e) {
           logger.w(e);
           return false;
         }
@@ -75,6 +78,9 @@ class ServiceClass extends ChangeNotifier {
           db.collection("users").doc(data.uid).set(data.toJson());
           db.collection('networks').doc(data.uid).set({'list': []});
           db.collection('coupons').doc(data.uid).set({'num': 0});
+          db.collection('couponLog')
+              .doc(data.uid)
+              .set({'purchase': [], 'consume': []});
           getToken();
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
@@ -97,23 +103,25 @@ class ServiceClass extends ChangeNotifier {
     isComplete = false;
     notifyListeners();
     isComplete = await addMember(body);
-    sleep(const Duration(seconds:1));
+    sleep(const Duration(seconds: 1));
     loading = false;
     notifyListeners();
   }
+
   Future<bool> addMember(MemberBody data) async {
-    try{
+    try {
       db.collection("member").doc(data.docId).set(data.toJson());
-    }catch(e){
+    } catch (e) {
       logger.w(e);
     }
     return true;
   }
+
   void getToken() async {
     String deviceToken = "";
-    await FirebaseMessaging.instance.getToken().then((token) => {
-      deviceToken = token!
-    });
+    await FirebaseMessaging.instance
+        .getToken()
+        .then((token) => {deviceToken = token!});
     logger.w(deviceToken);
     saveToken(deviceToken);
   }
@@ -125,9 +133,11 @@ class ServiceClass extends ChangeNotifier {
     logger.w(uid);
   }
 }
-class NetworkProvider extends ChangeNotifier{
+
+class NetworkProvider extends ChangeNotifier {
   String targetUid = "";
-  void updateTarget(String uid){
+
+  void updateTarget(String uid) {
     targetUid = uid;
   }
 }

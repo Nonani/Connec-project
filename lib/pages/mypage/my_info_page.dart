@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/mypage/account_setting_page.dart';
+import 'package:connec/pages/mypage/purchase_history.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 
 import 'In_app_purchase_connec.dart';
 
@@ -136,7 +136,11 @@ class _MyInfoPageState extends State<MyInfoPage> {
                       child: Column(
                     children: [
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(
+                                  builder: (context) =>IAPHistory()));
+                        },
                         child: Container(
                           padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
                           decoration: BoxDecoration(
@@ -476,7 +480,6 @@ class _MyInfoPageState extends State<MyInfoPage> {
   }
 
   Future _future() async {
-    Logger logger = Logger();
     FirebaseFirestore db = FirebaseFirestore.instance;
 
     Map<String, dynamic> result = {};

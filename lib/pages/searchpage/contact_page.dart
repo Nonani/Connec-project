@@ -45,13 +45,12 @@ class _ContactPageState extends State<ContactPage> {
         child: Form(
           key: _formKey,
           child: Column(children: [
-            CustomDropdownButton(itemList: offerItemList,
+            CustomDropdownButton(
+                itemList: offerItemList,
                 label: "제안 목적",
                 onChanged: (value) {
                   offer = value;
-                  setState(() {
-
-                  });
+                  setState(() {});
                 },
                 selectedItem: offer),
             SignUpEditTextForm(
@@ -78,7 +77,13 @@ class _ContactPageState extends State<ContactPage> {
       bottomNavigationBar: ElevatedButton(
           child: Text("제안 보내기"),
           onPressed: () async {
-            if (_formKey.currentState!.validate()){
+            FirebaseFirestore db = FirebaseFirestore.instance;
+            int couponNum = (await db
+                .collection('coupons')
+                .doc(FirebaseAuth.instance.currentUser!.uid)
+                .get())
+                .data()!['num'];
+            if (_formKey.currentState!.validate()&& couponNum > 0) {
               _formKey.currentState!.save();
               print(OpenTalkUrl);
               print(contactText);
@@ -86,12 +91,12 @@ class _ContactPageState extends State<ContactPage> {
               showCustomDialog(context);
               if (widget.docID.isEmpty) {
                 //유저인 경우
-                var info = await FirebaseFirestore.instance
+                var info = await db
                     .collection('users')
                     .doc(FirebaseAuth.instance.currentUser!.uid)
                     .get();
-                final url =
-                Uri.parse('https://foggy-boundless-avenue.glitch.me/sendComm');
+                final url = Uri.parse(
+                    'https://foggy-boundless-avenue.glitch.me/sendComm');
                 try {
                   http.Response response = await http.post(
                     url,
@@ -103,9 +108,9 @@ class _ContactPageState extends State<ContactPage> {
                       'from': "${FirebaseAuth.instance.currentUser!.uid}",
                       'type': "user",
                       'docId': '',
-                      'purpose':offer,
-                      'context':contactText,
-                      'chatLink':OpenTalkUrl
+                      'purpose': offer,
+                      'context': contactText,
+                      'chatLink': OpenTalkUrl
                     },
                   );
                   Navigator.pop(context);
@@ -116,12 +121,12 @@ class _ContactPageState extends State<ContactPage> {
                 }
               } else {
                 //  지인인 경우
-                var info = await FirebaseFirestore.instance
+                var info = await db
                     .collection('users')
                     .doc(FirebaseAuth.instance.currentUser!.uid)
                     .get();
-                final url =
-                Uri.parse('https://foggy-boundless-avenue.glitch.me/sendComm');
+                final url = Uri.parse(
+                    'https://foggy-boundless-avenue.glitch.me/sendComm');
                 try {
                   http.Response response = await http.post(
                     url,
@@ -133,9 +138,9 @@ class _ContactPageState extends State<ContactPage> {
                       'from': "${FirebaseAuth.instance.currentUser!.uid}",
                       'type': "member",
                       'docId': '${widget.docID}',
-                      'purpose':offer,
-                      'context':contactText,
-                      'chatLink':OpenTalkUrl
+                      'purpose': offer,
+                      'context': contactText,
+                      'chatLink': OpenTalkUrl
                     },
                   );
                   Navigator.pop(context);
@@ -146,9 +151,30 @@ class _ContactPageState extends State<ContactPage> {
                 }
               }
             }
-
-
           }),
     );
+  }
+
+  Future<void> consume() async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    int couponNum = (await db
+        .collection('coupons')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get())
+        .data()!['num'];
+    await db
+        .collection('coupons')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .set({'num': couponNum - 1});
+    await db.collection('couponLog')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      'consume': FieldValue.arrayUnion([
+        {
+          'time': DateTime.now().toString(),
+          'type': 'contact'
+        }
+      ])
+    });
   }
 }
