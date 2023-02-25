@@ -138,9 +138,13 @@ class _MyInfoPageState extends State<MyInfoPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(
-                                  builder: (context) =>IAPHistory()));
+                          Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => IAPHistory()))
+                              .then((value) => setState(
+                                    () {},
+                                  ));
                         },
                         child: Container(
                           padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
@@ -208,9 +212,9 @@ class _MyInfoPageState extends State<MyInfoPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => IAPConnec(),
-                              )).then((value) => setState(() {
-                                
-                              },));
+                              )).then((value) => setState(
+                                () {},
+                              ));
                         },
                         child: Container(
                           padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
@@ -246,7 +250,11 @@ class _MyInfoPageState extends State<MyInfoPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => NoticeListPage(),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NoticeListPage(),
+                              ));
                         },
                         child: Container(
                           padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
