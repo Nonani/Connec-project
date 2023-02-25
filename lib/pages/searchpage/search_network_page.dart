@@ -4,7 +4,6 @@ import 'package:connec/pages/searchpage/search_network_detail_page.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 
 import '../../components/member_item_widget.dart';
 
@@ -38,7 +37,6 @@ class SearchNetworkPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Logger logger = Logger();
     return FutureBuilder(
       future: _future(),
       builder: (context, snapshot) {
@@ -123,7 +121,6 @@ class SearchNetworkPage extends StatelessWidget {
   }
 
   Future _future() async {
-    Logger logger = Logger();
     final db = FirebaseFirestore.instance;
 
     var user = await db
@@ -144,7 +141,12 @@ class SearchNetworkPage extends StatelessWidget {
           .collection('workData')
           .where('code', isEqualTo: elementData['workArea'][0])
           .get();
-      elementData['title'] = tmp.docs[0]['title'];
+      elementData['lTitle'] = tmp.docs[0]['title'];
+      tmp = await db
+          .collection('workData')
+          .where('code', isEqualTo: '${elementData['workArea'][0][0]}00')
+          .get();
+      elementData['bTitle'] = tmp.docs[0]['title'];
       tmp = await db
           .collection('localData')
           .where('code', isEqualTo: elementData['location'])
