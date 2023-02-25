@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connec/main.dart';
 import 'package:connec/pages/searchpage/contact_detail_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +20,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
     //알림창 리스트 안에 들어갈 아이템 위젯을 관리하는 클래스
     switch (widget.notice["case"]) {
       case "network":
-      //네크워크 확장 관련 알림인 경우
+        //네크워크 확장 관련 알림인 경우
         if (widget.notice["from_uid"] !=
             FirebaseAuth.instance.currentUser!.uid.toString()) {
           return ReceiveNetworkRequest(widget.notice);
@@ -29,7 +28,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
           return SentNetworkRequest(widget.notice);
         }
       case "contact":
-      //제안하기 관련 알림인 경우
+        //제안하기 관련 알림인 경우
         if (widget.notice["from_uid"] !=
             FirebaseAuth.instance.currentUser!.uid.toString()) {
           //보낸 사람
@@ -100,6 +99,11 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                               .update({
                             'list': FieldValue.arrayUnion([notice['from_uid']])
                           });
+                          String from = (await db
+                              .collection('users')
+                              .doc(notice["from_uid"])
+                              .get())
+                              .data()!['name'];
                           Navigator.push(
                               context,
                               DialogRoute(
@@ -107,7 +111,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                                   builder: (context) => AlertDialog(
                                         title: Text("요청 수락"),
                                         content: Text(
-                                            "${notice["from_uid"]}님의 네트워크 요청을 수락하였습니다."),
+                                            "$from님의 네트워크 요청을 수락하였습니다."),
                                         actions: [
                                           ElevatedButton(
                                               onPressed: () {
@@ -120,7 +124,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                         icon: Image.asset("assets/images/accept_btn.png")),
                     IconButton(
                         iconSize: 10,
-                        onPressed: () {
+                        onPressed: () async {
                           db
                               .collection('notification')
                               .doc(notice["from_uid"])
@@ -147,6 +151,11 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                               .update({
                             'list': FieldValue.arrayUnion([notice])
                           });
+                          String from = (await db
+                                  .collection('users')
+                                  .doc(notice["from_uid"])
+                                  .get())
+                              .data()!['name'];
                           Navigator.push(
                               context,
                               DialogRoute(
@@ -154,7 +163,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                                   builder: (context) => AlertDialog(
                                         title: Text("요청 거절"),
                                         content: Text(
-                                            "${notice["from_uid"]}님의 네트워크 요청을 거절하였습니다."),
+                                            "$from님의 네트워크 요청을 거절하였습니다."),
                                         actions: [
                                           ElevatedButton(
                                               onPressed: () {
@@ -286,7 +295,7 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                                   notice: notice,
                                   type: "member",
                                 ),
-                              ));
+                              )).then((value) => setState(() {}));
                         },
                         icon: Image.asset("assets/images/accept_btn.png")),
                     IconButton(
