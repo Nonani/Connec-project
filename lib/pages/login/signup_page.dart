@@ -218,14 +218,14 @@ class _SignUpPageState extends State<SignUpPage> {
                     style: buttonText,
                   ),
                   onPressed: () async {
-
+                    _formKey.currentState!.save();
                     if (_formKey.currentState!.validate() &&
                         _checkboxValue1 &&
                         _checkboxValue2 &&
                         _workAreaCodes.length != 0 &&
                         _personalityItems.length >= 2 &&
                         _location != null) {
-                      _formKey.currentState!.save();
+
                       showCustomDialog(context);
                       await provider.postSignUpBody(SignUpBody(
                         uuid: uuid.v4(),
