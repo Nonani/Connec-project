@@ -435,17 +435,17 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     }catch(e){
       logger.w(e);
     }
-    // try{
-      thirdData = thirdQueryData(firstData['networkData'], secondData['networkData']);
+    try{
+      thirdData = await thirdQueryData(firstData['networkData'], secondData['networkData']);
+      logger.w(thirdData);
       parsedData = await parseWork(thirdData['relationData'], thirdData['networkUserData']);
       result['count'][2] = thirdData['count'];
       logger.w(thirdData['count']);
       result['data'].add(parsedData[0]);
       result['dict'].add(parsedData[1]);
-    // } catch (e) {
-    //   logger.w(e);
-    // }
-    //hl
+    } catch (e) {
+      logger.w(e);
+    }
     return result;
   }
 
@@ -612,7 +612,6 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
 
     result['count'] += networkUserData.length;
     result['count'] += relationData.length;
-
     return result;
   }
 
