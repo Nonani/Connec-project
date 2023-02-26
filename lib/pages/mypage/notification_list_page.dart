@@ -106,7 +106,7 @@ class _NoticeListPageState extends State<NoticeListPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            snapshot.data[index]['member_id'] == ''
+            snapshot.data[index]['member_id'] != ''
                 ? Text(
                     '${snapshot.data[index]['from']}님이 나의 지인에게 요청',
                     style: TextStyle(
@@ -212,7 +212,7 @@ class _NoticeListPageState extends State<NoticeListPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            snapshot.data[index]['member_id'] == ''
+            snapshot.data[index]['member_id'] != ''
                 ? Text(
               '내가 ${snapshot.data[index]['to']}의 지인에게 요청',
               style: TextStyle(
@@ -337,6 +337,7 @@ class _NoticeListPageState extends State<NoticeListPage> {
         }
       }
     }
+    logger.w(list);
 
     return list;
   }
