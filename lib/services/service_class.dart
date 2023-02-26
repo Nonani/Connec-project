@@ -52,6 +52,7 @@ class ServiceClass extends ChangeNotifier {
           db.collection("users").doc("${data.uid}").set(data.toJson());
           db.collection('networks').doc(data.uid).set({'list': []});
           db.collection('coupons').doc(data.uid).set({'num': 0});
+          db.collection('notification').doc(data.uid).set({'list': []});
           db.collection('couponLog')
               .doc(data.uid)
               .set({'purchase': [], 'consume': []});
@@ -78,6 +79,7 @@ class ServiceClass extends ChangeNotifier {
           db.collection("users").doc(data.uid).set(data.toJson());
           db.collection('networks').doc(data.uid).set({'list': []});
           db.collection('coupons').doc(data.uid).set({'num': 0});
+          db.collection('notification').doc(data.uid).set({'list': []});
           db.collection('couponLog')
               .doc(data.uid)
               .set({'purchase': [], 'consume': []});
