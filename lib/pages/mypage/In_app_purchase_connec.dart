@@ -29,6 +29,7 @@ const Map<String, int> _priceMap = {
   _tenTimesConsumable: 44900,
   _fiftyTimesConsumable: 209900
 };
+Map<String, String> _product = {};
 const Map<String, int> _productMap = {
   _onceConsumable: 1,
   _twoTimesConsumable: 2,
@@ -276,7 +277,7 @@ class _IAPConnecState extends State<IAPConnec> {
       return const Card(
           child: ListTile(
               leading: CircularProgressIndicator(),
-              title: Text('Fetching products...')));
+              title: Text('상품을 불러오는 중')));
     }
     if (!_isAvailable) {
       return const Card();
@@ -297,6 +298,7 @@ class _IAPConnecState extends State<IAPConnec> {
     _products.sort((a, b) => a.title.compareTo(b.title));
     productList.addAll(_products.map(
       (ProductDetails productDetails) {
+        _product[productDetails.id] = productDetails.title;
         return GestureDetector(
           child: ListTile(
             leading: Image.asset(
@@ -332,7 +334,6 @@ class _IAPConnecState extends State<IAPConnec> {
               // verify the latest status of you your subscription by using server side receipt validation
               // and update the UI accordingly. The subscription purchase status shown
               // inside the app may not be accurate.
-
               purchaseParam = GooglePlayPurchaseParam(
                 productDetails: productDetails,
               );
@@ -395,7 +396,7 @@ class _IAPConnecState extends State<IAPConnec> {
         'purchase': FieldValue.arrayUnion([
           {
             'time': DateTime.now().toString(),
-            'num': _productMap[purchaseDetails.productID],
+            'merch': _product[purchaseDetails.productID],
             'price': _priceMap[purchaseDetails.productID]
           }
         ])

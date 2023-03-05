@@ -243,7 +243,7 @@ class _IAPHistoryState extends State<IAPHistory> {
                                         ),
                                       ),
                                       Text(
-                                        '${snapshot.data[mode][index]['num'].toString()} 개',
+                                        snapshot.data[mode][index]['merch'].toString(),
                                         style: const TextStyle(
                                           color: Color(0xff666666),
                                           fontSize: 16,

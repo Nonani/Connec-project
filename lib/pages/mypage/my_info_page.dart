@@ -305,42 +305,6 @@ class _MyInfoPageState extends State<MyInfoPage> {
                           child: Row(
                             children: [
                               Icon(
-                                Icons.perm_contact_calendar_outlined,
-                                size: 30.0,
-                                color: Colors.blue,
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                '구인 장터',
-                                style: TextStyle(
-                                  color: Color(0xff333333),
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          print("test");
-                        },
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Color(0xffeeeeee),
-                                width: 1,
-                              ),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
                                 Icons.notifications_none_outlined,
                                 size: 30.0,
                                 color: Colors.blue,
