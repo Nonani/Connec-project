@@ -43,7 +43,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          "네트워크 확장",
+          "지인 등록",
           style: featureTitle,
         ),
         centerTitle: true,
@@ -75,7 +75,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 47.1),
                         child: LoginEditTextForm(
-                          label: "확장할 지인 코드",
+                          label: "등록할 지인 코드",
                           hint: "지인의 코드를 입력해 주세요",
                           validate: (value) {
                             if(value == ""){

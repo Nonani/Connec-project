@@ -122,7 +122,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                                   ));
                             },
                             child: const Text(
-                              "네트워크 확장",
+                              "지인 등록",
                               style: TextStyle(
                                 color: Color(0xfffafafa),
                                 fontSize: 15,
@@ -143,7 +143,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                                   ));
                             },
                             child: const Text(
-                              "네트워크 축소",
+                              "지인 삭제",
                               style: TextStyle(
                                 color: Color(0xfffafafa),
                                 fontSize: 15,
@@ -201,6 +201,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                             ListView.builder(
                               primary: false,
                               shrinkWrap: true,
+
                               itemCount: snapshot
                                   .data['data'][connectionCount].keys.length,
                               itemBuilder: (BuildContext context, int fIdx) {
@@ -242,6 +243,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                                             ),
                                           ),
                                           ListView.builder(
+                                            primary: false,
                                               shrinkWrap: true,
                                               itemCount: snapshot
                                                   .data['data'][connectionCount][
@@ -297,8 +299,8 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                                               })
                                         ]));
                               },
-                            )
-                          ]);
+                            ),
+                          SizedBox(height: 20,)]);
                         }
                         else {
                           return Container(
