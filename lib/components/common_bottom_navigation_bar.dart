@@ -45,12 +45,12 @@ class _CommonBottomNavigationBarState extends State<CommonBottomNavigationBar> {
         items: [
           BottomNavigationBarItem(
               icon: Image.asset(
-                "assets/images/navigation_icon_1.png",
+                "assets/images/navigation_icon_2.png",
                 height: 30,
                 width: 30,
               ),
-              label: "네트워크"),
-
+              label: "지인관리"),
+          
           BottomNavigationBarItem(
               icon: Image.asset(
                 "assets/images/navigation_icon_3.png",
