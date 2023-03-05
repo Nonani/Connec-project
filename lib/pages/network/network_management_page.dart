@@ -63,35 +63,32 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                     .get();
                 Clipboard.setData(ClipboardData(text: result["uuid"]));
                 showDialog(
-                  context: context,
-                  builder: (context) => Dialog(
-                    // The background color
-                    backgroundColor: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            '코드가 클립보드에\n복사되었습니다',
-                            style: TextStyle(
-                              color: Color(0xff333333),
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                            ),
+                    context: context,
+                    builder: (context) {
+                      Future.delayed(Duration(seconds: 3), () {
+                        Navigator.of(context).pop(true);
+                      });
+                      return Dialog(
+                        // The background color
+                        backgroundColor: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                '코드가 클립보드에\n복사되었습니다',
+                                style: TextStyle(
+                                  color: Color(0xff333333),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text("확인"))
-                        ],
-                      ),
-                    ),
-                  ),
+                        ),
+                      );
+                    }
                 );
               }),
         ],

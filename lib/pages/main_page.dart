@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/common_bottom_navigation_bar.dart';
 import 'package:connec/components/custom_dialog.dart';
-import 'package:connec/pages/member/member_list_page.dart';
-import 'package:connec/pages/network/network_management_page.dart';
 import 'package:connec/pages/searchpage/search_page.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 
 import '../components/custom_notice_item.dart';
-import 'mypage/my_info_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -46,34 +43,31 @@ class _MainPageState extends State<MainPage> {
                       Clipboard.setData(ClipboardData(text: result["uuid"]));
                       showDialog(
                         context: context,
-                        builder: (context) => Dialog(
-                          // The background color
-                          backgroundColor: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  '코드가 클립보드에\n복사되었습니다',
-                                  style: TextStyle(
-                                    color: Color(0xff333333),
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500,
+                        builder: (context) {
+                          Future.delayed(Duration(seconds: 3), () {
+                            Navigator.of(context).pop(true);
+                          });
+                          return Dialog(
+                            // The background color
+                            backgroundColor: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    '코드가 클립보드에\n복사되었습니다',
+                                    style: TextStyle(
+                                      color: Color(0xff333333),
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text("확인"))
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        }
                       );
                     }),
               ],
