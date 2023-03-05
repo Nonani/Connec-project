@@ -295,7 +295,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                                                     children: [
                                                       Container(
                                                         margin: const EdgeInsets
-                                                            .only(left: 40, right: 40,
+                                                            .only(left: 60, right: 40,
                                                             bottom: 10),
                                                         child: Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -306,26 +306,29 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                                                           [connectionCount][sKeys[sIdx]['code']],
                                                             style: const TextStyle(
                                                               color: Color(
-                                                                  0xff333333),
+                                                                  0xff666666),
                                                               fontSize: 16,
                                                               fontFamily: 'EchoDream',
                                                               fontWeight: FontWeight
-                                                                  .w700,
+                                                                  .w600,
                                                             ),),
                                                           Text("${sKeys[sIdx]['count']}명",
                                                             style: const TextStyle(
                                                               color: Color(
-                                                                  0xff333333),
+                                                                  0xff666666),
                                                               fontSize: 16,
                                                               fontFamily: 'EchoDream',
                                                               fontWeight: FontWeight
-                                                                  .w700,
-                                                            ),),
+                                                                  .w600,
+                                                            ),
+                                                          ),
                                                         ]),
                                                       ),
                                                     ]);
                                               })
-                                        ]));
+                                        ]
+                                    )
+                                );
                               },
                             ),
                           SizedBox(height: 20,)]);
