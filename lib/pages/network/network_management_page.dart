@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/common_bottom_navigation_bar.dart';
-import 'package:connec/pages/member/member_list_page.dart';
-import 'package:connec/pages/mypage/my_info_page.dart';
-import 'package:connec/pages/searchpage/search_page.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +59,37 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                       .doc("${FirebaseAuth.instance.currentUser!.uid}")
                       .get();
                   Clipboard.setData(ClipboardData(text: result["uuid"]));
+                  showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+                      // The background color
+                      backgroundColor: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '코드가 클립보드에\n복사되었습니다',
+                              style: TextStyle(
+                                color: Color(0xff333333),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("확인"))
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
                 }),
           ],
         ),
@@ -355,7 +383,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     firstData = await firstQueryData(FirebaseAuth.instance.currentUser!.uid);
 
     //parsing workData
-    List<dynamic> parsedData = await parseWork(firstData['relationData'], firstData['networkUserData']);
+    List<dynamic> parsedData = await parseWork(firstData['networkUserData']);
 
     result['count'][0] = firstData['count'];
     result['data'].add(parsedData[0]);
@@ -363,7 +391,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     //두 다리
     try {
       secondData = await secondQueryData(firstData['networkData']);
-      parsedData = await parseWork(secondData['relationData'], secondData['networkUserData']);
+      parsedData = await parseWork(secondData['networkUserData']);
       result['count'][1] = secondData['count'];
       result['data'].add(parsedData[0]);
       result['dict'].add(parsedData[1]);
@@ -373,7 +401,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     try{
       thirdData = await thirdQueryData(firstData['networkData'], secondData['networkData']);
       logger.w(thirdData);
-      parsedData = await parseWork(thirdData['relationData'], thirdData['networkUserData']);
+      parsedData = await parseWork(thirdData['networkUserData']);
       result['count'][2] = thirdData['count'];
       logger.w(thirdData['count']);
       result['data'].add(parsedData[0]);
@@ -408,19 +436,19 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
         .get();
     List<QueryDocumentSnapshot<Map<String, dynamic>>>? networkUserData =
         networkUsers.docs;
-    QuerySnapshot<Map<String, dynamic>> relation = await db
-        .collection('member')
-        .where('uid', whereIn: networkData['list'])
-        .get();
-    List<QueryDocumentSnapshot<Map<String, dynamic>>>? relationData =
-        relation.docs;
+    // QuerySnapshot<Map<String, dynamic>> relation = await db
+    //     .collection('member')
+    //     .where('uid', whereIn: networkData['list'])
+    //     .get();
+    // List<QueryDocumentSnapshot<Map<String, dynamic>>>? relationData =
+    //     relation.docs;
 
     result['networkData'] = networkData['list'];
     result['networkUserData'] = networkUserData;
-    result['relationData'] = relationData;
+    // result['relationData'] = relationData;
 
     result['count'] += networkUserData.length;
-    result['count'] += relationData.length;
+    // result['count'] += relationData.length;
 
     return result;
   }
@@ -457,26 +485,26 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
       networkUserData.addAll(networkUsers.docs);
     }
 
-    List<QueryDocumentSnapshot<Map<String, dynamic>>>? relationData = [];
-    for (int index = 0; index < (networkQuery.length / 10 + boolToInt((networkQuery.length % 10) > 0)).toInt(); index++) {
-      int start = 10 * index;
-      int end = 10 * (index + 1);
-      if (end > networkQuery.length) {
-        end = networkQuery.length;
-      }
-      QuerySnapshot<Map<String, dynamic>> relation = await db
-          .collection('member')
-          .where('uid', whereIn: networkQuery.sublist(start, end))
-          .get();
-      relationData.addAll(relation.docs);
-    }
+    // List<QueryDocumentSnapshot<Map<String, dynamic>>>? relationData = [];
+    // for (int index = 0; index < (networkQuery.length / 10 + boolToInt((networkQuery.length % 10) > 0)).toInt(); index++) {
+    //   int start = 10 * index;
+    //   int end = 10 * (index + 1);
+    //   if (end > networkQuery.length) {
+    //     end = networkQuery.length;
+    //   }
+    //   QuerySnapshot<Map<String, dynamic>> relation = await db
+    //       .collection('member')
+    //       .where('uid', whereIn: networkQuery.sublist(start, end))
+    //       .get();
+    //   relationData.addAll(relation.docs);
+    // }
 
     result['networkData'] = networkQuery;
     result['networkUserData'] = networkUserData;
-    result['relationData'] = relationData;
+    // result['relationData'] = relationData;
 
     result['count'] += networkUserData.length;
-    result['count'] += relationData.length;
+    // result['count'] += relationData.length;
 
     return result;
   }
@@ -531,27 +559,28 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
       networkUserData.addAll(networkUsers.docs);
     }
 
-    List<QueryDocumentSnapshot<Map<String, dynamic>>>? relationData = [];
-    for (int index = 0; index < (lastNetworkQuery.length / 10 + boolToInt((lastNetworkQuery.length % 10) > 0)).toInt(); index++) {
-      int start = 10 * index;
-      int end = 10 * (index + 1);
-      if (end > lastNetworkQuery.length) {
-        end = lastNetworkQuery.length;
-      }
-      QuerySnapshot<Map<String, dynamic>> relation = await db
-          .collection('member')
-          .where('uid', whereIn: lastNetworkQuery.sublist(start, end))
-          .get();
-      relationData.addAll(relation.docs);
-    }
+    // List<QueryDocumentSnapshot<Map<String, dynamic>>>? relationData = [];
+    // for (int index = 0; index < (lastNetworkQuery.length / 10 + boolToInt((lastNetworkQuery.length % 10) > 0)).toInt(); index++) {
+    //   int start = 10 * index;
+    //   int end = 10 * (index + 1);
+    //   if (end > lastNetworkQuery.length) {
+    //     end = lastNetworkQuery.length;
+    //   }
+    //   QuerySnapshot<Map<String, dynamic>> relation = await db
+    //       .collection('member')
+    //       .where('uid', whereIn: lastNetworkQuery.sublist(start, end))
+    //       .get();
+    //   relationData.addAll(relation.docs);
+    // }
 
+    logger.w(result);
+    result['networkUserData'] = networkUserData;
     result['count'] += networkUserData.length;
-    result['count'] += relationData.length;
+    // result['count'] += relationData.length;
     return result;
   }
 
   dynamic parseWork(
-      List<QueryDocumentSnapshot<Map<String, dynamic>>>? relationData,
       List<QueryDocumentSnapshot<Map<String, dynamic>>>? networkUserData) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     List<dynamic> result = [];
@@ -561,8 +590,11 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     List<int> workDataCnt = [];
     Map<String, dynamic> workDict = {};
     Map<String, dynamic> leveledData = {};
+
+    logger.w(networkUserData);
+
     for (QueryDocumentSnapshot<Map<String, dynamic>> element
-    in relationData! + networkUserData!) {
+    in networkUserData!) {
       Map<String, dynamic> member = element.data();
       if (!workData.contains(member['workArea'][0])) {
         workData.add(member['workArea'][0]);
