@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/components/common_bottom_navigation_bar.dart';
 import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/member/member_list_page.dart';
 import 'package:connec/pages/network/network_management_page.dart';
@@ -20,16 +21,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int _currentIndex = 2;
   Logger logger = Logger();
-  List<Widget> list = [
-    NetworkManagementPage(),
-    AcquitanceListPage(),
-    SearchPage(),
-    // ExpandNetworkPage(),
-    MyInfoPage(),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -237,67 +229,8 @@ class _MainPageState extends State<MainPage> {
                 ),
               ],
             ),
-            bottomNavigationBar: SizedBox(
-              height: 70,
-              child: BottomNavigationBar(
-                currentIndex: _currentIndex,
-                onTap: (index) {
-                  print('index test : ${index}');
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => list[_currentIndex],
-                      )).then((value) => setState(() {}));
-                },
-                type: BottomNavigationBarType.fixed,
-                backgroundColor: Color(0xff5f66f2),
-                showSelectedLabels: true,
-                fixedColor: Colors.white,
-                unselectedItemColor: Colors.white,
-                selectedFontSize: 12,
-                unselectedFontSize: 12,
-                items: [
-                  BottomNavigationBarItem(
-                      icon: Image.asset(
-                        "assets/images/navigation_icon_1.png",
-                        height: 30,
-                        width: 30,
-                      ),
-                      label: "네트워크"),
-                  BottomNavigationBarItem(
-                      icon: Image.asset(
-                        "assets/images/navigation_icon_2.png",
-                        height: 30,
-                        width: 30,
-                      ),
-                      label: "지인관리"),
-                  BottomNavigationBarItem(
-                      icon: Image.asset(
-                        "assets/images/navigation_icon_3.png",
-                        height: 30,
-                        width: 30,
-                      ),
-                      label: "검색"),
-                  // BottomNavigationBarItem(
-                  //     icon: Image.asset(
-                  //       "assets/images/navigation_icon_4.png",
-                  //       height: 30,
-                  //       width: 30,
-                  //     ),
-                  //     label: "구인장터"),
-                  BottomNavigationBarItem(
-                      icon: Image.asset(
-                        "assets/images/navigation_icon_5.png",
-                        height: 30,
-                        width: 30,
-                      ),
-                      label: "마이페이지"),
-                ],
-              ),
-            ),
+
+            bottomNavigationBar: CommonBottomNavigationBar(),
           );
         }
       },
