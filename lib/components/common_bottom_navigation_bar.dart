@@ -1,6 +1,6 @@
+import 'package:connec/pages/mypage/notification_list_page.dart';
 import 'package:flutter/material.dart';
 
-import '../pages/member/member_list_page.dart';
 import '../pages/mypage/my_info_page.dart';
 import '../pages/network/network_management_page.dart';
 import '../pages/searchpage/search_page.dart';
@@ -15,6 +15,7 @@ class _CommonBottomNavigationBarState extends State<CommonBottomNavigationBar> {
   List<Widget> list = [
     NetworkManagementPage(),
     SearchPage(),
+    NoticeListPage(),
     MyInfoPage(),
   ];
 
@@ -58,13 +59,13 @@ class _CommonBottomNavigationBarState extends State<CommonBottomNavigationBar> {
                 width: 30,
               ),
               label: "검색"),
-          // BottomNavigationBarItem(
-          //     icon: Image.asset(
-          //       "assets/images/navigation_icon_4.png",
-          //       height: 30,
-          //       width: 30,
-          //     ),
-          //     label: "구인장터"),
+          BottomNavigationBarItem(
+              icon: Image.asset(
+                "assets/images/navigation_icon_4.png",
+                height: 30,
+                width: 20,
+              ),
+              label: "제안현황"),
           BottomNavigationBarItem(
               icon: Image.asset(
                 "assets/images/navigation_icon_5.png",

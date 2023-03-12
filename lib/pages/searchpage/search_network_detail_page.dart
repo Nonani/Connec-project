@@ -1,12 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connec/pages/add_member_page.dart';
 import 'package:connec/pages/searchpage/contact_page.dart';
 import 'package:connec/style/buttonstyle.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-import '../../components/custom_dialog.dart';
 import '../../style/contextstyle.dart';
 
 class SearchNetworkDetailPage extends StatelessWidget {
@@ -183,32 +180,16 @@ class SearchNetworkDetailPage extends StatelessWidget {
           Expanded(
             child: ElevatedButton(
               onPressed: () async {
-                FirebaseFirestore db = FirebaseFirestore.instance;
-                QuerySnapshot<Map<String, dynamic>> memberData = await db
-                    .collection('member')
-                    .where('uid',
-                        isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                    .get();
-                if (memberData.docs.length > 1) {
-                  logger.w(data);
-                  logger.w(data['uid']);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ContactPage(
-                            docID: data['docId'] ?? "", uid: data['uid']),
-                      ));
-                } else {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddMemberPage(),
-                      ));
-                }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ContactPage(
+                          docID: data['docId'] ?? "", uid: data['uid']),
+                    ));
               },
               style: featureButton,
               child: Text(
-                '연락하기',
+                '제안하기',
                 style: buttonText,
               ),
             ),
