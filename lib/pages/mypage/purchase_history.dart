@@ -243,7 +243,8 @@ class _IAPHistoryState extends State<IAPHistory> {
                                         ),
                                       ),
                                       Text(
-                                        snapshot.data[mode][index]['merch'].toString(),
+                                        snapshot.data[mode][index]['merch']
+                                            .toString().substring(3, 14),
                                         style: const TextStyle(
                                           color: Color(0xff666666),
                                           fontSize: 16,
@@ -303,24 +304,24 @@ class _IAPHistoryState extends State<IAPHistory> {
                                   ),
                                 ),
                               ),
-                              Text('usage'),
+                              Text(snapshot.data[mode][index]['user']),
                               Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                        child: Row(children: const [
+                                        child: Row(children: [
                                       Text(
-                                        "사용",
-                                        style: TextStyle(
+                                        snapshot.data[mode][index]['type'].toString(),
+                                        style: const TextStyle(
                                           color: Color(0xff666666),
                                           fontSize: 16,
                                           fontFamily: 'EchoDream',
                                           fontWeight: FontWeight.w700,
                                         ),
                                       ),
-                                      SizedBox(width: 27),
-                                      Text(
+                                      const SizedBox(width: 27),
+                                      const Text(
                                         "쿠폰 1개",
                                         style: TextStyle(
                                           color: Color(0xff5f66f2),
@@ -405,11 +406,8 @@ class _IAPHistoryState extends State<IAPHistory> {
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .get())
         .data();
-    logger.w(data);
     result[0] = data!['purchase'];
     result[1] = data['consume'];
-
-    logger.w(result);
     return result;
   }
 }
