@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 
 import '../../components/custom_dialog.dart';
 import '../../const/data.dart';
+import '../../style/buttonstyle.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({required this.uid, required this.docID, Key? key})
@@ -75,7 +76,9 @@ class _ContactPageState extends State<ContactPage> {
         ),
       ),
       bottomNavigationBar: ElevatedButton(
-          child: Text("제안권 사용"),
+          style: featureButton,
+          child: Text("제안권 사용",
+            style: buttonText,),
           onPressed: () async {
             FirebaseFirestore db = FirebaseFirestore.instance;
             int couponNum = (await db
