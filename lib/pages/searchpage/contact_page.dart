@@ -75,7 +75,7 @@ class _ContactPageState extends State<ContactPage> {
         ),
       ),
       bottomNavigationBar: ElevatedButton(
-          child: Text("제안 보내기"),
+          child: Text("제안권 사용"),
           onPressed: () async {
             FirebaseFirestore db = FirebaseFirestore.instance;
             int couponNum = (await db
