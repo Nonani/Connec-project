@@ -19,10 +19,12 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
   final logger = Logger();
 
   int connectionCount = 0;
-  List<String> connectionText = ['한 다리', '두 다리', '세 다리'];
+  List<String> connectionText = ['한 다리', '두 다리', '세 다리', '전체 사용자'];
+  List<String> userText = ['총 지인', '전체 사용자 수'];
   List<String> connectionList = [
     "assets/images/first_deg.png",
     "assets/images/second_deg.png",
+    "assets/images/third_deg.png",
     "assets/images/third_deg.png"
   ];
 
@@ -44,7 +46,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: GestureDetector(
-          child:Text(
+          child: Text(
             'CONNEC',
             style: connecTitle,
           ),
@@ -88,8 +90,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                           ),
                         ),
                       );
-                    }
-                );
+                    });
               }),
         ],
       ),
@@ -113,7 +114,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                         child: ElevatedButton(
                           onPressed: () {
                             setState(() =>
-                                connectionCount = (connectionCount + 1) % 3);
+                                connectionCount = (connectionCount + 1) % 4);
                           },
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(186, 36),
@@ -193,8 +194,8 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                const Text(
-                                  "총 지인",
+                                Text(
+                                  userText[connectionCount ~/ 3],
                                   style: TextStyle(
                                     color: Color(0xff333333),
                                     fontSize: 17,
@@ -351,9 +352,9 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                           padding: EdgeInsets.only(left: 35, top: 10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
-                            children: const [
+                            children: [
                               Text(
-                                "총 지인",
+                                userText[connectionCount ~/ 3],
                                 style: TextStyle(
                                   color: Color(0xff333333),
                                   fontSize: 17,
@@ -387,7 +388,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     Logger logger = Logger();
 
     Map<String, dynamic> result = {};
-    result['count'] = [0, 0, 0];
+    result['count'] = [0, 0, 0, 0];
     result['data'] = [];
     result['dict'] = [];
 
@@ -395,16 +396,24 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     Map<String, dynamic> secondData = {};
     Map<String, dynamic> thirdData = {};
 
+    List<dynamic> parsedData = [];
     // 한 다리
+    logger.w(result);
+    try {
+      firstData = await firstQueryData(FirebaseAuth.instance.currentUser!.uid);
 
-    firstData = await firstQueryData(FirebaseAuth.instance.currentUser!.uid);
+      //parsing workData
+      parsedData = await parseWork(firstData['networkUserData']);
+      result['count'][0] = firstData['count'];
+      result['data'].add(parsedData[0]);
+      result['dict'].add(parsedData[1]);
+    }catch(e)
+    {
+      result['data'].add({});
+      result['dict'].add({});
+      logger.w(e);
+    }
 
-    //parsing workData
-    List<dynamic> parsedData = await parseWork(firstData['networkUserData']);
-
-    result['count'][0] = firstData['count'];
-    result['data'].add(parsedData[0]);
-    result['dict'].add(parsedData[1]);
     //두 다리
     try {
       secondData = await secondQueryData(firstData['networkData']);
@@ -413,6 +422,8 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
       result['data'].add(parsedData[0]);
       result['dict'].add(parsedData[1]);
     } catch (e) {
+      result['data'].add({});
+      result['dict'].add({});
       logger.w(e);
     }
     try {
@@ -425,6 +436,18 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
       result['data'].add(parsedData[0]);
       result['dict'].add(parsedData[1]);
     } catch (e) {
+      result['data'].add({});
+      result['dict'].add({});
+      logger.w(e);
+    }
+    try{
+      dynamic data = await allUserData();
+      parsedData = await parseWork(data);
+      logger.w(parsedData);
+      result['data'].add(parsedData[0]);
+      result['dict'].add(parsedData[1]);
+      result['count'][3] = data.length;
+    } catch(e){
       logger.w(e);
     }
     return result;
@@ -614,6 +637,16 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     result['networkUserData'] = networkUserData;
     result['count'] += networkUserData.length;
     // result['count'] += relationData.length;
+    return result;
+  }
+
+  dynamic allUserData() async{
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    List<QueryDocumentSnapshot<Map<String, dynamic>>>? result = (await db
+        .collection('users')
+        .where('uid', isNotEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get()).docs;
+    logger.w(result);
     return result;
   }
 
