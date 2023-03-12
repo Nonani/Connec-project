@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-import '../../components/custom_dialog.dart';
 import '../../style/contextstyle.dart';
 
 class SearchNetworkDetailPage extends StatelessWidget {
@@ -208,7 +207,7 @@ class SearchNetworkDetailPage extends StatelessWidget {
               },
               style: featureButton,
               child: Text(
-                '연락하기',
+                '제안하기',
                 style: buttonText,
               ),
             ),

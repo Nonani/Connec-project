@@ -24,7 +24,6 @@ class ContactPage extends StatefulWidget {
 class _ContactPageState extends State<ContactPage> {
   String inputText = '';
   String contactText = '';
-  String OpenTalkUrl = '';
   final _formKey = GlobalKey<FormState>();
   String offer = offerItemList.first;
 
@@ -59,11 +58,6 @@ class _ContactPageState extends State<ContactPage> {
               hint: "인재가 관심을 가질 조건을 제안해주세요",
               onSaved: (newValue) => contactText = newValue,
             ),
-            SignUpEditTextForm(
-              label: "카카오톡 오픈채팅방 링크",
-              hint: "오픈채팅방 링크를 입력해주세요",
-              onSaved: (newValue) => OpenTalkUrl = newValue,
-            )
             // TextField(
             //   maxLines: 20,
             //   onChanged: ((value) {
@@ -88,7 +82,6 @@ class _ContactPageState extends State<ContactPage> {
                 .data()!['num'];
             if (_formKey.currentState!.validate()&& couponNum > 0) {
               _formKey.currentState!.save();
-              print(OpenTalkUrl);
               print(contactText);
               print(offer);
               showCustomDialog(context);
@@ -113,7 +106,6 @@ class _ContactPageState extends State<ContactPage> {
                       'docId': '',
                       'purpose': offer,
                       'context': contactText,
-                      'chatLink': OpenTalkUrl
                     },
                   );
                 } catch (e) {
@@ -140,7 +132,6 @@ class _ContactPageState extends State<ContactPage> {
                       'docId': '${widget.docID}',
                       'purpose': offer,
                       'context': contactText,
-                      'chatLink': OpenTalkUrl
                     },
                   );
 
