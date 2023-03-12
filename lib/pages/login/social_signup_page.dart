@@ -114,12 +114,12 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                           );
                         },
                       ),
-                      SignUpEditTextForm(
-                        label: "소개",
-                        hint: "소개를 입력해주세요",
-                        isSecret: false,
-                        onSaved: (newValue) => _introduction = newValue,
-                      ),
+                      // SignUpEditTextForm(
+                      //   label: "소개",
+                      //   hint: "소개를 입력해주세요",
+                      //   isSecret: false,
+                      //   onSaved: (newValue) => _introduction = newValue,
+                      // ),
                       Container(
                         margin: EdgeInsets.fromLTRB(13, 4, 13, 2),
                         child: Row(
