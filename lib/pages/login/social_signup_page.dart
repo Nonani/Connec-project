@@ -13,10 +13,11 @@ import '../../components/custom_edit_textform.dart';
 import '../../services/service_class.dart';
 
 class SocialSignUpPage extends StatefulWidget {
-  const SocialSignUpPage({Key? key, this.uid, this.serviceName})
+  const SocialSignUpPage({Key? key, this.uid, this.serviceName, this.profileImageUrl})
       : super(key: key);
   final uid;
   final serviceName;
+  final profileImageUrl;
 
   @override
   State<SocialSignUpPage> createState() => _SocialSignUpPageState();
@@ -113,12 +114,12 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                           );
                         },
                       ),
-                      SignUpEditTextForm(
-                        label: "소개",
-                        hint: "소개를 입력해주세요",
-                        isSecret: false,
-                        onSaved: (newValue) => _introduction = newValue,
-                      ),
+                      // SignUpEditTextForm(
+                      //   label: "소개",
+                      //   hint: "소개를 입력해주세요",
+                      //   isSecret: false,
+                      //   onSaved: (newValue) => _introduction = newValue,
+                      // ),
                       Container(
                         margin: EdgeInsets.fromLTRB(13, 4, 13, 2),
                         child: Row(
@@ -174,6 +175,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 style: featureButton,
                 child: Text("회원가입", style: buttonText),
                 onPressed: () async {
+                  Logger logger = Logger();
                   if (_formKey.currentState!.validate() &&
                       _checkboxValue1 &&
                       _checkboxValue2 &&
@@ -182,12 +184,15 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                       _location != null) {
                     _formKey.currentState!.save();
                     showCustomDialog(context);
+                    logger.w(widget.profileImageUrl);
                     await provider.postSignUpBody(SignUpBody(
                       uid: widget.uid.toString(),
+                      profile_image_url: widget.profileImageUrl,
                       uuid: uuid.v4(),
                       name: _name,
                       age: _age,
                       work: _work,
+                      rate: 0,
                       personality: _personalityItems,
                       career: _careerItems,
                       gender: _gender,
@@ -258,7 +263,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                   width: 15,
                 ),
                 Text(
-                  '최대 5개까지 등록 가능',
+                  '최소 1개, 최대 5개까지 등록 가능',
                   style: TextStyle(
                       color: Color(0xffbdbdbd),
                       fontSize: 12,

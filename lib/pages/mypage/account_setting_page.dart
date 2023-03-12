@@ -139,7 +139,7 @@ class _AccountSettingPaqeState extends State<AccountSettingPaqe> {
                                     (doc) => print("Document deleted"),
                                 onError: (e) => print("Error updating document $e"),
                               );
-                              await FirebaseAuth.instance.currentUser!.delete();
+                              FirebaseAuth.instance.currentUser!.delete();
                               await FirebaseAuth.instance.signOut();
                               Navigator.popUntil(context, (route) => route.isFirst);
                             },

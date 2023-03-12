@@ -104,6 +104,7 @@ class _LoginPageState extends State<LoginPage> {
     bool isLogined = await KakaoLogin().login();
     if (isLogined) {
       kakao.User user = await kakao.UserApi.instance.me();
+      logger.w(user!.kakaoAccount!.profile!.profileImageUrl);
       final result = await FirebaseFirestore.instance
           .collection("users")
           .doc("kakao:${user!.id}")
@@ -116,6 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                 builder: ((context) => SocialSignUpPage(
                       serviceName: "kakao",
                       uid: "kakao:${user!.id}",
+                      profileImageUrl: user!.kakaoAccount!.profile!.profileImageUrl,
                     ))));
       } else {
         //이전에 로그인을 하여 회원가입 정보를 넣은 경우

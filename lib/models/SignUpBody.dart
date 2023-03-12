@@ -14,6 +14,7 @@ class SignUpBody {
   String? age;
   String? introduction;
   double? rate;
+  String? profile_image_url;
 
   SignUpBody(
       {this.uid,
@@ -30,6 +31,7 @@ class SignUpBody {
       this.gender,
       this.age,
       this.introduction,
+      this.profile_image_url,
       this.rate});
 
   SignUpBody.fromJson(Map<String, dynamic> json) {
@@ -47,6 +49,7 @@ class SignUpBody {
     gender = json['gender'];
     age = json['age'];
     introduction = json['introduction'];
+    profile_image_url = json['profile_image_url'];
     rate = json['rate'];
   }
 
@@ -66,6 +69,7 @@ class SignUpBody {
     data['gender'] = this.gender;
     data['age'] = this.age;
     data['introduction'] = this.introduction;
+    data['profile_image_url'] = this.profile_image_url;
     data['rate'] = this.rate;
     return data;
   }
