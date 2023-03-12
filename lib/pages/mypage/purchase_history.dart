@@ -333,7 +333,7 @@ class _IAPHistoryState extends State<IAPHistory> {
                                     ])),
                                     TextButton(
                                         onPressed: () {},
-                                        child: Text(
+                                        child: const Text(
                                           "구매취소",
                                           style: TextStyle(
                                             color: Color(0xff999999),
