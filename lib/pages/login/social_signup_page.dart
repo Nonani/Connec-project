@@ -13,7 +13,8 @@ import '../../components/custom_edit_textform.dart';
 import '../../services/service_class.dart';
 
 class SocialSignUpPage extends StatefulWidget {
-  const SocialSignUpPage({Key? key, this.uid, this.serviceName, this.profileImageUrl})
+  const SocialSignUpPage(
+      {Key? key, this.uid, this.serviceName, this.profileImageUrl})
       : super(key: key);
   final uid;
   final serviceName;
@@ -205,18 +206,14 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                       Navigator.pop(context);
                       Navigator.pop(context);
                     }
-                  }
-                  else if(_workAreaCodes.isEmpty){
+                  } else if (_workAreaCodes.isEmpty) {
                     showDialog(
                         context: context,
-                        builder: (context) => workValidationDialog()
-                    );
-                  }
-                  else if(_location == null){
+                        builder: (context) => workValidationDialog());
+                  } else if (_location == null) {
                     showDialog(
                         context: context,
-                        builder: (context) => areaValidationDialog()
-                    );
+                        builder: (context) => areaValidationDialog());
                   } else {
                     print(_formKey.currentState!.validate());
                   }
@@ -341,9 +338,13 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
   }
 
   void showCareerListDialog(String code, String title) {
-    SimpleDialog dialog = SimpleDialog(
-        title: Text('해당 분야 경력'),
-        children: List<Widget>.generate(careerList.length - 1, (index) {
+    SimpleDialog dialog = SimpleDialog(title: Text('해당 분야 경력'), children: [
+      Container(
+        height: 300,
+        width: 100,
+        child: SingleChildScrollView(
+            child: Column(
+                children: List<Widget>.generate(careerList.length - 1, (index) {
           return SimpleDialogOption(
               child: Text(careerList.sublist(1, careerList.length)[index]),
               onPressed: () {
@@ -360,7 +361,9 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 }
                 Navigator.pop(context);
               });
-        }));
+        }))),
+      )
+    ]);
     showDialog(
         context: context,
         builder: (context) {
@@ -407,6 +410,8 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
     switch (_curWorkTier) {
       case 1:
         SimpleDialog dialog = SimpleDialog(
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             title: Container(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -414,7 +419,15 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 Text('${title}'),
               ],
             )),
-            children: dialogWidgetList);
+            children: [
+              Container(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: dialogWidgetList,
+                  ),
+                ),
+              )
+            ]);
         showDialog(
             context: context,
             builder: (context) {
@@ -433,7 +446,17 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 Text('${title}'),
               ],
             )),
-            children: dialogWidgetList);
+            children: [
+              Container(
+                height: 300,
+                width: 100,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: dialogWidgetList,
+                  ),
+                ),
+              )
+            ]);
         showDialog(
             context: context,
             builder: (context) {
