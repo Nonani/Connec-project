@@ -123,8 +123,10 @@ class _NoticeListPageState extends State<NoticeListPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 buildReceiveItemTitle(snapshot, index),
+                buildItemPopupMenu()
               ],
             ),
             Container(
@@ -165,8 +167,10 @@ class _NoticeListPageState extends State<NoticeListPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 buildSendItemTitle(snapshot, index),
+                buildItemPopupMenu()
               ],
             ),
 
@@ -254,6 +258,26 @@ class _NoticeListPageState extends State<NoticeListPage> {
         ),
       ],
     );
+  }
+  PopupMenuButton buildItemPopupMenu(){
+    List<String> menu = ['제안확정', '신고하기' ];
+    return PopupMenuButton<String>(
+      // Callback that sets the selected popup menu item.
+      onSelected: (String item) {
+        logger.w(item);
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        PopupMenuItem<String>(
+          value: menu[0],
+          child: Text(menu[0]),
+        ),
+        PopupMenuItem<String>(
+          value: menu[1],
+          child: Text(menu[1]),
+        ),
+      ],
+    );
+
   }
   Future _future() async {
     final notice = await db
