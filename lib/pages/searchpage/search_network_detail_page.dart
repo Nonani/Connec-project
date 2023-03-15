@@ -4,7 +4,7 @@ import 'package:connec/style/buttonstyle.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-import '../../style/contextstyle.dart';
+import '../../style/Member/contextstyle.dart';
 
 class SearchNetworkDetailPage extends StatelessWidget {
   Map<String, dynamic> data;

@@ -3,7 +3,7 @@ import 'package:connec/style/buttonstyle.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-import '../../style/contextstyle.dart';
+import '../../style/Member/contextstyle.dart';
 import 'member_body_page.dart';
 
 class AcquitanceManagementPage extends StatelessWidget {

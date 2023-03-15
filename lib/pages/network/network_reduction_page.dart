@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-import '../../style/contextstyle.dart';
+import '../../style/Member/contextstyle.dart';
 
 class NetworkReductionPage extends StatelessWidget {
   String uid = "";

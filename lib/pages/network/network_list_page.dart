@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
-import '../../style/contextstyle.dart';
+import '../../style/Member/contextstyle.dart';
 import 'expand_network_page.dart';
 
 class NetworkListPage extends StatefulWidget {
