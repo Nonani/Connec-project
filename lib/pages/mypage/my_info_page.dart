@@ -66,6 +66,13 @@ class _MyInfoPageState extends State<MyInfoPage> {
                               shape: BoxShape.circle,
                               color: Color(0xffafafaf),
                             ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: Image.network(
+                                snapshot.data['user']['profile_image_url'],
+                                fit: BoxFit.cover,
+                              )
+                            )
                           ),
                           Container(
                             width: 150,
