@@ -79,3 +79,4 @@ const List<String> personalityList = <String>[
 ];
 const List<String> genderList = <String>['선택', "남성", "여성"];
 const List<String> offerItemList = ["선택", "정규직 채용", "계약직 채용", "프로젝트 외주", "자문"];
+const List<String> reportCategoryList = ["선택", "48시간 내 연락 불가", "정보 불일치", "기타"];

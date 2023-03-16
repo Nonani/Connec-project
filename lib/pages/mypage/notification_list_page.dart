@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/pages/mypage/report_page.dart';
 import 'package:connec/style/Notification/contextStyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +127,7 @@ class _NoticeListPageState extends State<NoticeListPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 buildReceiveItemTitle(snapshot, index),
-                buildItemPopupMenu()
+                buildItemPopupMenu(snapshot, index)
               ],
             ),
             Container(
@@ -170,7 +171,7 @@ class _NoticeListPageState extends State<NoticeListPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 buildSendItemTitle(snapshot, index),
-                buildItemPopupMenu()
+                buildItemPopupMenu(snapshot, index)
               ],
             ),
 
@@ -259,12 +260,19 @@ class _NoticeListPageState extends State<NoticeListPage> {
       ],
     );
   }
-  PopupMenuButton buildItemPopupMenu(){
+  PopupMenuButton buildItemPopupMenu(AsyncSnapshot snapshot, int index){
     List<String> menu = ['제안확정', '신고하기' ];
     return PopupMenuButton<String>(
       // Callback that sets the selected popup menu item.
       onSelected: (String item) {
-        logger.w(item);
+        if( item == "제안확정"){
+
+        }
+        else{
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) => ReportPage(to: snapshot.data[index]['to'], from: FirebaseAuth.instance.currentUser!.uid,),
+          ));
+        }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         PopupMenuItem<String>(
