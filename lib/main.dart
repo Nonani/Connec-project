@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/login/login_page.dart';
 import 'package:connec/pages/main_page.dart';
+import 'package:connec/services/Job.dart';
 import 'package:connec/services/service_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -30,6 +31,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ServiceClass()),
+        ChangeNotifierProvider(create: (_) => JobProvider()),
       ],
       child: const MyApp(),
     ),

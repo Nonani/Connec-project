@@ -10,7 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../components/custom_dropdown_button.dart';
 import '../../components/custom_edit_textform.dart';
+import '../../services/Job.dart';
 import '../../services/service_class.dart';
+import 'job_dialog.dart';
 
 class SocialSignUpPage extends StatefulWidget {
   const SocialSignUpPage(
@@ -241,6 +243,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
   }
 
   Container buildWorkContainer(AsyncSnapshot snapshot) {
+    final jobProvider = Provider.of<JobProvider>(context, listen: false);
     return Container(
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
       width: double.infinity,
@@ -270,8 +273,18 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
             ),
             IconButton(
                 onPressed: () {
-                  if (_workAreaItems.length < 5)
-                    showWorkListDialog(snapshot, "전문분야");
+                  Logger logger = Logger();
+                  logger.w(jobProvider.jobList.length);
+                  if (jobProvider.jobList.length < 5)
+                    Navigator.push(
+                        context,
+                        DialogRoute(
+                          context: context,
+                          builder: (context) => JobTypePage(),
+                        )).then((value) => setState(() {
+
+                        },));
+                  // showWorkListDialog(snapshot, "전문분야");
                 },
                 icon: Icon(
                   Icons.add_circle,
@@ -285,9 +298,11 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
         ListView.separated(
           primary: false,
           shrinkWrap: true,
-          itemCount: _workAreaItems.length,
+          itemCount: jobProvider.jobList.length,
           separatorBuilder: (_, __) => const Divider(),
           itemBuilder: (BuildContext context, int index) {
+            Logger logger = Logger();
+            logger.w(jobProvider.jobList[index].subType);
             return ListTile(
               contentPadding: EdgeInsets.zero,
               title: Container(
@@ -305,21 +320,19 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                       children: [
                         Expanded(
                             child: Text(
-                          _workAreaItems[index],
+                              jobProvider.jobList[index].subType!.name,
                           overflow: TextOverflow.ellipsis,
                         )),
                         IconButton(
                             onPressed: () {
-                              _workAreaItems.removeAt(index);
-                              _workAreaCodes.removeAt(index);
-                              _careerItems.remove(index);
+                              jobProvider.jobList.removeAt(index);
                               setState(() {});
                             },
                             icon: Icon(Icons.cancel_outlined))
                       ],
                     ),
                     Text(
-                      '경력  ${_careerItems[index]}',
+                      '경력  ${jobProvider.jobList[index].career!.year}년 ${jobProvider.jobList[index].career!.month}개월',
                       style: TextStyle(
                         color: Color(0xff999999),
                         fontSize: 12,
@@ -585,8 +598,8 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
             itemList: personalityList,
             label: "성격",
             validator: (value) {
-              if (_personalityItems.length < 2) {
-                return "2개 이상 선택해주세요";
+              if (_personalityItems.length < 3) {
+                return "3개 이상 선택해주세요";
               } else
                 return null;
             },
