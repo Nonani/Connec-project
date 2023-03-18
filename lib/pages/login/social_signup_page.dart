@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_dialog.dart';
+import 'package:connec/services/LocalService.dart';
 import 'package:connec/style/buttonstyle.dart';
 import 'package:logger/logger.dart';
 import 'package:uuid/uuid.dart';
@@ -10,9 +13,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../components/custom_dropdown_button.dart';
 import '../../components/custom_edit_textform.dart';
-import '../../services/Job.dart';
+import '../../services/JobService.dart';
 import '../../services/service_class.dart';
 import 'job_dialog.dart';
+import 'local_dialog.dart';
 
 class SocialSignUpPage extends StatefulWidget {
   const SocialSignUpPage(
@@ -30,15 +34,11 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
   var uuid = Uuid();
   String? _name;
   String _work = workList.first;
-  String? _location;
-  String? _locaion_label;
   String _gender = genderList.first;
   String _age = ageList.first;
   String? _introduction;
   bool _checkboxValue1 = false;
   bool _checkboxValue2 = false;
-  int _curLocalTier = 1;
-  String _curLocalParent = "";
   String _personality = personalityList.first;
   List<String> _personalityItems = [];
   final _formKey = GlobalKey<FormState>();
@@ -176,12 +176,14 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                   Logger logger = Logger();
                   final jobProvider =
                       Provider.of<JobProvider>(context, listen: false);
+                  final localProvider =
+                  Provider.of<LocalProvider>(context, listen: false);
                   if (_formKey.currentState!.validate() &&
                       _checkboxValue1 &&
                       _checkboxValue2 &&
                       // _workAreaCodes.isNotEmpty &&
                       _personalityItems.length >= 2 &&
-                      _location != null) {
+                      localProvider.local.sub_local != null) {
                     _formKey.currentState!.save();
                     showCustomDialog(context);
                     logger.w(widget.profileImageUrl);
@@ -197,7 +199,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                       career: jobProvider.getCareerList(),
                       gender: _gender,
                       introduction: _introduction,
-                      location: _location,
+                      location: localProvider.local.sub_local_code,
                       workArea: jobProvider.getSubType(),
                       serviceName: widget.serviceName.toString(),
                     ));
@@ -209,7 +211,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                     showDialog(
                         context: context,
                         builder: (context) => workValidationDialog());
-                  } else if (_location == null) {
+                  } else if (localProvider.local.sub_local == null) {
                     showDialog(
                         context: context,
                         builder: (context) => areaValidationDialog());
@@ -353,6 +355,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
   }
 
   Container buildLocalContainer(AsyncSnapshot snapshot) {
+    final localProvider = Provider.of<LocalProvider>(context, listen: false);
     return Container(
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
       width: double.infinity,
@@ -366,7 +369,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
         SizedBox(height: 10),
         GestureDetector(
           onTap: () {
-            showLocalListDialog(snapshot, "지역");
+            Navigator.push(context, DialogRoute(context: context, builder: (context) => LocalDataScreen( onClose: (){setState((){});}),));
           },
           child: Container(
             width: double.infinity,
@@ -377,7 +380,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 border: Border(
                     bottom: BorderSide(color: Color(0xff5f66f2), width: 1))),
             alignment: Alignment.centerLeft,
-            child: _location == null
+            child: localProvider.local.local == null
                 ? Text(
                     '선택',
                     style: TextStyle(
@@ -387,7 +390,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                     ),
                   )
                 : Text(
-                    '${_locaion_label}',
+                    '${localProvider.local.local} > ${localProvider.local.sub_local}',
                     style: TextStyle(
                       color: Color(0xff333333),
                       fontSize: 16,
@@ -399,63 +402,74 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
       ]),
     );
   }
-
-  void showLocalListDialog(AsyncSnapshot snapshot, String title) {
-    List dialogList = [];
-    List<Widget> dialogWidgetList = [];
-
-    snapshot.data["localData"].forEach((element) {
-      if (element.data()["tier"] == _curLocalTier &&
-          element.data()["parent"] == _curLocalParent) {
-        dialogList.add(element.data());
-        dialogWidgetList.add(SimpleDialogOption(
-          child: Text(element.data()["title"]),
-          onPressed: () {
-            switch (_curLocalTier) {
-              case 1:
-                title = element.data()["title"];
-                break;
-              case 2:
-                title = title + ' > ${element.data()["title"]}';
-                _location = element.data()["code"];
-                _locaion_label = title;
-                Navigator.pop(context);
-                return;
-            }
-            _curLocalTier += 1;
-            _curLocalParent = element.data()["code"];
-            showLocalListDialog(snapshot, title);
-          },
-        ));
-      }
-    });
-    switch (_curLocalTier) {
-      case 1:
-        SimpleDialog dialog =
-            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
-        showDialog(
-            context: context,
-            builder: (context) {
-              return dialog;
-            }).then((value) => setState(() {
-              _curLocalTier = 1;
-              _curLocalParent = "";
-            }));
-        break;
-      case 2:
-        SimpleDialog dialog =
-            SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
-        showDialog(
-            context: context,
-            builder: (context) {
-              return dialog;
-            }).then((value) {
-          Navigator.pop(context);
-          setState(() {});
-        });
-        break;
-    }
-  }
+  //
+  // void showLocalListDialog(AsyncSnapshot snapshot, String title) {
+  //   List dialogList = [];
+  //   List<Widget> dialogWidgetList = [];
+  //
+  //   snapshot.data["localData"].forEach((element) {
+  //     if (element.data()["tier"] == _curLocalTier &&
+  //         element.data()["parent"] == _curLocalParent) {
+  //       dialogList.add(element.data());
+  //       dialogWidgetList.add(SimpleDialogOption(
+  //         child: Text(element.data()["title"]),
+  //         onPressed: () {
+  //           switch (_curLocalTier) {
+  //             case 1:
+  //               title = element.data()["title"];
+  //               break;
+  //             case 2:
+  //               title = title + ' > ${element.data()["title"]}';
+  //               _location = element.data()["code"];
+  //               _locaion_label = title;
+  //               Navigator.pop(context);
+  //               return;
+  //           }
+  //           _curLocalTier += 1;
+  //           _curLocalParent = element.data()["code"];
+  //           showLocalListDialog(snapshot, title);
+  //         },
+  //       ));
+  //     }
+  //   });
+  //   switch (_curLocalTier) {
+  //     case 1:
+  //       SimpleDialog dialog =
+  //           SimpleDialog( title: Text('${title}'), children: dialogWidgetList);
+  //       showDialog(
+  //           context: context,
+  //           builder: (context) {
+  //             return ConstrainedBox( constraints: BoxConstraints(
+  //               minHeight: 10,
+  //               maxHeight: 20,
+  //               maxWidth: 350,
+  //             ),
+  //             child: dialog,);
+  //
+  //           }).then((value) => setState(() {
+  //             _curLocalTier = 1;
+  //             _curLocalParent = "";
+  //           }));
+  //       break;
+  //     case 2:
+  //       SimpleDialog dialog =
+  //           SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
+  //       showDialog(
+  //           context: context,
+  //           builder: (context) {
+  //             return ConstrainedBox( constraints: BoxConstraints(
+  //               minHeight: 10,
+  //               maxHeight: 20,
+  //               maxWidth: 350,
+  //             ),
+  //               child: dialog,);
+  //           }).then((value) {
+  //         Navigator.pop(context);
+  //         setState(() {});
+  //       });
+  //       break;
+  //   }
+  // }
 
   Container buildPersonalityContainer(AsyncSnapshot snapshot) {
     return Container(

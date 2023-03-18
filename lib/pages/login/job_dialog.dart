@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/JobSubType.dart';
 import '../../models/JobType.dart';
-import '../../services/Job.dart';
+import '../../services/JobService.dart';
 
 class JobTypePage extends StatelessWidget {
   final VoidCallback? onClose;
@@ -72,7 +72,7 @@ class JobTypePage extends StatelessWidget {
 }
 
 class JobSubTypePage extends StatelessWidget {
-  final jobType;
+  final JobType jobType;
   final VoidCallback? onClose;
 
   JobSubTypePage(this.jobType, this.onClose);
@@ -98,7 +98,7 @@ class JobSubTypePage extends StatelessWidget {
             ),
           ),
           title: Text(
-            '레슨',
+            '${jobType.name}',
             style: TextStyle(
               color: Color(0xff5f66f2),
               fontSize: 17,
