@@ -38,9 +38,12 @@ class SearchNetworkDetailPage extends StatelessWidget {
               child: SingleChildScrollView(
                   child: Column(children: [
                 Column(children: [
-                  SizedBox(height: 121),
+                  SizedBox(height: 50),
+                  Image.network(data['profile_image_url'],
+                   height: 240),
+                  SizedBox(height: 20),
                   Text(data['bTitle'], style: contextTitle),
-                  SizedBox(height: 26),
+                  SizedBox(height: 10),
                   FutureBuilder(
                     future: workString(data['workArea']),
                     builder: (context, snapshot) {
@@ -56,7 +59,6 @@ class SearchNetworkDetailPage extends StatelessWidget {
                       }
                     },
                   ),
-                  SizedBox(height: 23)
                 ]),
                 Container(
                   width: 336,
@@ -74,16 +76,6 @@ class SearchNetworkDetailPage extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 17.5, right: 17.5),
                   child: Column(children: [
                     Column(children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("관계", style: contextKey),
-                          Text('한 다리', style: contextValue),
-                        ],
-                      ),
                       SizedBox(
                         height: 10,
                       ),
@@ -149,26 +141,10 @@ class SearchNetworkDetailPage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("성격", style: contextKey),
-                          Text(data['personality'][0], style: contextValue),
+                          Text("직업", style: contextKey),
+                          Text(data['work'], style: contextValue),
                         ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("", style: contextKey),
-                          Text(data['personality'][1], style: contextValue),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("소개", style: contextKey),
-                          Text(data['introduction'], style: contextValue),
-                        ],
-                      ),
+                      )
                     ]),
                   ]),
                 ),

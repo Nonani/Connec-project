@@ -11,6 +11,7 @@ import '../../components/member_item_widget.dart';
 class SearchNetworkPage extends StatelessWidget {
   SearchNetworkPage(this.code, {Key? key}) : super(key: key);
   final String code;
+  final logger = Logger();
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final TextStyle _nameStyle = const TextStyle(
     color: Color(0xff333333),
@@ -144,7 +145,7 @@ class SearchNetworkPage extends StatelessWidget {
         Map<String, dynamic>? tmp =
             (await db.collection('users').doc(user).get()).data();
         if (tmp!['workArea'].contains(code)) {
-          tmp = await getWork(tmp);
+          tmp = await getTitle(tmp);
           data['list'].add(tmp);
         }
       }
@@ -169,7 +170,7 @@ class SearchNetworkPage extends StatelessWidget {
         Map<String, dynamic>? tmp =
             (await db.collection('users').doc(user).get()).data();
         if (tmp!['workArea'].contains(code)) {
-          tmp = await getWork(tmp);
+          tmp = await getTitle(tmp);
           data['list'].add(tmp);
         }
       }
@@ -194,7 +195,7 @@ class SearchNetworkPage extends StatelessWidget {
         Map<String, dynamic>? tmp =
             (await db.collection('users').doc(user).get()).data();
         if (tmp!['workArea'].contains(code)) {
-          tmp = await getWork(tmp);
+          tmp = await getTitle(tmp);
           data['list'].add(tmp);
         }
       }
@@ -206,7 +207,7 @@ class SearchNetworkPage extends StatelessWidget {
     return data;
   }
 
-  Future<Map<String, dynamic>> getWork(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> getTitle(Map<String, dynamic> data) async {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> work = (await db
             .collection('workData')
             .where(FieldPath.documentId, whereIn: [code, "${code[0]}00"]).get())
@@ -218,6 +219,12 @@ class SearchNetworkPage extends StatelessWidget {
         data['lTitle'] = element.data()['title'];
       }
     }
+    String location = (await db
+        .collection('localData')
+        .where('code', isEqualTo: data['location']).get())
+        .docs[0].data()['title'];
+    logger.w(location);
+    data['location'] = location;
     return data;
   }
 }
