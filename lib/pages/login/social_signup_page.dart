@@ -37,17 +37,12 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
   String? _introduction;
   bool _checkboxValue1 = false;
   bool _checkboxValue2 = false;
-  int _curWorkTier = 1;
   int _curLocalTier = 1;
-  String _curWorkParent = "";
   String _curLocalParent = "";
   String _personality = personalityList.first;
   List<String> _personalityItems = [];
-  List<String> _workAreaItems = [];
-  List<String> _workAreaCodes = [];
-  List<String> _careerItems = [];
   final _formKey = GlobalKey<FormState>();
-
+  bool _needUpdate = false;
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ServiceClass>(context, listen: false);
@@ -179,10 +174,12 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 child: Text("회원가입", style: buttonText),
                 onPressed: () async {
                   Logger logger = Logger();
+                  final jobProvider =
+                      Provider.of<JobProvider>(context, listen: false);
                   if (_formKey.currentState!.validate() &&
                       _checkboxValue1 &&
                       _checkboxValue2 &&
-                      _workAreaCodes.isNotEmpty &&
+                      // _workAreaCodes.isNotEmpty &&
                       _personalityItems.length >= 2 &&
                       _location != null) {
                     _formKey.currentState!.save();
@@ -197,18 +194,18 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                       work: _work,
                       rate: 0,
                       personality: _personalityItems,
-                      career: _careerItems,
+                      career: jobProvider.getCareerList(),
                       gender: _gender,
                       introduction: _introduction,
                       location: _location,
-                      workArea: _workAreaCodes,
+                      workArea: jobProvider.getSubType(),
                       serviceName: widget.serviceName.toString(),
                     ));
                     if (provider.isComplete) {
                       Navigator.pop(context);
                       Navigator.pop(context);
                     }
-                  } else if (_workAreaCodes.isEmpty) {
+                  } else if (jobProvider.jobList.isEmpty) {
                     showDialog(
                         context: context,
                         builder: (context) => workValidationDialog());
@@ -271,25 +268,30 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 ),
               ],
             ),
-            IconButton(
-                onPressed: () {
-                  Logger logger = Logger();
-                  logger.w(jobProvider.jobList.length);
-                  if (jobProvider.jobList.length < 5)
-                    Navigator.push(
-                        context,
-                        DialogRoute(
-                          context: context,
-                          builder: (context) => JobTypePage(),
-                        )).then((value) => setState(() {
+            (jobProvider.jobList.length < 5)
+                ? IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          DialogRoute(
+                            context: context,
+                            builder: (context) => JobTypePage( onClose: (){setState((){});},),
+                          )).then((value) => setState(
+                            () {},
+                          ));
 
-                        },));
-                  // showWorkListDialog(snapshot, "전문분야");
-                },
-                icon: Icon(
-                  Icons.add_circle,
-                  color: Colors.blue,
-                ))
+                      // showWorkListDialog(snapshot, "전문분야");
+                    },
+                    icon: Icon(
+                      Icons.add_circle,
+                      color: Colors.blue,
+                    ))
+                : IconButton(
+                    onPressed: null,
+                    icon: Icon(
+                      Icons.add_circle,
+                      color: Colors.grey,
+                    ))
           ],
         ),
         SizedBox(
@@ -320,7 +322,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                       children: [
                         Expanded(
                             child: Text(
-                              jobProvider.jobList[index].subType!.name,
+                          jobProvider.jobList[index].subType!.name,
                           overflow: TextOverflow.ellipsis,
                         )),
                         IconButton(
@@ -348,141 +350,6 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
         ),
       ]),
     );
-  }
-
-  void showCareerListDialog(String code, String title) {
-    SimpleDialog dialog = SimpleDialog(title: Text('해당 분야 경력'), children: [
-      Container(
-        height: 300,
-        width: 100,
-        child: SingleChildScrollView(
-            child: Column(
-                children: List<Widget>.generate(careerList.length - 1, (index) {
-          return SimpleDialogOption(
-              child: Text(careerList.sublist(1, careerList.length)[index]),
-              onPressed: () {
-                if (_workAreaItems
-                        .where((element) => element == title)
-                        .isEmpty &&
-                    _workAreaCodes
-                        .where((element) => element == code)
-                        .isEmpty) {
-                  _workAreaItems.add(title);
-                  _workAreaCodes.add(code);
-                  _careerItems
-                      .add(careerList.sublist(1, careerList.length)[index]);
-                }
-                Navigator.pop(context);
-              });
-        }))),
-      )
-    ]);
-    showDialog(
-        context: context,
-        builder: (context) {
-          return dialog;
-        }).then((value) {
-      Navigator.pop(context);
-      setState(() {
-        _curWorkTier = 1;
-        _curWorkParent = "";
-      });
-    });
-  }
-
-  void showWorkListDialog(AsyncSnapshot snapshot, String title) {
-    List dialogList = [];
-    List<Widget> dialogWidgetList = [];
-
-    snapshot.data["workData"].forEach((element) {
-      if (element.data()["tier"] == _curWorkTier &&
-          element.data()["parent"] == _curWorkParent) {
-        dialogList.add(element.data());
-        dialogWidgetList.add(SimpleDialogOption(
-          child: Text(element.data()["title"]),
-          onPressed: () {
-            switch (_curWorkTier) {
-              case 1:
-                title = element.data()["title"];
-                _curWorkTier += 1;
-                _curWorkParent = element.data()["code"];
-                showWorkListDialog(snapshot, title);
-                break;
-              case 2:
-                title = title + ' > ${element.data()["title"]}';
-
-                _curWorkTier += 1;
-                _curWorkParent = element.data()["code"];
-
-                showCareerListDialog(element.data()["code"], title);
-            }
-          },
-        ));
-      }
-    });
-    switch (_curWorkTier) {
-      case 1:
-        SimpleDialog dialog = SimpleDialog(
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            title: Container(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('${title}'),
-              ],
-            )),
-            children: [
-              Container(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: dialogWidgetList,
-                  ),
-                ),
-              )
-            ]);
-        showDialog(
-            context: context,
-            builder: (context) {
-              return dialog;
-            }).then((value) => setState(() {
-              _curWorkTier = 1;
-              _curWorkParent = "";
-            }));
-        break;
-      case 2:
-        SimpleDialog dialog = SimpleDialog(
-            title: Container(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('${title}'),
-              ],
-            )),
-            children: [
-              Container(
-                height: 300,
-                width: 100,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: dialogWidgetList,
-                  ),
-                ),
-              )
-            ]);
-        showDialog(
-            context: context,
-            builder: (context) {
-              return dialog;
-            }).then((value) {
-          Navigator.pop(context);
-          setState(() {
-            _curWorkTier = 1;
-            _curWorkParent = "";
-          });
-        });
-        break;
-    }
   }
 
   Container buildLocalContainer(AsyncSnapshot snapshot) {

@@ -37,6 +37,14 @@ class JobProvider with ChangeNotifier {
   //     notifyListeners();
   //   }
   // }
+
+  void removeElement(JobSubType subType){
+    for (int i = 0;i<_jobList.length;i++) {
+      if(_jobList[i].subType!.code == subType.code){
+        _jobList.removeAt(i);
+      }
+    }
+  }
   void addJobCareer(
       JobType jobType, JobSubType subType, String year, String month) {
       Logger logger = Logger();
@@ -51,6 +59,19 @@ class JobProvider with ChangeNotifier {
         logger.w(element.type!.name);
       });
   }
-
+  List<String> getSubType(){
+    List<String> subTypeCodeList = [];
+    for (var value in jobList) {
+      subTypeCodeList.add(value.subType!.code);
+    }
+    return subTypeCodeList;
+  }
+  List<String> getCareerList(){
+    List<String> CareerList = [];
+    for (var value in jobList) {
+      CareerList.add('${value.career!.year}년${value.career!.month}개월');
+    }
+    return CareerList;
+  }
   List<Job> get jobList => _jobList;
 }
