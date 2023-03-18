@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/pages/mypage/report_page.dart';
+import 'package:connec/style/Notification/contextStyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -26,11 +28,11 @@ class _NoticeListPageState extends State<NoticeListPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 30, top: 20),
+              padding: const EdgeInsets.only(left: 30, top: 20),
               child: ToggleSwitch(
                 minWidth: 90.0,
                 cornerRadius: 20.0,
-                activeBgColors: [
+                activeBgColors: const [
                   [Color(0xff5f66f2)],
                   [Color(0xff5f66f2)],
                 ],
@@ -41,17 +43,21 @@ class _NoticeListPageState extends State<NoticeListPage> {
                 totalSwitches: 2,
                 customTextStyles: [
                   TextStyle(
-                    color: initialIndex == 0 ? Color(0xfffafafa) : Colors.black,
+                    color: initialIndex == 0
+                        ? const Color(0xfffafafa)
+                        : Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                   ),
                   TextStyle(
-                    color: initialIndex != 0 ? Color(0xfffafafa) : Colors.black,
+                    color: initialIndex != 0
+                        ? const Color(0xfffafafa)
+                        : Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                   )
                 ],
-                labels: ['현재', '과거'],
+                labels: const ['현재', '과거'],
                 radiusStyle: true,
                 onToggle: <int>(index) {
                   print('switched to: $index');
@@ -62,7 +68,7 @@ class _NoticeListPageState extends State<NoticeListPage> {
                 },
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             FutureBuilder(
@@ -78,13 +84,13 @@ class _NoticeListPageState extends State<NoticeListPage> {
                       itemBuilder: (context, index) {
                         return snapshot.data[index]['to_uid'] ==
                                 FirebaseAuth.instance.currentUser!.uid
-                            ? buildRecieveItem(snapshot, index)
+                            ? buildReceiveItem(snapshot, index)
                             : buildSendItem(snapshot, index);
                       },
                     ),
                   );
                 } else {
-                  return Expanded(
+                  return const Expanded(
                     child: Center(
                       child: CircularProgressIndicator(),
                     ),
@@ -98,99 +104,12 @@ class _NoticeListPageState extends State<NoticeListPage> {
     );
   }
 
-  GestureDetector buildRecieveItem(AsyncSnapshot<dynamic> snapshot, int index) {
+  GestureDetector buildReceiveItem(AsyncSnapshot<dynamic> snapshot, int index) {
     return GestureDetector(
       child: Container(
-        margin: EdgeInsets.only(left: 12),
-        padding: EdgeInsets.only(left: 12, top: 12, bottom: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            snapshot.data[index]['member_id'] != ''
-                ? Text(
-                    '${snapshot.data[index]['from']}님이 나의 지인에게 요청',
-                    style: TextStyle(
-                      color: Color(0xff333333),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  )
-                : Text(
-                    '${snapshot.data[index]['from']}님이 나에게 요청',
-                    style: TextStyle(
-                      color: Color(0xff333333),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-            // Text(
-            //   '디자인/개발 > 개발 외주 > 웹 개발',
-            //   style: TextStyle(
-            //       color: Color(0xff999999),
-            //       fontSize: 12,
-            //       fontWeight: FontWeight.w400),
-            // ),
-            Container(
-              padding: EdgeInsets.only(left: 7, top: 13),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        '상태',
-                        style: TextStyle(
-                            color: Color(0xffafafaf),
-                            fontSize: 11,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        snapshot.data[index]['state'] == 'waiting'
-                            ? '미확인'
-                            : snapshot.data[index]['state'] == 'rejected'
-                                ? '거절'
-                                : '수락',
-                        style: TextStyle(
-                            color: Color(0xff333333),
-                            fontSize: 11,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 7,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        '시간',
-                        style: TextStyle(
-                            color: Color(0xffafafaf),
-                            fontSize: 11,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        snapshot.data[index]['date'],
-                        style: TextStyle(
-                            color: Color(0xff333333),
-                            fontSize: 11,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-        decoration: BoxDecoration(
+        margin: const EdgeInsets.only(left: 12),
+        padding: const EdgeInsets.only(left: 12, top: 12, bottom: 15),
+        decoration: const BoxDecoration(
           color: Color(0xfffafafa),
           boxShadow: [
             BoxShadow(
@@ -199,104 +118,42 @@ class _NoticeListPageState extends State<NoticeListPage> {
               blurRadius: 15,
               spreadRadius: 0,
             ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                buildReceiveItemTitle(snapshot, index),
+                buildItemPopupMenu(snapshot, index)
+              ],
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 7, top: 13),
+              child: Column(
+                children: [
+                  buildItemState(snapshot, index),
+                  const SizedBox(
+                    height: 7,
+                  ),
+                  buildItemTime(snapshot, index)
+                ],
+              ),
+            )
           ],
         ),
       ),
     );
   }
+
   buildSendItem(AsyncSnapshot snapshot, int index) {
     return GestureDetector(
       child: Container(
-        margin: EdgeInsets.only(left: 12),
-        padding: EdgeInsets.only(left: 12, top: 12, bottom: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            snapshot.data[index]['member_id'] != ''
-                ? Text(
-              '내가 ${snapshot.data[index]['to']}의 지인에게 요청',
-              style: TextStyle(
-                color: Color(0xff333333),
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
-            )
-                : Text(
-              '내가 ${snapshot.data[index]['to']}에게 요청',
-              style: TextStyle(
-                color: Color(0xff333333),
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            // Text(
-            //   '디자인/개발 > 개발 외주 > 웹 개발',
-            //   style: TextStyle(
-            //       color: Color(0xff999999),
-            //       fontSize: 12,
-            //       fontWeight: FontWeight.w400),
-            // ),
-            Container(
-              padding: EdgeInsets.only(left: 7, top: 13),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        '상태',
-                        style: TextStyle(
-                            color: Color(0xffafafaf),
-                            fontSize: 11,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        snapshot.data[index]['state'] == 'waiting'
-                            ? '미확인'
-                            : snapshot.data[index]['state'] == 'rejected'
-                            ? '거절'
-                            : '수락',
-                        style: TextStyle(
-                            color: Color(0xff333333),
-                            fontSize: 11,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 7,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        '시간',
-                        style: TextStyle(
-                            color: Color(0xffafafaf),
-                            fontSize: 11,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        snapshot.data[index]['date'],
-                        style: TextStyle(
-                            color: Color(0xff333333),
-                            fontSize: 11,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-        decoration: BoxDecoration(
+        margin: const EdgeInsets.only(left: 12),
+        padding: const EdgeInsets.only(left: 12, top: 12, bottom: 15),
+        decoration: const BoxDecoration(
           color: Color(0xfffafafa),
           boxShadow: [
             BoxShadow(
@@ -307,8 +164,128 @@ class _NoticeListPageState extends State<NoticeListPage> {
             ),
           ],
         ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                buildSendItemTitle(snapshot, index),
+                buildItemPopupMenu(snapshot, index)
+              ],
+            ),
+
+            Container(
+              padding: const EdgeInsets.only(left: 7, top: 13),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  buildItemState(snapshot, index),
+                  const SizedBox(height: 7),
+                  buildItemTime(snapshot, index)
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
+  }
+  Text buildReceiveItemTitle(AsyncSnapshot snapshot, int index) {
+    String text = "";
+    if (snapshot.data[index]['member_id'] != '') {
+      text = '${snapshot.data[index]['from']}님이 나의 지인에게 요청';
+    } else {
+      text = '${snapshot.data[index]['from']}님이 나에게 요청';
+    }
+    return Text(
+        text,
+        style: contextTitle
+    );
+  }
+  Text buildSendItemTitle(AsyncSnapshot snapshot, int index) {
+    String text = "";
+    if (snapshot.data[index]['member_id'] != '') {
+      text = '내가 ${snapshot.data[index]['to']}의 지인에게 요청';
+    } else {
+      text = '내가 ${snapshot.data[index]['to']}에게 요청';
+    }
+    return Text(
+      text,
+      style: contextTitle
+    );
+  }
+  Row buildItemState(AsyncSnapshot snapshot, int index){
+    String text = "";
+    if (snapshot.data[index]['state'] == 'waiting') {
+      text = '미확인';
+    } else if(snapshot.data[index]['state'] == 'rejected') {
+      text = '거절';
+    } else {
+      text = '수락';
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          '상태',
+          style: contextKey
+        ),
+        const SizedBox(
+          width: 8,
+        ),
+        Text(
+          text,
+          style: contextValue
+        )
+      ],
+    );
+  }
+  Row buildItemTime(AsyncSnapshot snapshot, int index){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          '시간',
+          style: contextKey
+        ),
+        const SizedBox(
+          width: 8,
+        ),
+        Text(
+          snapshot.data[index]['date'],
+          style: contextValue
+        ),
+      ],
+    );
+  }
+  PopupMenuButton buildItemPopupMenu(AsyncSnapshot snapshot, int index){
+    List<String> menu = ['제안확정', '신고하기' ];
+    return PopupMenuButton<String>(
+      // Callback that sets the selected popup menu item.
+      onSelected: (String item) {
+        if( item == "제안확정"){
+
+        }
+        else{
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) => ReportPage(to: snapshot.data[index]['to'], from: FirebaseAuth.instance.currentUser!.uid,),
+          ));
+        }
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        PopupMenuItem<String>(
+          value: menu[0],
+          child: Text(menu[0]),
+        ),
+        PopupMenuItem<String>(
+          value: menu[1],
+          child: Text(menu[1]),
+        ),
+      ],
+    );
+
   }
   Future _future() async {
     final notice = await db
@@ -332,7 +309,6 @@ class _NoticeListPageState extends State<NoticeListPage> {
 
         if (noticeItem['case'] == "contact" &&
             noticeItem['state'] != 'waiting') {
-
           list.add(noticeItem);
         }
       }
@@ -341,6 +317,5 @@ class _NoticeListPageState extends State<NoticeListPage> {
 
     return list;
   }
-
 
 }

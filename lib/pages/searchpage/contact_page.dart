@@ -100,8 +100,8 @@ class _ContactPageState extends State<ContactPage> {
                       'Content-Type': 'application/x-www-form-urlencoded',
                     },
                     body: <String, String>{
-                      'to': '${widget.uid}',
-                      'from': "${FirebaseAuth.instance.currentUser!.uid}",
+                      'to': widget.uid,
+                      'from': FirebaseAuth.instance.currentUser!.uid,
                       'type': "user",
                       'docId': '',
                       'purpose': offer,
@@ -142,7 +142,7 @@ class _ContactPageState extends State<ContactPage> {
               }
               Navigator.pop(context);
               Navigator.pop(context);
-              await consume();
+              await consume(widget.uid);
             }else{
               print(couponNum);
             }
@@ -150,13 +150,18 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  Future<void> consume() async {
+  Future<void> consume(String uid) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     int couponNum = (await db
         .collection('coupons')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get())
         .data()!['num'];
+    String name = (await db
+        .collection('users')
+        .doc(uid)
+        .get())
+        .data()!['name'];
     await db
         .collection('coupons')
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -167,7 +172,8 @@ class _ContactPageState extends State<ContactPage> {
       'consume': FieldValue.arrayUnion([
         {
           'time': DateTime.now().toString(),
-          'type': 'contact'
+          'type': '사용',
+          'user': name
         }
       ])
     });

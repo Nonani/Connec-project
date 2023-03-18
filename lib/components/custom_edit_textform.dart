@@ -75,7 +75,7 @@ Widget SignUpEditTextForm(
             )),
         SizedBox(height: 10),
         TextFormField(
-          maxLines: label == "소개" || label == "제안 내용" ? 5 : 1,
+          maxLines: label == "신고 내용" || label == "제안 내용" ? 5 : 1,
           obscureText: isSecret,
           decoration: InputDecoration(
               hintText: hint,
