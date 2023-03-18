@@ -6,6 +6,7 @@ import 'package:connec/pages/mypage/purchase_history.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import 'In_app_purchase_connec.dart';
 
@@ -56,24 +57,22 @@ class _MyInfoPageState extends State<MyInfoPage> {
                       Row(
                         children: [
                           Container(
-                            height: 48,
-                            width: 48,
-                            margin: EdgeInsets.only(
-                              left: 18,
-                              right: 18,
-                            ),
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xffafafaf),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
-                              child: Image.network(
-                                snapshot.data['user']['profile_image_url'],
-                                fit: BoxFit.cover,
-                              )
-                            )
-                          ),
+                              height: 55,
+                              width: 55,
+                              margin: EdgeInsets.only(
+                                left: 18,
+                                right: 18,
+                              ),
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xffafafaf),
+                              ),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  child: Image.network(
+                                    snapshot.data['user']['profile_image_url'],
+                                    fit: BoxFit.cover,
+                                  ))),
                           Container(
                             width: 150,
                             child: Column(
@@ -84,6 +83,24 @@ class _MyInfoPageState extends State<MyInfoPage> {
                                   style: TextStyle(
                                     color: Color(0xff333333),
                                     fontSize: 17,
+                                    fontFamily: 'S-CoreDream-6Bold',
+                                    fontWeight: FontWeight.w200,
+                                  ),
+                                ),
+                                Text(
+                                  '사용자 평점: ${snapshot.data['user']['rate']} / 5.0',
+                                  style: TextStyle(
+                                    color: Color(0xff333333),
+                                    fontSize: 12,
+                                    fontFamily: 'S-CoreDream-6Bold',
+                                    fontWeight: FontWeight.w200,
+                                  ),
+                                ),
+                                Text(
+                                  '지인 평점:  ${snapshot.data['user']['networkRate']} / 5.0',
+                                  style: TextStyle(
+                                    color: Color(0xff333333),
+                                    fontSize: 12,
                                     fontFamily: 'S-CoreDream-6Bold',
                                     fontWeight: FontWeight.w200,
                                   ),
@@ -474,7 +491,30 @@ class _MyInfoPageState extends State<MyInfoPage> {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
 
-    result['user'] = user.data();
+    Map<String, dynamic>? tmp = user.data();
+    List<dynamic> networks = (await db
+            .collection('networks')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .get())
+        .data()!['list'];
+    var logger = Logger();
+    try {
+      double networkRate = 0.0;
+      List<QueryDocumentSnapshot<Map<String, dynamic>>> data = (await db
+              .collection('users')
+              .where(FieldPath.documentId, whereIn: networks)
+              .get())
+          .docs;
+      for (QueryDocumentSnapshot<Map<String, dynamic>> user in data) {
+        networkRate += user.data()['rate'];
+      }
+      networkRate /= networks.length;
+      tmp!['networkRate'] = networkRate;
+    } catch (e) {
+      logger.w(e);
+    }
+
+    result['user'] = tmp;
     result['couponCnt'] = couponCnt['num'];
     return result;
   }
