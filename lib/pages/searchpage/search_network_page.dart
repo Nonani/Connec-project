@@ -142,11 +142,13 @@ class SearchNetworkPage extends StatelessWidget {
           .data()!['list'];
 
       for (String user in firstUser) {
-        Map<String, dynamic>? tmp =
-            (await db.collection('users').doc(user).get()).data();
-        if (tmp!['workArea'].contains(code)) {
-          tmp = await getTitle(tmp);
-          data['list'].add(tmp);
+        if (user != FirebaseAuth.instance.currentUser!.uid) {
+          Map<String, dynamic>? tmp =
+              (await db.collection('users').doc(user).get()).data();
+          if (tmp!['workArea'].contains(code)) {
+            tmp = await getTitle(tmp);
+            data['list'].add(tmp);
+          }
         }
       }
     } catch (e) {
@@ -161,7 +163,8 @@ class SearchNetworkPage extends StatelessWidget {
               .get())
           .docs) {
         for (var user in users.data()['list']) {
-          if (!firstUser.contains(user)) {
+          if (user != FirebaseAuth.instance.currentUser!.uid &&
+              !firstUser.contains(user)) {
             secondUser.add(user);
           }
         }
@@ -186,7 +189,9 @@ class SearchNetworkPage extends StatelessWidget {
               .get())
           .docs) {
         for (var user in users.data()['list']) {
-          if (!firstUser.contains(user) && !secondUser.contains(user)) {
+          if (user != FirebaseAuth.instance.currentUser!.uid &&
+              !firstUser.contains(user) &&
+              !secondUser.contains(user)) {
             thirdUser.add(user);
           }
         }
@@ -220,9 +225,11 @@ class SearchNetworkPage extends StatelessWidget {
       }
     }
     String location = (await db
-        .collection('localData')
-        .where('code', isEqualTo: data['location']).get())
-        .docs[0].data()['title'];
+            .collection('localData')
+            .where('code', isEqualTo: data['location'])
+            .get())
+        .docs[0]
+        .data()['title'];
     logger.w(location);
     data['location'] = location;
     return data;
