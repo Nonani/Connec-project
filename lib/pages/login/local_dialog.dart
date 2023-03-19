@@ -63,7 +63,7 @@ class LocalDataScreen extends StatelessWidget {
                 return ListTile(
                   title: Text(localData.title),
                   onTap: () {
-                    if (localData.title == '서울') {
+                    if (localData.title == '전국') {
                       localProvider.setLocal("전국");
                       localProvider.setSubLocal("전국");
                       Navigator.pop(context);
