@@ -34,18 +34,22 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        shape: Border(bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
-        backgroundColor: Color(0xfffafafa),
-        elevation: 0,
-        title: Text("로그인", style: featureTitle),
-        centerTitle: true,
-      ),
+      appBar: null,
       body: SafeArea(
         child: ListView(
           children: [
             Container(
-              margin: EdgeInsets.only(top: size.height * 0.18),
+              margin: EdgeInsets.only(top: size.height * 0.11),
+              child: Text(
+                '사람과 사람을 연결하는',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xff5f66f2),
+
+                ),
+              ),
+            ),
+            Container(
               width: double.infinity,
               height: size.height * 0.072,
               child: Center(
@@ -60,40 +64,34 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            SizedBox(height: size.height * 0.34),
-            Center(
-              child: Text(
-                '카카오톡으로 로그인하기',
-                style: TextStyle(
-                  color: Color(0xff5f66f2),
-                  fontSize: 17,
-                  fontFamily: 'S-CoreDream-6',
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            SizedBox(height: size.height * 0.05),
+            SizedBox(height: size.height * 0.21),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                customImageButton(AssetImage("assets/images/kakao_btn.png"),
-                    () async {
-                  await loginWithKakao(context);
-                }, 70),
-                SizedBox(height: size.height * 0.03,),
+                GestureDetector(
+                  onTap: () async {
+                    await loginWithKakao(context);
+                  },
+                  child: Container(
+                    child: Image.asset(
+                        "assets/images/kakao_login_medium_wide.png"),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
                 Text(
-                  '아이콘을 눌러\n카카오톡과 연결해주세요',
+                  '버튼을 눌러\n카카오톡과 연결해주세요',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Color(0xffbdbdbd),
+                    color: Color(0xff5f66f2),
                     fontSize: 11.5,
                     fontFamily: 'S-CoreDream-4',
                   ),
                 ),
               ],
             ),
-
           ],
         ),
       ),
@@ -117,7 +115,8 @@ class _LoginPageState extends State<LoginPage> {
                 builder: ((context) => SocialSignUpPage(
                       serviceName: "kakao",
                       uid: "kakao:${user!.id}",
-                      profileImageUrl: user!.kakaoAccount!.profile!.profileImageUrl,
+                      profileImageUrl:
+                          user!.kakaoAccount!.profile!.profileImageUrl,
                     ))));
       } else {
         //이전에 로그인을 하여 회원가입 정보를 넣은 경우

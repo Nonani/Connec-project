@@ -10,11 +10,11 @@ TextStyle contextKey = const TextStyle(
   color: Color(0xffafafaf),
   fontSize: 13,
   fontFamily: 'EchoDream',
-  fontWeight: FontWeight.w200,
+  fontWeight: FontWeight.w400,
 );
 TextStyle contextValue = const TextStyle(
   color: Color(0xff666666),
   fontSize: 13,
   fontFamily: 'EchoDream',
-  fontWeight: FontWeight.w200,
+  fontWeight: FontWeight.w400,
 );

@@ -13,12 +13,15 @@ class MemberItemWidget extends StatelessWidget {
     required String relationship,
     required String pCapability,
     required String sCapability,
-  })  : _nameStyle = nameStyle,
+    required imageUrl,
+  })
+      : _nameStyle = nameStyle,
         _classStyle = classStyle,
         _sectionStyle = contextStyle,
         _mainField = mainField,
         _subField = subField,
         _rate = rate,
+        _imageUrl = imageUrl,
         _relationship = relationship,
         _pCapability = pCapability,
         _sCapability = sCapability,
@@ -32,6 +35,7 @@ class MemberItemWidget extends StatelessWidget {
   final String _subField;
   final String _rate;
   final String _relationship;
+  final String _imageUrl;
   final String _pCapability;
   final String _sCapability;
 
@@ -57,12 +61,13 @@ class MemberItemWidget extends StatelessWidget {
                     ],
                   ),
                   Padding(
-                      padding: EdgeInsets.only(left: 160),
+                      padding: EdgeInsets.only(left: 1, top: 10),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Image.network(_imageUrl, height: 70,),
                           Padding(
-                            padding: EdgeInsets.only(right: 21),
+                            padding: EdgeInsets.only(left: 20,right: 21),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -92,7 +97,7 @@ class MemberItemWidget extends StatelessWidget {
                               Padding(
                                   padding: EdgeInsets.only(top: 7),
                                   child:
-                                      Text(_pCapability, style: _sectionStyle)),
+                                  Text(_pCapability, style: _sectionStyle)),
                               Padding(
                                   padding: EdgeInsets.only(top: 4),
                                   child:

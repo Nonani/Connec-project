@@ -17,25 +17,25 @@ class SearchNetworkPage extends StatelessWidget {
     color: Color(0xff333333),
     fontSize: 15,
     fontFamily: 'S-CoreDream-6Bold',
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
   );
   final TextStyle _classStyle = const TextStyle(
     color: Color(0xff999999),
     fontSize: 9,
     fontFamily: 'EchoDream',
-    fontWeight: FontWeight.w200,
+    fontWeight: FontWeight.w400,
   );
   final TextStyle _contextStyle = const TextStyle(
     color: Color(0xffafafaf),
     fontSize: 11,
     fontFamily: 'EchoDream',
-    fontWeight: FontWeight.w200,
+    fontWeight: FontWeight.w400,
   );
   final TextStyle _itemStyle = const TextStyle(
     color: Color(0xff333333),
     fontSize: 11,
     fontFamily: 'EchoDream',
-    fontWeight: FontWeight.w200,
+    fontWeight: FontWeight.w400,
   );
 
   @override
@@ -105,6 +105,7 @@ class SearchNetworkPage extends StatelessWidget {
                                             ['lTitle'],
                                         // field: snapshot.data['list'][index]['work'],
                                         rate: '0',
+                                        imageUrl: snapshot.data['list'][index]['profile_image_url'],
                                         relationship: '한 다리',
                                         pCapability: snapshot.data['list']
                                             [index]['personality'][0],
@@ -209,6 +210,7 @@ class SearchNetworkPage extends StatelessWidget {
     }
 
     data['length'] = data['list'].length;
+    logger.w(data);
     return data;
   }
 

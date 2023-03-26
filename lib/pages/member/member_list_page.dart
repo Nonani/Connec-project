@@ -136,6 +136,7 @@ class _AcquitanceListPageState extends State<AcquitanceListPage> {
                                           ['bTitle'],
                                       subField: snapshot.data['list'][index]
                                       ['lTitle'],
+                                      imageUrl: snapshot.data['list'][index]['profile_image_url'],
                                       // field: snapshot.data['list'][index]['work'],
                                       rate: snapshot.data['list'][index]['rate']
                                           .toString(),
