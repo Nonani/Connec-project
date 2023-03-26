@@ -667,12 +667,14 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     for (QueryDocumentSnapshot<Map<String, dynamic>> element
         in networkUserData!) {
       Map<String, dynamic> member = element.data();
-      if (!workData.contains(member['workArea'][0])) {
-        workData.add(member['workArea'][0]);
-        workDataCnt.add(1);
-      } else {
-        int idx = workData.indexOf(member['workArea'][0]);
-        workDataCnt[idx]++;
+      for (int num = 0; num < member['workArea'].length; num++) {
+        if (!workData.contains(member['workArea'][num])) {
+          workData.add(member['workArea'][num]);
+          workDataCnt.add(1);
+        } else {
+          int idx = workData.indexOf(member['workArea'][num]);
+          workDataCnt[idx]++;
+        }
       }
     }
 
