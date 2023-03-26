@@ -39,19 +39,24 @@ class _LoginPageState extends State<LoginPage> {
         child: ListView(
           children: [
             Container(
-              margin: EdgeInsets.only(top: size.height * 0.11),
+
+              margin: EdgeInsets.only(top: size.height * 0.15, left: size.width*0.3,right: size.width*0.3),
+              child: Image.asset('assets/images/connec_logo2.png',color: Color(0xff5f66f2),),
+
+            ),
+            Container(
+              margin: EdgeInsets.only(top: size.height * 0.1),
               child: Text(
                 '사람과 사람을 연결하는',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xff5f66f2),
-
                 ),
               ),
             ),
             Container(
               width: double.infinity,
-              height: size.height * 0.072,
+              height: size.height * 0.07,
               child: Center(
                 child: Text(
                   'CONNEC',
@@ -64,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            SizedBox(height: size.height * 0.21),
+            SizedBox(height: size.height * 0.15),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -133,6 +138,7 @@ class _LoginPageState extends State<LoginPage> {
               'uid': "kakao:${user.id}",
             },
           );
+          logger.w(response.body);
           if (response.statusCode == 200) {
             Map<String, dynamic> jsonData = jsonDecode(response.body);
             try {
@@ -146,6 +152,7 @@ class _LoginPageState extends State<LoginPage> {
         } catch (e) {
           logger.w(e);
         }
+
         Navigator.pop(context);
       }
     }

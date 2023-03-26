@@ -93,6 +93,8 @@ flutter:
     - assets/images/third_deg.png
     - assets/images/coupon.png
     - assets/images/kakao_login_medium_wide.png
+    - assets/images/connec_logo1.png
+    - assets/images/connec_logo2.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
