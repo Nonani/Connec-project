@@ -112,7 +112,6 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
               .collection('member')
               .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
               .get();
-          if (memberData.docs.length > 1) {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
               if(await isAlreadyNetwork()){
@@ -145,14 +144,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
                 logger.w(info.data());
               }
             }
-          }
-          else {
-            Navigator.push(
-                context, MaterialPageRoute(
-              builder: (context) =>
-                  AddMemberPage(),
-            ));
-          }
+
         },
         style: featureButton,
         child: Text('확장하기',
