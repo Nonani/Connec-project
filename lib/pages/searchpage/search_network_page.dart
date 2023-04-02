@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/searchpage/search_network_detail_page.dart';
@@ -5,7 +7,7 @@ import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-
+import 'package:http/http.dart' as http;
 import '../../components/member_item_widget.dart';
 
 class SearchNetworkPage extends StatelessWidget {
@@ -13,6 +15,8 @@ class SearchNetworkPage extends StatelessWidget {
   final String code;
   final logger = Logger();
   final FirebaseFirestore db = FirebaseFirestore.instance;
+  List<String> connectionString = ['한 다리', '두 다리', '세 다리'];
+
   final TextStyle _nameStyle = const TextStyle(
     color: Color(0xff333333),
     fontSize: 15,
@@ -106,7 +110,7 @@ class SearchNetworkPage extends StatelessWidget {
                                         // field: snapshot.data['list'][index]['work'],
                                         rate: '0',
                                         imageUrl: snapshot.data['list'][index]['profile_image_url'],
-                                        relationship: '한 다리',
+                                        relationship: connectionString [snapshot.data['connectionData'][snapshot.data['list'][index]['uid']] - 1],
                                         pCapability: snapshot.data['list']
                                             [index]['personality'][0],
                                         sCapability: snapshot.data['list']
@@ -125,6 +129,7 @@ class SearchNetworkPage extends StatelessWidget {
   }
 
   Future _future() async {
+    final Uri url = Uri.parse('https://foggy-boundless-avenue.glitch.me/relData');
     final logger = Logger();
     Map<String, dynamic> data = {};
 
@@ -133,6 +138,7 @@ class SearchNetworkPage extends StatelessWidget {
     List<dynamic> firstUser = [];
     List<dynamic> secondUser = [];
     List<dynamic> thirdUser = [];
+    Map<String, dynamic> connectionData = {};
 
     //한다리
     try {
@@ -209,6 +215,21 @@ class SearchNetworkPage extends StatelessWidget {
       logger.w(e);
     }
 
+    try {
+      http.Response response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: <String, String>{
+          'uid': FirebaseAuth.instance.currentUser!.uid,
+        },
+      );
+      connectionData = json.decode(response.body);
+      data['connectionData'] = connectionData;
+    }catch (e) {
+      logger.w(e);
+    }
     data['length'] = data['list'].length;
     logger.w(data);
     return data;
