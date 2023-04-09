@@ -54,13 +54,21 @@ class _MainPageState extends State<MainPage> {
                               padding: const EdgeInsets.symmetric(vertical: 20),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 20),
+                                  child:Icon(
+                                  Icons.check_circle,
+                                      size: 100,
+                                      color: Color(0xff5f66f2))
+                                  ),
                                   Text(
-                                    '코드가 클립보드에\n복사되었습니다',
+                                    '코드가 클립보드에\n  복사되었습니다.',
                                     style: TextStyle(
                                       color: Color(0xff333333),
                                       fontSize: 17,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                 ],
