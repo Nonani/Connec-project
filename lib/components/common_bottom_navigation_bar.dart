@@ -7,11 +7,13 @@ import '../pages/searchpage/search_page.dart';
 
 class CommonBottomNavigationBar extends StatefulWidget {
   @override
-  State<CommonBottomNavigationBar> createState() => _CommonBottomNavigationBarState();
+  State<CommonBottomNavigationBar> createState() =>
+      _CommonBottomNavigationBarState();
 }
 
 class _CommonBottomNavigationBarState extends State<CommonBottomNavigationBar> {
-  int _currentIndex = 2;
+  int _currentIndex = 3;
+  int _prevIndex = 4;
   List<Widget> list = [
     NetworkManagementPage(),
     SearchPage(),
@@ -21,20 +23,22 @@ class _CommonBottomNavigationBarState extends State<CommonBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
+
     return SizedBox(
       height: 70,
       child: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
           print('index test : ${index}');
-          setState(() {
-            _currentIndex = index;
-          });
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => list[_currentIndex],
-              )).then((value) => setState(() {}));
+
+            setState(() {
+              _prevIndex = _currentIndex;
+              _currentIndex = index;
+            });
+            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.push(
+              context,MaterialPageRoute( builder: (context) => list[_currentIndex]
+            )).then((value) => setState((){}));
         },
         type: BottomNavigationBarType.fixed,
         backgroundColor: Color(0xff5f66f2),
@@ -51,7 +55,6 @@ class _CommonBottomNavigationBarState extends State<CommonBottomNavigationBar> {
                 width: 30,
               ),
               label: "지인관리"),
-          
           BottomNavigationBarItem(
               icon: Image.asset(
                 "assets/images/navigation_icon_3.png",
