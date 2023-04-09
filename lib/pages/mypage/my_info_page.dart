@@ -272,46 +272,46 @@ class _MyInfoPageState extends State<MyInfoPage> {
                           ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => NoticeListPage(),
-                              ));
-                        },
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Color(0xffeeeeee),
-                                width: 1,
-                              ),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.message_outlined,
-                                size: 30.0,
-                                color: Colors.blue,
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                '연락 현황',
-                                style: TextStyle(
-                                  color: Color(0xff333333),
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //           builder: (context) => NoticeListPage(),
+                      //         ));
+                      //   },
+                      //   child: Container(
+                      //     padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
+                      //     decoration: BoxDecoration(
+                      //       border: Border(
+                      //         bottom: BorderSide(
+                      //           color: Color(0xffeeeeee),
+                      //           width: 1,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     child: Row(
+                      //       children: [
+                      //         Icon(
+                      //           Icons.message_outlined,
+                      //           size: 30.0,
+                      //           color: Colors.blue,
+                      //         ),
+                      //         SizedBox(
+                      //           width: 20,
+                      //         ),
+                      //         Text(
+                      //           '연락 현황',
+                      //           style: TextStyle(
+                      //             color: Color(0xff333333),
+                      //             fontSize: 17,
+                      //             fontWeight: FontWeight.w500,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                       GestureDetector(
                         onTap: () {
                           print("test");

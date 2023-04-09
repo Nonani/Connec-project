@@ -55,9 +55,20 @@ class _ContactPageState extends State<ContactPage> {
                 selectedItem: offer),
             SignUpEditTextForm(
               label: "제안 내용",
-              hint: "인재가 관심을 가질 조건을 제안해주세요",
+              hint: "인재에게 원하는 업무 내용을 작성해주세요\n(500자 이내)",
               onSaved: (newValue) => contactText = newValue,
             ),
+            Container(
+              padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
+              alignment: AlignmentDirectional.centerStart,
+              child: Text("인재가 수락을 하면 연락처를 알려드립니다.",
+                  style: TextStyle(
+                    color: Color(0xffbdbdbd),
+                    fontSize: 16,
+                    fontFamily: 'EchoDream',
+                    fontWeight: FontWeight.w400,
+                  )),
+            )
             // TextField(
             //   maxLines: 20,
             //   onChanged: ((value) {
@@ -71,16 +82,18 @@ class _ContactPageState extends State<ContactPage> {
       ),
       bottomNavigationBar: ElevatedButton(
           style: featureButton,
-          child: Text("제안권 사용",
-            style: buttonText,),
+          child: Text(
+            "제안권 사용",
+            style: buttonText,
+          ),
           onPressed: () async {
             FirebaseFirestore db = FirebaseFirestore.instance;
             int couponNum = (await db
-                .collection('coupons')
-                .doc(FirebaseAuth.instance.currentUser!.uid)
-                .get())
+                    .collection('coupons')
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .get())
                 .data()!['num'];
-            if (_formKey.currentState!.validate()&& couponNum > 0) {
+            if (_formKey.currentState!.validate() && couponNum > 0) {
               _formKey.currentState!.save();
               print(contactText);
               print(offer);
@@ -134,8 +147,6 @@ class _ContactPageState extends State<ContactPage> {
                       'context': contactText,
                     },
                   );
-
-
                 } catch (e) {
                   print(e);
                 }
@@ -143,7 +154,7 @@ class _ContactPageState extends State<ContactPage> {
               Navigator.pop(context);
               Navigator.pop(context);
               await consume(widget.uid);
-            }else{
+            } else {
               print(couponNum);
             }
           }),
@@ -153,28 +164,21 @@ class _ContactPageState extends State<ContactPage> {
   Future<void> consume(String uid) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     int couponNum = (await db
-        .collection('coupons')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get())
+            .collection('coupons')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .get())
         .data()!['num'];
-    String name = (await db
-        .collection('users')
-        .doc(uid)
-        .get())
-        .data()!['name'];
+    String name = (await db.collection('users').doc(uid).get()).data()!['name'];
     await db
         .collection('coupons')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .set({'num': couponNum - 1});
-    await db.collection('couponLog')
+    await db
+        .collection('couponLog')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .update({
       'consume': FieldValue.arrayUnion([
-        {
-          'time': DateTime.now().toString(),
-          'type': '사용',
-          'user': name
-        }
+        {'time': DateTime.now().toString(), 'type': '사용', 'user': name}
       ])
     });
   }

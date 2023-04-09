@@ -69,6 +69,7 @@ class _AccountSettingPaqeState extends State<AccountSettingPaqe> {
                   child: Container(
                     margin: EdgeInsets.only(
                         left: 110, right: 110, top: 35, bottom: 45),
+                    child: Image.network(snapshot.data["profile_image_url"]),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Color(0xffafafaf),
