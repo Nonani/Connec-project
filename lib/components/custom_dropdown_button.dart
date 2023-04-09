@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 Widget CustomDropdownButton({
   required List<String> itemList,
   required String label,
+  String? hint,
   required ValueChanged onChanged,
   required String selectedItem,
   FormFieldValidator? validator,
@@ -22,12 +23,26 @@ Widget CustomDropdownButton({
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("${label}",
-            style: TextStyle(
-              fontFamily: "EchoDream",
-              fontWeight: FontWeight.w600,
-              fontSize: 17,
-            )),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("${label}",
+                style: TextStyle(
+                  fontFamily: "EchoDream",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 17,
+                )),
+            SizedBox(width: 10),
+            (hint!=null)?
+            Text(hint,
+              style: TextStyle(
+                color: Color(0xffbdbdbd),
+                fontSize: 12,
+              ),
+            ):Container()
+
+          ],
+        ),
         SizedBox(height: 10),
         Container(
           width: double.infinity,
@@ -42,9 +57,7 @@ Widget CustomDropdownButton({
             decoration: InputDecoration(
               border: InputBorder.none,
             ),
-            validator: validator != null
-                ? validator
-                : (value) {
+            validator: validator ?? (value) {
                     if (value!.isEmpty || value == '선택') {
                       return '선택해주세요.';
                     } else {
@@ -64,7 +77,6 @@ Widget CustomDropdownButton({
                     color: Color(0xff333333),
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
-                    fontFamily: 'S-CoreDream-4',
                   ),
             onChanged: onChanged,
             items: itemList.map<DropdownMenuItem<String>>((String value) {

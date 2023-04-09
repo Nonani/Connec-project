@@ -152,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
         } catch (e) {
           logger.w(e);
         }
-
+        print("logined");
         Navigator.pop(context);
       }
     }

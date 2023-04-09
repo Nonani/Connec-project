@@ -54,7 +54,6 @@ class JobTypePage extends StatelessWidget {
               return ListTile(
                 title: Text(jobType.name),
                 onTap: () {
-                  ;
                   Navigator.pushReplacement(
                     context,
                     DialogRoute(
@@ -153,8 +152,8 @@ class CareerHistoryPage extends StatefulWidget {
 class _CareerHistoryPageState extends State<CareerHistoryPage> {
   final _formKey = GlobalKey<FormState>();
   String? _errorText;
-  String _year = '';
-  String _month = '';
+  String _year = '0';
+  String _month = '0';
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -272,10 +271,13 @@ class _CareerHistoryPageState extends State<CareerHistoryPage> {
                                   hintText: '0',
                                   border: InputBorder.none),
                               validator: (value) {
+                                if(_year != '0' && value!.isEmpty){
+                                  return null;
+                                }
                                 if (value == null ||
                                     value.isEmpty ||
                                     int.parse(value) < 1 ||
-                                    int.parse(value) > 12) {
+                                    int.parse(value) > 11) {
                                   setState(() {
                                     _errorText = "올바른 숫자를 입력하세요!";
                                   },);
@@ -314,7 +316,6 @@ class _CareerHistoryPageState extends State<CareerHistoryPage> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        print(_errorText);
                         if (_formKey.currentState!.validate() && _errorText==null) {
 
                           jobProvider.removeElement(widget.subType);
@@ -324,7 +325,7 @@ class _CareerHistoryPageState extends State<CareerHistoryPage> {
                           widget.onClose!();
                         }
                       },
-                      child: Text('Save'),
+                      child: Text('저장'),
                     ),
                   ],
                 ),
