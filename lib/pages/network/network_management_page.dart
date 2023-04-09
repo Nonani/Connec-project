@@ -218,7 +218,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
                           ),
                           Container(
                             margin: const EdgeInsets.only(
-                                left: 35, top: 10, bottom: 26.5),
+                                left: 35, top:10, right: 30, bottom: 16),
                             decoration: const BoxDecoration(
                               border: Border(
                                   bottom: BorderSide(

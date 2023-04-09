@@ -145,7 +145,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
 
         },
         style: featureButton,
-        child: Text('확장하기',
+        child: Text('등록하기',
           style: buttonText,
         ),
       ),

@@ -61,8 +61,8 @@ class _NetworkListPageState extends State<NetworkListPage> {
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                   title: Text(
-                    'CONNEC',
-                    style: connecTitle,
+                    "지인 삭제",
+                    style: featureTitle,
                   ),
                   centerTitle: true,
                   actions: [

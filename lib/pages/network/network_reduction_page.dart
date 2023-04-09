@@ -243,14 +243,6 @@ class NetworkReductionPage extends StatelessWidget {
                                           Text(snapshot.data['personality'][1], style: contextValue),
                                         ],
                                       ),
-                                      SizedBox(height: 10),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("소개", style: contextKey),
-                                          Text(snapshot.data['introduction'], style: contextValue),
-                                        ],
-                                      ),
                                     ]),
                                   ]),
                                 ],
