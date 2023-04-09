@@ -1,4 +1,5 @@
 import 'package:connec/const/data.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -48,6 +49,42 @@ class _ReportPageState extends State<ReportPage> {
       body: Form(
         child: Column(
           children: [
+            Container(
+              height:50,
+              margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+              decoration: BoxDecoration(
+                color: Color(0xffeeeeee),
+                border: Border(
+                  bottom: BorderSide(
+                    color: Color(0xff5f66f2),
+                    width: 1.0,
+                  ),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    '신고 대상',
+                    style: TextStyle(
+                      color: Color(0xff333333),
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    (FirebaseAuth.instance.currentUser!.uid==widget.from)?
+                    '${widget.to}':widget.from,
+                    style: TextStyle(
+                      color: Color(0xff666666),
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             CustomDropdownButton(
                 itemList: reportCategoryList,
                 label: "신고 분류",

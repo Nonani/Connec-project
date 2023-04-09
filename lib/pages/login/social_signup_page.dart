@@ -478,6 +478,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
         CustomDropdownButton(
             itemList: personalityList,
             label: "성격",
+            hint: '최소 3개, 최대 5개까지 등록 가능',
             validator: (value) {
               if (_personalityItems.length < 3) {
                 return "3개 이상 선택해주세요";

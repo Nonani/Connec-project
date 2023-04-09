@@ -66,6 +66,9 @@ class LocalDataScreen extends StatelessWidget {
                     if (localData.title == '전국') {
                       localProvider.setLocal("전국");
                       localProvider.setSubLocal("전국");
+                      localProvider.setLocalCode("0000000");
+                      localProvider.setSubLocalCode("0000000");
+                      onClose!();
                       Navigator.pop(context);
                     } else {
                       localProvider.setLocal(document['title']);
