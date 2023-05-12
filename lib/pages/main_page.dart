@@ -240,6 +240,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future _future() async {
+
     FirebaseFirestore db = FirebaseFirestore.instance;
     final result = await db
         .collection("notification")

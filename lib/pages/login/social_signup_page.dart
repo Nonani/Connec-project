@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../components/custom_dropdown_button.dart';
 import '../../components/custom_edit_textform.dart';
-import '../../services/JobService.dart';
+import '../../models/JobModel.dart';
 import '../../services/service_class.dart';
 import 'job_dialog.dart';
 import 'local_dialog.dart';

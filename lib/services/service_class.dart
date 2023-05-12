@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
-import '../models/MemberBody.dart';
 import '../models/SignUpBody.dart';
 
 class ServiceClass extends ChangeNotifier {
@@ -100,24 +99,7 @@ class ServiceClass extends ChangeNotifier {
     }
   }
 
-  Future<void> postMemberBody(MemberBody body) async {
-    loading = true;
-    isComplete = false;
-    notifyListeners();
-    isComplete = await addMember(body);
-    sleep(const Duration(seconds: 1));
-    loading = false;
-    notifyListeners();
-  }
 
-  Future<bool> addMember(MemberBody data) async {
-    try {
-      db.collection("member").doc(data.docId).set(data.toJson());
-    } catch (e) {
-      logger.w(e);
-    }
-    return true;
-  }
 
   void getToken() async {
     String deviceToken = "";

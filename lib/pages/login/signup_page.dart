@@ -426,26 +426,26 @@ class _SignUpPageState extends State<SignUpPage> {
     List<Widget> dialogWidgetList = [];
 
     snapshot.data["workData"].forEach((element) {
-      if (element.data()["tier"] == _curWorkTier &&
-          element.data()["parent"] == _curWorkParent) {
-        dialogList.add(element.data());
+      if (element.getMemberInfo()["tier"] == _curWorkTier &&
+          element.getMemberInfo()["parent"] == _curWorkParent) {
+        dialogList.add(element.getMemberInfo());
         dialogWidgetList.add(SimpleDialogOption(
-          child: Text(element.data()["title"]),
+          child: Text(element.getMemberInfo()["title"]),
           onPressed: () {
             switch (_curWorkTier) {
               case 1:
-                title = element.data()["title"];
+                title = element.getMemberInfo()["title"];
                 _curWorkTier += 1;
-                _curWorkParent = element.data()["code"];
+                _curWorkParent = element.getMemberInfo()["code"];
                 showWorkListDialog(snapshot, title);
                 break;
               case 2:
-                title = title + ' > ${element.data()["title"]}';
+                title = title + ' > ${element.getMemberInfo()["title"]}';
 
                 _curWorkTier += 1;
-                _curWorkParent = element.data()["code"];
+                _curWorkParent = element.getMemberInfo()["code"];
 
-                showCareerListDialog(element.data()["code"], title);
+                showCareerListDialog(element.getMemberInfo()["code"], title);
             }
           },
         ));
@@ -549,25 +549,25 @@ class _SignUpPageState extends State<SignUpPage> {
     List<Widget> dialogWidgetList = [];
 
     snapshot.data["localData"].forEach((element) {
-      if (element.data()["tier"] == _curLocalTier &&
-          element.data()["parent"] == _curLocalParent) {
-        dialogList.add(element.data());
+      if (element.getMemberInfo()["tier"] == _curLocalTier &&
+          element.getMemberInfo()["parent"] == _curLocalParent) {
+        dialogList.add(element.getMemberInfo());
         dialogWidgetList.add(SimpleDialogOption(
-          child: Text(element.data()["title"]),
+          child: Text(element.getMemberInfo()["title"]),
           onPressed: () {
             switch (_curLocalTier) {
               case 1:
-                title = element.data()["title"];
+                title = element.getMemberInfo()["title"];
                 break;
               case 2:
-                title = title + ' > ${element.data()["title"]}';
-                _location = element.data()["code"];
+                title = title + ' > ${element.getMemberInfo()["title"]}';
+                _location = element.getMemberInfo()["code"];
                 _locaion_label = title;
                 Navigator.pop(context);
                 return;
             }
             _curLocalTier += 1;
-            _curLocalParent = element.data()["code"];
+            _curLocalParent = element.getMemberInfo()["code"];
             showLocalListDialog(snapshot, title);
           },
         ));

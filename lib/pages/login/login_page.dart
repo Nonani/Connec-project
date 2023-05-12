@@ -11,10 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as kakao;
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
-import '../../components/login_icon_button.dart';
-import '../../components/custom_edit_textform.dart';
-import 'signup_page.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -39,10 +38,14 @@ class _LoginPageState extends State<LoginPage> {
         child: ListView(
           children: [
             Container(
-
-              margin: EdgeInsets.only(top: size.height * 0.15, left: size.width*0.3,right: size.width*0.3),
-              child: Image.asset('assets/images/connec_logo2.png',color: Color(0xff5f66f2),),
-
+              margin: EdgeInsets.only(
+                  top: size.height * 0.15,
+                  left: size.width * 0.3,
+                  right: size.width * 0.3),
+              child: Image.asset(
+                'assets/images/connec_logo2.png',
+                color: Color(0xff5f66f2),
+              ),
             ),
             Container(
               margin: EdgeInsets.only(top: size.height * 0.1),
@@ -145,8 +148,16 @@ class _LoginPageState extends State<LoginPage> {
               await FirebaseAuth.instance
                   .signInWithCustomToken(jsonData["token"]);
               getToken();
+
             } catch (e) {
               logger.w(e);
+            }
+
+            try {
+
+            } catch (e) {
+              logger.w(e);
+              // error handling
             }
           }
         } catch (e) {
