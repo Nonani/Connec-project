@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/searchpage/contact_detail_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-
+import 'package:http/http.dart' as http;
 class CustomNoticeItem extends StatefulWidget {
   const CustomNoticeItem({Key? key, required this.notice}) : super(key: key);
   final Map<String, dynamic> notice;
@@ -61,57 +63,36 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                         iconSize: 10,
                         onPressed: () async {
                           // 기존 값 인덱스 삭제
-                          db
-                              .collection('notification')
-                              .doc(notice["from_uid"])
-                              .update({
-                            'list': FieldValue.arrayRemove([notice])
-                          });
-                          db
-                              .collection('notification')
-                              .doc(notice["to_uid"])
-                              .update({
-                            'list': FieldValue.arrayRemove([notice])
-                          });
-                          notice["state"] = "accepted";
-                          //수정된 값 인덱스 추가
-                          db
-                              .collection('notification')
-                              .doc(notice["from_uid"])
-                              .update({
-                            'list': FieldValue.arrayUnion([notice])
-                          });
-                          db
-                              .collection('notification')
-                              .doc(notice["to_uid"])
-                              .update({
-                            'list': FieldValue.arrayUnion([notice])
-                          });
-                          db
-                              .collection('networks')
-                              .doc(notice['from_uid'])
-                              .update({
-                            'list': FieldValue.arrayUnion([notice['to_uid']])
-                          });
-                          db
-                              .collection('networks')
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .update({
-                            'list': FieldValue.arrayUnion([notice['from_uid']])
-                          });
-                          String from = (await db
-                              .collection('users')
-                              .doc(notice["from_uid"])
-                              .get())
-                              .data()!['name'];
+                          Logger logger = Logger();
+
+                          final url = Uri.parse(
+                              'https://foggy-boundless-avenue.glitch.me/sendReq');
+                          try {
+                            http.Response response = await http.post(
+                              url,
+                              headers: <String, String>{
+                                'Content-Type':
+                                    'application/x-www-form-urlencoded',
+                              },
+                              body: <String, String>{
+                                'case': notice['case'],
+                                'to': notice['from_uid'],
+                                'from': notice['to_uid'],
+                              },
+                            );
+                            logger.w(response.body);
+
+                          } catch (e) {
+                            logger.w(e);
+                          }
                           Navigator.push(
                               context,
                               DialogRoute(
                                   context: context,
                                   builder: (context) => AlertDialog(
                                         title: Text("요청 수락"),
-                                        content: Text(
-                                            "$from님의 네트워크 요청을 수락하였습니다."),
+                                        content:
+                                            Text("${notice["from"]}님의 네트워크 요청을 수락하였습니다."),
                                         actions: [
                                           ElevatedButton(
                                               onPressed: () {
@@ -162,8 +143,8 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                                   context: context,
                                   builder: (context) => AlertDialog(
                                         title: Text("요청 거절"),
-                                        content: Text(
-                                            "$from님의 네트워크 요청을 거절하였습니다."),
+                                        content:
+                                            Text("$from님의 네트워크 요청을 거절하였습니다."),
                                         actions: [
                                           ElevatedButton(
                                               onPressed: () {
@@ -418,9 +399,9 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                             'list': FieldValue.arrayUnion([notice])
                           });
                           String from = (await db
-                              .collection('users')
-                              .doc(notice["from_uid"])
-                              .get())
+                                  .collection('users')
+                                  .doc(notice["from_uid"])
+                                  .get())
                               .data()!['name'];
                           Navigator.push(
                               context,
@@ -428,8 +409,8 @@ class _CustomNoticeItemState extends State<CustomNoticeItem> {
                                   context: context,
                                   builder: (context) => AlertDialog(
                                         title: Text("제안 거절"),
-                                        content: Text(
-                                            "$from님의 제안 요청을 거절하였습니다."),
+                                        content:
+                                            Text("$from님의 제안 요청을 거절하였습니다."),
                                         actions: [
                                           ElevatedButton(
                                               onPressed: () {

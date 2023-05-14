@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/common_bottom_navigation_bar.dart';
 import 'package:connec/style/titlestyle.dart';
@@ -399,6 +401,8 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
           'uid': FirebaseAuth.instance.currentUser!.uid.toString(),
         },
       );
+      logger.w(response.body);
+      return jsonDecode(response.body);
     }catch (e){
        logger.w(e);
     }

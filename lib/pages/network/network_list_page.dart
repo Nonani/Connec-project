@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
+import 'package:http/http.dart' as http;
 import '../../style/Member/contextstyle.dart';
 import 'expand_network_page.dart';
 
@@ -149,25 +151,26 @@ class _NetworkListPageState extends State<NetworkListPage> {
   }
 
   Future _future() async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    print(FirebaseAuth.instance.currentUser!.uid.toString());
-    final list = await db
-        .collection("networks")
-        .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-        .get();
-    Map<String, dynamic> result = {};
-    result['length'] = list.data()?['list'].length;
-    result['users'] = [];
-    for (String uid in list.data()?['list']) {
-      var tmp = await db.collection('users').doc(uid).get();
-      var data = tmp.data();
-      var acquaintances =  await db.collection('members').where('uid', isEqualTo: tmp.data()?['uid']).get();
-      logger.w(acquaintances.docs.length);
-      data!['acquaintances'] = acquaintances.docs.length;
-      result['users'].add(data);
-    }
-    logger.w(result);
+    Logger logger = Logger();
 
-    return result;
+    final url =
+    Uri.parse('https://foggy-boundless-avenue.glitch.me/member/list');
+    try {
+      http.Response response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: <String, String>{
+          'uid': FirebaseAuth.instance.currentUser!.uid.toString(),
+        },
+      );
+      logger.w(response.body);
+
+      return jsonDecode(response.body);
+    }catch (e){
+      logger.w(e);
+    }
+    return null;
   }
 }
