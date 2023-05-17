@@ -40,6 +40,7 @@ class ServiceClass extends ChangeNotifier {
             },
             body: <String, String>{
               'uid': '${data.uid}',
+              'data': data.toJson().toString()
             },
           );
           logger.w(response.body);
@@ -47,19 +48,18 @@ class ServiceClass extends ChangeNotifier {
           logger.w(e);
           return false;
         }
-        try {
-          db.collection("users").doc("${data.uid}").set(data.toJson());
-          db.collection('networks').doc(data.uid).set({'list': []});
-          db.collection('coupons').doc(data.uid).set({'num': 0});
-          db.collection('notification').doc(data.uid).set({'list': []});
-          db.collection('couponLog')
-              .doc(data.uid)
-              .set({'purchase': [], 'consume': []});
-        } catch (e) {
-          logger.w(e);
-          return false;
-        }
-
+        // try {
+        //   db.collection("users").doc("${data.uid}").set(data.toJson());
+        //   db.collection('networks').doc(data.uid).set({'list': []});
+        //   db.collection('coupons').doc(data.uid).set({'num': 0});
+        //   db.collection('notification').doc(data.uid).set({'list': []});
+        //   db.collection('couponLog')
+        //       .doc(data.uid)
+        //       .set({'purchase': [], 'consume': []});
+        // } catch (e) {
+        //   logger.w(e);
+        //   return false;
+        // }
         return true;
       case 'naver':
         return true;
