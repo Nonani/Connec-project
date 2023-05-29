@@ -163,7 +163,23 @@ class _NoticeListPageState extends State<NoticeListPage> {
                         shrinkWrap: true,
                         itemCount: snapshot.data["send"].length,
                         itemBuilder: (context, index) {
-                          return buildSendItem(snapshot.data["send"], index);
+                          var state =
+                          snapshot.data["send"][index]["state"];
+                          if (!isCompleteState) {
+                            if (state == "waiting" || state == "reported") {
+                              return buildSendItem(
+                                  snapshot.data["receive"], index);
+                            }else{
+                              return Container();
+                            }
+                          }else{
+                            if (state == "waiting" || state == "reported") {
+                              return Container();
+                            }else{
+                              return buildSendItem(
+                                  snapshot.data["receive"], index);
+                            }
+                          }
                         },
                       ),
                     );
@@ -174,8 +190,24 @@ class _NoticeListPageState extends State<NoticeListPage> {
                         shrinkWrap: true,
                         itemCount: snapshot.data["receive"].length,
                         itemBuilder: (context, index) {
-                          return buildReceiveItem(
-                              snapshot.data["receive"], index);
+                          var state =
+                          snapshot.data["receive"][index]["state"];
+                          if (!isCompleteState) {
+
+                            if (state == "waiting" || state == "reported") {
+                              return buildReceiveItem(
+                                  snapshot.data["receive"], index);
+                            }else{
+                              return Container();
+                            }
+                          }else{
+                            if (state == "waiting" || state == "reported") {
+                              return Container();
+                            }else{
+                              return buildReceiveItem(
+                                  snapshot.data["receive"], index);
+                            }
+                          }
                         },
                       ),
                     );
@@ -203,13 +235,18 @@ class _NoticeListPageState extends State<NoticeListPage> {
               minWidth: 90.0,
               minHeight: 40.0,
               cornerRadius: 20.0,
+              initialLabelIndex: isCompleteState?1:0,
               activeBgColor: [Color(0xff5f66f2)],
               activeFgColor: Colors.white,
               inactiveBgColor: Color(0x29000000),
               inactiveFgColor: Color(0xff666666),
               labels: ['진행 중', '진행완료'],
               onToggle: (index) {
-                isCompleteState = index == 0 ? false : true;
+
+                setState(() {
+                  isCompleteState = index == 0 ? false : true;
+                });
+                print(isCompleteState);
               }),
           Expanded(
             child: Container(),
@@ -265,6 +302,17 @@ class _NoticeListPageState extends State<NoticeListPage> {
 
   buildSendItem(List<dynamic> data, int index) {
     return GestureDetector(
+      onTap: (){
+        switch(data[index]['state']){
+          case "waiting":
+          case "reported":
+          case "accepted":
+          case "solved":
+          case "rejected":
+          case "scored":
+
+        }
+      },
       child: Container(
         padding: const EdgeInsets.only(left: 12, top: 12, bottom: 15),
         decoration: const BoxDecoration(
