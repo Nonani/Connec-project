@@ -264,7 +264,7 @@ packages:
     source: hosted
     version: "2.2.18"
   flutter_test:
-    dependency: "direct dev"
+    dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"

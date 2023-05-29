@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/login/login_page.dart';
 import 'package:connec/pages/main_page.dart';
 import 'package:connec/models/JobModel.dart';
+import 'package:connec/pages/proposition/contact_state_page.dart';
 import 'package:connec/services/LocalService.dart';
 import 'package:connec/services/service_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -5,17 +5,19 @@ import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 import '../../components/custom_dialog.dart';
 import '../../const/data.dart';
 import '../../style/buttonstyle.dart';
 
 class ContactPage extends StatefulWidget {
-  const ContactPage({required this.uid, required this.docID, Key? key})
+  const ContactPage({required this.uid, required this.workCode, Key? key})
       : super(key: key);
 
   final String uid;
-  final String docID;
+
+  final String workCode;
 
   @override
   State<ContactPage> createState() => _ContactPageState();
@@ -88,69 +90,43 @@ class _ContactPageState extends State<ContactPage> {
           ),
           onPressed: () async {
             FirebaseFirestore db = FirebaseFirestore.instance;
+            Logger logger = Logger();
             int couponNum = (await db
-                    .collection('coupons')
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .get())
+                .collection('coupons')
+                .doc(FirebaseAuth.instance.currentUser!.uid)
+                .get())
                 .data()!['num'];
             if (_formKey.currentState!.validate() && couponNum > 0) {
               _formKey.currentState!.save();
               print(contactText);
               print(offer);
               showCustomDialog(context);
-              if (widget.docID.isEmpty) {
-                //유저인 경우
-                var info = await db
-                    .collection('users')
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .get();
-                final url = Uri.parse(
-                    'https://foggy-boundless-avenue.glitch.me/sendComm');
-                try {
-                  http.Response response = await http.post(
-                    url,
-                    headers: <String, String>{
-                      'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: <String, String>{
-                      'to': widget.uid,
-                      'from': FirebaseAuth.instance.currentUser!.uid,
-                      'type': "user",
-                      'docId': '',
-                      'purpose': offer,
-                      'context': contactText,
-                    },
-                  );
-                } catch (e) {
-                  print(e);
-                }
-              } else {
-                //  지인인 경우
-                var info = await db
-                    .collection('users')
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .get();
-                final url = Uri.parse(
-                    'https://foggy-boundless-avenue.glitch.me/sendComm');
-                try {
-                  http.Response response = await http.post(
-                    url,
-                    headers: <String, String>{
-                      'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: <String, String>{
-                      'to': '${widget.uid}',
-                      'from': "${FirebaseAuth.instance.currentUser!.uid}",
-                      'type': "member",
-                      'docId': '${widget.docID}',
-                      'purpose': offer,
-                      'context': contactText,
-                    },
-                  );
-                } catch (e) {
-                  print(e);
-                }
+
+              var info = await db
+                  .collection('users')
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .get();
+              final url = Uri.parse(
+                  'https://foggy-boundless-avenue.glitch.me/proposition/sendReq');
+              try {
+                http.Response response = await http.post(
+                  url,
+                  headers: <String, String>{
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                  },
+                  body: <String, String>{
+                    'to': widget.uid,
+                    'from': FirebaseAuth.instance.currentUser!.uid,
+                    'workArea': widget.workCode,
+                    'purpose': offer,
+                    'context': contactText
+                  },
+                );
+                logger.w(response.body);
+              } catch (e) {
+                print(e);
               }
+
               Navigator.pop(context);
               Navigator.pop(context);
               await consume(widget.uid);
@@ -164,9 +140,9 @@ class _ContactPageState extends State<ContactPage> {
   Future<void> consume(String uid) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     int couponNum = (await db
-            .collection('coupons')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .get())
+        .collection('coupons')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get())
         .data()!['num'];
     String name = (await db.collection('users').doc(uid).get()).data()!['name'];
     await db

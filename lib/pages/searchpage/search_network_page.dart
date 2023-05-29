@@ -90,7 +90,7 @@ class SearchNetworkPage extends StatelessWidget {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
                                     return SearchNetworkDetailPage(
-                                        snapshot.data!['list'][index]);
+                                        snapshot.data!['list'][index], code);
                                   }));
                                 },
                                 child: Padding(

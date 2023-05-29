@@ -9,8 +9,8 @@ import '../proposition/contact_page.dart';
 
 class SearchNetworkDetailPage extends StatelessWidget {
   Map<String, dynamic> data;
-
-  SearchNetworkDetailPage(this.data, {Key? key}) : super(key: key);
+  String code;
+  SearchNetworkDetailPage(this.data, this.code, {Key? key}) : super(key: key);
 
   final logger = Logger();
 
@@ -160,8 +160,8 @@ class SearchNetworkDetailPage extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ContactPage(
-                          docID: data['docId'] ?? "", uid: data['uid']),
+                      builder: (context) => ContactPage(workCode:code,
+                          uid: data['uid']),
                     ));
               },
               style: featureButton,

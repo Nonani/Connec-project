@@ -288,32 +288,6 @@ class _NoticeListPageState extends State<NoticeListPage> {
 
   }
   Future _future() async {
-    final notice = await db
-        .collection("notification")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-    List list = [];
-    if (initialIndex == 0) {
-      //  현재 알림 목록을 불러와야 할 때
-      for (int i = 0; i < notice.data()!['list']!.length; i++) {
-        var noticeItem = notice.data()!['list'][i];
-        if (noticeItem['case'] == "contact" &&
-            noticeItem['state'] == 'waiting') {
-          list.add(noticeItem);
-        }
-      }
-    } else {
-      // 과거 알림 목록을 불러와야 할 때
-      for (int i = 0; i < notice.data()!['list']!.length; i++) {
-        var noticeItem = notice.data()!['list'][i];
-
-        if (noticeItem['case'] == "contact" &&
-            noticeItem['state'] != 'waiting') {
-          list.add(noticeItem);
-        }
-      }
-    }
-    logger.w(list);
 
     return list;
   }
