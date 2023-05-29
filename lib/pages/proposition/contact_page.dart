@@ -124,7 +124,7 @@ class _ContactPageState extends State<ContactPage> {
                 );
                 logger.w(response.body);
               } catch (e) {
-                print(e);
+                logger.w(e);
               }
 
               Navigator.pop(context);
