@@ -1,26 +1,33 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connec/components/custom_expansion_tile.dart';
+import 'dart:convert';
+
 import 'package:connec/style/buttonstyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:http/http.dart' as http;
 
 import '../../style/Member/contextstyle.dart';
 
-class NetworkReductionPage extends StatelessWidget {
-  String uid = "";
-  int acquitances = 0;
-
-  NetworkReductionPage(this.uid, this.acquitances, {Key? key})
-      : super(key: key);
-
+class NetworkReductionPage extends StatefulWidget {
+  String uid;
   final logger = Logger();
+
+  NetworkReductionPage(this.uid, {Key? key}) : super(key: key);
+
+  @override
+  State<NetworkReductionPage> createState() => _NetworkReductionPage(this.uid);
+}
+class _NetworkReductionPage extends State<NetworkReductionPage>{
+  String uid;
+  final logger = Logger();
+  _NetworkReductionPage(this.uid);
 
   @override
   Widget build(BuildContext context) {
+
     return FutureBuilder(
         future: _future(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        builder: (BuildContext context, snapshot) {
           if (!snapshot.hasData) {
             return const SafeArea(
               child: Center(
@@ -138,15 +145,14 @@ class NetworkReductionPage extends StatelessWidget {
                                           Padding(
                                             padding: EdgeInsets.only(
                                                 bottom: 10),
-                                            child: Text(acquitances.toString(),
+                                            child: Text(snapshot.data['acquitances'].toString(),
                                                 style: contextValue),
                                           ),
                                           Padding(
                                               padding: EdgeInsets.only(
                                                   bottom: 10),
                                               child: Text(
-                                                  snapshot
-                                                      .data['personality'][0],
+                                                  snapshot.data['personality'][0],
                                                   style: contextValue)),
                                         ],
                                       )
@@ -253,17 +259,22 @@ class NetworkReductionPage extends StatelessWidget {
               ),
               bottomNavigationBar: ElevatedButton(
                 onPressed: () async {
-                  FirebaseFirestore db = FirebaseFirestore.instance;
-                  db
-                      .collection('networks')
-                      .doc(FirebaseAuth.instance.currentUser!.uid)
-                      .update({
-                    'list': FieldValue.arrayRemove([uid])
-                  });
-                  db.collection('networks').doc(uid).update({
-                    'list': FieldValue.arrayRemove(
-                        [FirebaseAuth.instance.currentUser!.uid])
-                  });
+                  final url =
+                  Uri.parse('https://foggy-boundless-avenue.glitch.me/member/delete');
+                  try {
+                    await http.post(
+                      url,
+                      headers: <String, String>{
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                      },
+                      body: <String, String>{
+                        'uid': FirebaseAuth.instance.currentUser!.uid,
+                        'memberUid': uid,
+                      },
+                    );
+                  }catch (e){
+                    logger.w("error");
+                  }
                   Navigator.of(context).pop();
                 },
                 style: featureButton,
@@ -278,7 +289,7 @@ class NetworkReductionPage extends StatelessWidget {
   }
 
 
-  List<Widget> workSection(List<String> workArea, List<dynamic> career) {
+  List<Widget> workSection(List<dynamic> workArea, List<dynamic> career) {
     List<Widget> result = [];
     for (int index = 0; index < workArea.length * 2; index++) {
       String text = index > 0 ? "" : "전문분야";
@@ -306,33 +317,22 @@ class NetworkReductionPage extends StatelessWidget {
   }
 
   Future _future() async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    var user = await db.collection('users').doc(uid).get();
-    Map<String, dynamic>? result = user.data();
-    String location = ((await db
-        .collection('localData')
-        .where('code', isEqualTo: result!['location'])
-        .get())
-        .docs[0])
-        .data()['title'];
-    result!['location'] = location;
-    List<dynamic> workArea = await parseWork(result!['workArea']);
-    result['workArea'] = workArea;
-    logger.w(workArea);
-    return result;
-  }
-
-  Future<List<String>> parseWork(List<dynamic> data) async {
-    List<String> result = [];
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    for (String element in data) {
-      String primary =
-      (await db.collection('workData').doc('${element[0]}00').get())
-          .data()!['title'];
-      String secondary =
-      (await db.collection('workData').doc(element).get()).data()!['title'];
-      result.add("$primary > $secondary");
+    final url =
+    Uri.parse('https://foggy-boundless-avenue.glitch.me/member/detail');
+    try {
+      http.Response response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: <String, String>{
+          'uid': uid,
+        },
+      );
+      return json.decode(response.body);
+    }catch (e){
+      return null;
     }
-    return result;
+
   }
 }

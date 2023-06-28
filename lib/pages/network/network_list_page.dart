@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
-import '../../style/Member/contextstyle.dart';
 import 'expand_network_page.dart';
 
 class NetworkListPage extends StatefulWidget {
@@ -22,18 +21,18 @@ class NetworkListPage extends StatefulWidget {
 
 class _NetworkListPageState extends State<NetworkListPage> {
   final logger = Logger();
-  final TextStyle _nameStyle = const TextStyle(
-    color: Color(0xff333333),
-    fontSize: 19,
-    fontFamily: 'S-CoreDream-6Bold',
-    fontWeight: FontWeight.w500,
-  );
-  final TextStyle _contextStyle = const TextStyle(
-    color: Color(0xffafafaf),
-    fontSize: 13,
-    fontFamily: 'EchoDream',
-    fontWeight: FontWeight.w200,
-  );
+  // final TextStyle _nameStyle = const TextStyle(
+  //   color: Color(0xff333333),
+  //   fontSize: 19,
+  //   fontFamily: 'S-CoreDream-6Bold',
+  //   fontWeight: FontWeight.w500,
+  // );
+  // final TextStyle _contextStyle = const TextStyle(
+  //   color: Color(0xffafafaf),
+  //   fontSize: 13,
+  //   fontFamily: 'EchoDream',
+  //   fontWeight: FontWeight.w200,
+  // );
 
 
   @override
@@ -74,7 +73,6 @@ class _NetworkListPageState extends State<NetworkListPage> {
                         onPressed: () async{
                           final db = FirebaseFirestore.instance;
                           final result = await db.collection("users").doc("${FirebaseAuth.instance.currentUser!.uid}").get();
-                          logger.w(FirebaseAuth.instance.currentUser!.uid);
                           Clipboard.setData(ClipboardData(text: result["uuid"]));
                         }),
                   ],
@@ -97,8 +95,10 @@ class _NetworkListPageState extends State<NetworkListPage> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          NetworkReductionPage(snapshot.data['users'][index]['uid'], snapshot.data['users'][index]['acquaintances']),
+                                          NetworkReductionPage(snapshot.data['users'][index]['uid']),
                                     ));
+                                setState(() {
+                                });
                               },
                               child: Padding(
                                 padding: EdgeInsets.only(bottom: 14),
@@ -165,7 +165,6 @@ class _NetworkListPageState extends State<NetworkListPage> {
           'uid': FirebaseAuth.instance.currentUser!.uid.toString(),
         },
       );
-      logger.w(response.body);
 
       return jsonDecode(response.body);
     }catch (e){

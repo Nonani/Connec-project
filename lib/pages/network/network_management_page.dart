@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/common_bottom_navigation_bar.dart';
 import 'package:connec/style/titlestyle.dart';
@@ -392,7 +390,7 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
     final url =
     Uri.parse('https://foggy-boundless-avenue.glitch.me/member/info');
     try {
-      http.Response response = await http.post(
+      await http.post(
         url,
         headers: <String, String>{
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -401,8 +399,6 @@ class _NetworkManagementPageState extends State<NetworkManagementPage> {
           'uid': FirebaseAuth.instance.currentUser!.uid.toString(),
         },
       );
-      logger.w(response.body);
-      return jsonDecode(response.body);
     }catch (e){
        logger.w(e);
     }
