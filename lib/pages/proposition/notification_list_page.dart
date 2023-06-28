@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/mypage/report_page.dart';
+import 'package:connec/pages/proposition/contact_waiting_state_page.dart';
 import 'package:connec/style/Notification/contextStyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -305,6 +306,8 @@ class _NoticeListPageState extends State<NoticeListPage> {
       onTap: (){
         switch(data[index]['state']){
           case "waiting":
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ContactWaitingStatePage(data[index])));
+            break;
           case "reported":
           case "accepted":
           case "solved":
