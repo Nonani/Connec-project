@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/mypage/report_page.dart';
-import 'package:connec/pages/proposition/contact_waiting_state_page.dart';
+import 'package:connec/pages/proposition/contact_send_accepted_page.dart';
+import 'package:connec/pages/proposition/contact_send_waiting_page.dart';
 import 'package:connec/style/Notification/contextStyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -164,21 +165,24 @@ class _NoticeListPageState extends State<NoticeListPage> {
                         shrinkWrap: true,
                         itemCount: snapshot.data["send"].length,
                         itemBuilder: (context, index) {
-                          var state =
-                          snapshot.data["send"][index]["state"];
+                          var state = snapshot.data["send"][index]["state"];
                           if (!isCompleteState) {
-                            if (state == "waiting" || state == "reported") {
+                            if (state == "s_waiting" ||
+                                state == "s_accepted" ||
+                                state == "s_reporting") {
                               return buildSendItem(
                                   snapshot.data["send"], index);
-                            }else{
+                            } else {
                               return Container();
                             }
-                          }else{
-                            if (state == "waiting" || state == "reported") {
+                          } else {
+                            if (state == "s_waiting" ||
+                                state == "s_accepted" ||
+                                state == "s_reporting") {
                               return Container();
-                            }else{
+                            } else {
                               return buildSendItem(
-                                  snapshot.data["receive"], index);
+                                  snapshot.data["send"], index);
                             }
                           }
                         },
@@ -191,20 +195,20 @@ class _NoticeListPageState extends State<NoticeListPage> {
                         shrinkWrap: true,
                         itemCount: snapshot.data["receive"].length,
                         itemBuilder: (context, index) {
-                          var state =
-                          snapshot.data["receive"][index]["state"];
+                          var state = snapshot.data["receive"][index]["state"];
                           if (!isCompleteState) {
-
-                            if (state == "waiting" || state == "reported") {
+                            if (state == "r_waiting" ||
+                                state == "r_reporting") {
                               return buildReceiveItem(
                                   snapshot.data["receive"], index);
-                            }else{
+                            } else {
                               return Container();
                             }
-                          }else{
-                            if (state == "waiting" || state == "reported") {
+                          } else {
+                            if (state == "r_waiting" ||
+                                state == "r_reporting") {
                               return Container();
-                            }else{
+                            } else {
                               return buildReceiveItem(
                                   snapshot.data["receive"], index);
                             }
@@ -236,14 +240,13 @@ class _NoticeListPageState extends State<NoticeListPage> {
               minWidth: 90.0,
               minHeight: 40.0,
               cornerRadius: 20.0,
-              initialLabelIndex: isCompleteState?1:0,
+              initialLabelIndex: isCompleteState ? 1 : 0,
               activeBgColor: [Color(0xff5f66f2)],
               activeFgColor: Colors.white,
               inactiveBgColor: Color(0x29000000),
               inactiveFgColor: Color(0xff666666),
               labels: ['진행 중', '진행완료'],
               onToggle: (index) {
-
                 setState(() {
                   isCompleteState = index == 0 ? false : true;
                 });
@@ -303,17 +306,28 @@ class _NoticeListPageState extends State<NoticeListPage> {
 
   buildSendItem(List<dynamic> data, int index) {
     return GestureDetector(
-      onTap: (){
-        switch(data[index]['state']){
-          case "waiting":
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ContactWaitingStatePage(data[index])));
+      onTap: () {
+        switch (data[index]['state']) {
+          case "s_waiting":
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ContactWaitingStatePage(data[index])));
             break;
-          case "reported":
-          case "accepted":
-          case "solved":
-          case "rejected":
-          case "scored":
+          case "s_accepted":
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ContactSendAcceptedPage(data[index])));
+            break;
+          case "s_unconfirmed":
 
+
+          case "s_reporting":
+          case "s_rejected":
+          case "scored":
         }
       },
       child: Container(
@@ -465,7 +479,7 @@ class _NoticeListPageState extends State<NoticeListPage> {
 
   Row buildItemState(List<dynamic> data, int index) {
     String text = "";
-    if (data[index]['state'] == 'waiting') {
+    if (data[index]['state'] == 'r_waiting') {
       text = '미확인';
     } else if (data[index]['state'] == 'rejected') {
       text = '거절';

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/pages/proposition/contact_report_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -9,9 +10,15 @@ import '../../components/custom_dialog.dart';
 import '../../style/Member/contextstyle.dart';
 import '../../style/buttonstyle.dart';
 
-class ContactWaitingStatePage extends StatelessWidget {
-  const ContactWaitingStatePage(this.data, {Key? key}) : super(key: key);
+class ContactSendAcceptedPage extends StatefulWidget {
+  const ContactSendAcceptedPage(this.data, {Key? key}) : super(key: key);
   final dynamic data;
+
+  @override
+  State<ContactSendAcceptedPage> createState() => _ContactSendAcceptedPageState();
+}
+
+class _ContactSendAcceptedPageState extends State<ContactSendAcceptedPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -63,14 +70,14 @@ class ContactWaitingStatePage extends StatelessWidget {
                       margin: EdgeInsets.only(
                           left: 80, right: 80, top: 18, bottom: 20),
                       child: Image.network(
-                        "${data["urlImage"]}",
+                        "${widget.data["urlImage"]}",
                         fit: BoxFit.fill,
                       ),
                     ),
                   ),
                   Center(
                     child: Text(
-                      '${data["primary"]}',
+                      '${widget.data["primary"]}',
                       style: TextStyle(
                         color: Color(0xff333333),
                         fontSize: 21,
@@ -81,7 +88,7 @@ class ContactWaitingStatePage extends StatelessWidget {
                   ),
                   Center(
                     child: Text(
-                      '${data["primary"]} > ${data["secondary"]}',
+                      '${widget.data["primary"]} > ${widget.data["secondary"]}',
                       style: TextStyle(
                         color: Color(0xffafafaf),
                         fontSize: 12,
@@ -269,7 +276,7 @@ class ContactWaitingStatePage extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Color(0xffeeeeee),
                     ),
-                    child: Center(child: Text(data["context"])),
+                    child: Center(child: Text(widget.data["context"])),
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 26, top: 18),
@@ -293,7 +300,7 @@ class ContactWaitingStatePage extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Color(0xffeeeeee),
                     ),
-                    child: Text(data["purpose"]),
+                    child: Text(widget.data["purpose"]),
                   ),
                   Container(
                     height: 57,
@@ -310,18 +317,14 @@ class ContactWaitingStatePage extends StatelessWidget {
                           style: TextStyle(
                             color: Color(0xff333333),
                             fontSize: 21,
-                            fontFamily: 'S-CoreDream-6Bold',
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         Text(
-                          '승낙 대기',
-                          overflow: TextOverflow.clip,
-                          maxLines: 5,
+                          '제안 승낙',
                           style: TextStyle(
-                            color: Color(0xff666666),
+                            color: Color(0xff5f66f2),
                             fontSize: 18,
-                            fontFamily: 'S-CoreDream-6',
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -335,18 +338,49 @@ class ContactWaitingStatePage extends StatelessWidget {
         },
         future: _future(),
       ),
-      bottomNavigationBar: ElevatedButton(
-        style: featureButton,
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: Text(
-          '확인',
-          style: TextStyle(
-            color: Color(0xfffafafa),
-            fontSize: 20,
-            fontFamily: 'S-CoreDream-4',
-          ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Color(0xff5f66f2),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                style: featureButton,
+                onPressed: () {
+                  // Navigator.push(context, MaterialPageRoute(builder: (context) => ContactReportPage(),));
+                },
+                child: Text(
+                  '평가',
+                  style: TextStyle(
+                    color: Color(0xfffafafa),
+                    fontSize: 20,
+                    fontFamily: 'S-CoreDream-4',
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: ElevatedButton(
+                style: featureButton,
+                onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ContactReportPage(to_uid: widget.data!['to_uid'], name: widget.data!['to_uid'])));
+                },
+                child: Text(
+                  '신고',
+                  style: TextStyle(
+                    color: Color(0xfffafafa),
+                    fontSize: 20,
+                    fontFamily: 'S-CoreDream-4',
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -381,7 +415,7 @@ class ContactWaitingStatePage extends StatelessWidget {
 
   Future? _future() async {
     Logger logger = Logger();
-    logger.w(data);
+    logger.w(widget.data);
     final url = Uri.parse(
         'https://foggy-boundless-avenue.glitch.me/proposition/detail');
     try {
@@ -391,10 +425,9 @@ class ContactWaitingStatePage extends StatelessWidget {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: <String, String>{
-          'uid': "${data!['to_uid']}",
+          'uid': "${widget.data!['to_uid']}",
         },
       );
-      logger.w(response.body);
       return jsonDecode(response.body);
     } catch (e) {
       print("Error getting document: $e");
