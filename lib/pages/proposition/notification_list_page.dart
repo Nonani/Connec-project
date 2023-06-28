@@ -169,7 +169,7 @@ class _NoticeListPageState extends State<NoticeListPage> {
                           if (!isCompleteState) {
                             if (state == "waiting" || state == "reported") {
                               return buildSendItem(
-                                  snapshot.data["receive"], index);
+                                  snapshot.data["send"], index);
                             }else{
                               return Container();
                             }
