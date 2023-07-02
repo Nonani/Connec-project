@@ -184,7 +184,7 @@ class _ContactReportPageState extends State<ContactReportPage> {
         style: featureButton,
         onPressed: () async{
           Logger logger = Logger();
-          Uri apiUrl = Uri.parse("https://foggy-boundless-avenue.glitch.me/proposition/report"); // 백엔드 엔드포인트로 변경
+          Uri apiUrl = Uri.parse("https://foggy-boundless-avenue.glitch.me/report"); // 백엔드 엔드포인트로 변경
           Map<String, dynamic> jsonStringData = {
             'reporting_uid': FirebaseAuth.instance.currentUser!.uid,
             'reported_uid': widget.to_uid,

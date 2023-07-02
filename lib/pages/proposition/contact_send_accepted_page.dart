@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/proposition/contact_report_page.dart';
+import 'package:connec/pages/proposition/contact_score_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -15,11 +16,11 @@ class ContactSendAcceptedPage extends StatefulWidget {
   final dynamic data;
 
   @override
-  State<ContactSendAcceptedPage> createState() => _ContactSendAcceptedPageState();
+  State<ContactSendAcceptedPage> createState() =>
+      _ContactSendAcceptedPageState();
 }
 
 class _ContactSendAcceptedPageState extends State<ContactSendAcceptedPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -349,7 +350,15 @@ class _ContactSendAcceptedPageState extends State<ContactSendAcceptedPage> {
               child: ElevatedButton(
                 style: featureButton,
                 onPressed: () {
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) => ContactReportPage(),));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ContactScorePage(
+                          to_uid: widget.data!['to_uid'],
+                          name: widget.data!['name'],
+                          urlImage: widget.data['urlImage'],
+                        ),
+                      ));
                 },
                 child: Text(
                   '평가',
@@ -365,10 +374,12 @@ class _ContactSendAcceptedPageState extends State<ContactSendAcceptedPage> {
               child: ElevatedButton(
                 style: featureButton,
                 onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ContactReportPage(to_uid: widget.data!['to_uid'], name: widget.data!['to_uid'])));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ContactReportPage(
+                              to_uid: widget.data!['to_uid'],
+                              name: widget.data!['name'])));
                 },
                 child: Text(
                   '신고',
