@@ -1,4 +1,3 @@
-import 'package:connec/pages/proposition/notification_list_page.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/mypage/my_info_page.dart';

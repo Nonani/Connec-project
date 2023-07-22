@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-Widget LoginEditTextForm(
-    {required String label,
-    bool isSecret = false,
-    required String hint,
-    required FormFieldSetter onSaved,
-    FormFieldValidator? validate}) {
+Widget LoginEditTextForm({required String label,
+  bool isSecret = false,
+  required String hint,
+  required FormFieldSetter onSaved,
+  FormFieldValidator? validate}) {
   return Container(
     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
     child: Column(
@@ -22,8 +21,8 @@ Widget LoginEditTextForm(
           validator: validate != null
               ? validate
               : (value) {
-                  return null;
-                },
+            return null;
+          },
           obscureText: isSecret,
           decoration: InputDecoration(
             focusedErrorBorder: OutlineInputBorder(
@@ -56,12 +55,12 @@ Widget LoginEditTextForm(
   );
 }
 
-Widget SignUpEditTextForm(
-    {required String label,
-    bool isSecret = false,
-    required String hint,
-    required FormFieldSetter onSaved,
-    FormFieldValidator? validate}) {
+Widget SignUpEditTextForm({required String label,
+  int lineNum = 1,
+  bool isSecret = false,
+  required String hint,
+  required FormFieldSetter onSaved,
+  FormFieldValidator? validate}) {
   return Container(
     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
     child: Column(
@@ -75,7 +74,7 @@ Widget SignUpEditTextForm(
             )),
         SizedBox(height: 10),
         TextFormField(
-          maxLines: label == "신고 내용" || label == "제안 내용" || label == "내용"? 5 : 1,
+          maxLines: lineNum,
           obscureText: isSecret,
           decoration: InputDecoration(
               hintText: hint,
@@ -93,12 +92,12 @@ Widget SignUpEditTextForm(
           validator: validate != null
               ? validate
               : (value) {
-                  if (value!.isEmpty) {
-                    return "빈 칸입니다.";
-                  } else {
-                    return null;
-                  }
-                },
+            if (value!.isEmpty) {
+              return "빈 칸입니다.";
+            } else {
+              return null;
+            }
+          },
         ),
       ],
     ),

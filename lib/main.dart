@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/login/login_page.dart';
-import 'package:connec/pages/main_page.dart';
 import 'package:connec/models/JobModel.dart';
 import 'package:connec/pages/mypage/my_info_page.dart';
 import 'package:connec/services/LocalService.dart';

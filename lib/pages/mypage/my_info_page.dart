@@ -1,14 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_dialog.dart';
-import 'package:connec/pages/mypage/account_setting_page.dart';
-import 'package:connec/pages/mypage/purchase_history.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 import '../project_regist_page.dart';
-import 'In_app_purchase_connec.dart';
 
 class MyInfoPage extends StatefulWidget {
   const MyInfoPage({Key? key}) : super(key: key);
@@ -50,15 +48,17 @@ class _MyInfoPageState extends State<MyInfoPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    height: 200,
+                  Center(
                     child: Container(
-                      margin: EdgeInsets.only(
-                          left: 110, right: 110, top: 35, bottom: 45),
-                      child: Image.network(""),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xffafafaf),
+                      height: 200,
+                      child: Container(
+                        margin: EdgeInsets.only(
+                            left: 110, right: 110, top: 35, bottom: 45),
+                        child: Image.network(snapshot.data["profile_image_url"]),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xffafafaf),
+                        ),
                       ),
                     ),
                   ),
@@ -66,13 +66,13 @@ class _MyInfoPageState extends State<MyInfoPage> {
                       margin: EdgeInsets.only(bottom: 10),
                       child: Center(
                         child: Text(
-                          "이름",
+                          "${snapshot.data["name"]}",
                         ),
                       )),
                   Container(
                     margin: EdgeInsets.only(bottom: 10),
                     child: Center(
-                      child: Text("직업"),
+                      child: Text("${snapshot.data["work"]}"),
                     ),
                   ),
                   Container(
@@ -129,14 +129,46 @@ class _MyInfoPageState extends State<MyInfoPage> {
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 20),
-                    child: Text(
-                      "  나 이 :\n  성 별 : \n전화번호 :\n활동지역 :\n",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 17,
-                        fontFamily: 'EchoDream',
-                        fontWeight: FontWeight.w600,
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "나 이 : ${snapshot.data["age"]}",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 17,
+                            fontFamily: 'EchoDream',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          "성 별 : ${snapshot.data["gender"]}",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 17,
+                            fontFamily: 'EchoDream',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          "전화번호 : ${snapshot.data["phone_number"]}",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 17,
+                            fontFamily: 'EchoDream',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          "활동지역 : ${snapshot.data["location"]}",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 17,
+                            fontFamily: 'EchoDream',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Container(
@@ -163,16 +195,29 @@ class _MyInfoPageState extends State<MyInfoPage> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            Text("※ 최대 10개",style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                              fontFamily: 'EchoDream',
-                              fontWeight: FontWeight.w600,
-                            ),)
+                            Text(
+                              "※ 최대 10개",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                                fontFamily: 'EchoDream',
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )
                           ],
                         ),
-                        IconButton(onPressed: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context) => ProjectRegistPage(),));}, icon: Icon(Icons.add_circle, color: Colors.blue,))
+                        IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProjectRegistPage(),
+                                  ));
+                            },
+                            icon: Icon(
+                              Icons.add_circle,
+                              color: Colors.blue,
+                            ))
                       ],
                     ),
                   ),
@@ -186,43 +231,26 @@ class _MyInfoPageState extends State<MyInfoPage> {
   }
 
   Future _future() async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
+    Logger logger = Logger();
 
-    Map<String, dynamic> result = {};
-    DocumentSnapshot<Map<String, dynamic>> user = await db
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid.toString())
-        .get();
-    DocumentSnapshot<Map<String, dynamic>> couponCnt = await db
-        .collection('coupons')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    Map<String, dynamic>? tmp = user.data();
-    List<dynamic> networks = (await db
-            .collection('networks')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .get())
-        .data()!['list'];
-    var logger = Logger();
+    final url =
+        Uri.parse('https://foggy-boundless-avenue.glitch.me/mypage/info');
     try {
-      double networkRate = 0.0;
-      List<QueryDocumentSnapshot<Map<String, dynamic>>> data = (await db
-              .collection('users')
-              .where(FieldPath.documentId, whereIn: networks)
-              .get())
-          .docs;
-      for (QueryDocumentSnapshot<Map<String, dynamic>> user in data) {
-        networkRate += user.data()['rate'];
-      }
-      networkRate /= networks.length;
-      tmp!['networkRate'] = networkRate;
+      http.Response response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: <String, String>{
+          'uid': FirebaseAuth.instance.currentUser!.uid.toString(),
+        },
+      );
+      logger.w(response.body);
+      return jsonDecode(response.body);
     } catch (e) {
       logger.w(e);
     }
 
-    result['user'] = tmp;
-    result['couponCnt'] = couponCnt['num'];
-    return result;
+    return null;
   }
 }
