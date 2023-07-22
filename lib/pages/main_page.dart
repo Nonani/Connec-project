@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/common_bottom_navigation_bar.dart';
 import 'package:connec/components/custom_dialog.dart';
-import 'package:connec/pages/searchpage/search_page.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -91,63 +90,7 @@ class _MainPageState extends State<MainPage> {
             ),
             body: Column(
               children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.only(left: 23, top: 54),
-                  child: const Text(
-                    '어떤 사람을 찾으시나요?',
-                    style: TextStyle(
-                      color: Color(0xff333333),
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                Container(
-                    margin: EdgeInsets.only(left: 17, right: 17, top: 10),
-                    width: double.infinity,
-                    height: 41,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SearchPage(),
-                              ));
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          foregroundColor: Colors.black,
-                          elevation: 0,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(21)),
-                            side: BorderSide(
-                              width: 1.0,
-                              color: Color(0xff5f66f2),
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          children: const [
-                            Icon(
-                              Icons.search,
-                              size: 30,
-                              color: Color(0xff5f66f2),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              '키워드로 검색해 보세요.',
-                              style: TextStyle(
-                                color: Color(0xff999999),
-                                fontSize: 15,
-                                fontFamily: 'S-CoreDream-4Regular',
-                                fontWeight: FontWeight.w200,
-                              ),
-                            ),
-                          ],
-                        ))),
+
                 Padding(
                   padding: const EdgeInsets.only(top: 45, left: 23),
                   child: Row(

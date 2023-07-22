@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../pages/mypage/my_info_page.dart';
 import '../pages/network/network_management_page.dart';
-import '../pages/searchpage/search_page.dart';
 
 class CommonBottomNavigationBar extends StatefulWidget {
   @override
@@ -16,8 +15,7 @@ class _CommonBottomNavigationBarState extends State<CommonBottomNavigationBar> {
   int _prevIndex = 4;
   List<Widget> list = [
     NetworkManagementPage(),
-    SearchPage(),
-    NoticeListPage(),
+
     MyInfoPage(),
   ];
 

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/pages/login/login_page.dart';
 import 'package:connec/pages/main_page.dart';
 import 'package:connec/models/JobModel.dart';
-import 'package:connec/pages/proposition/contact_send_waiting_page.dart';
+import 'package:connec/pages/mypage/my_info_page.dart';
 import 'package:connec/services/LocalService.dart';
 import 'package:connec/services/service_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
         if (response.payload != null && (response.payload!).isNotEmpty){
           logger.w("payload exist");
         } else{
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MainPage(),),(route) => false);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) =>MyInfoPage(),),(route) => false);
         }
       }catch(e) {
 
@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) =>
-            (!snapshot.hasData) ? LoginPage() : MainPage());
+            (!snapshot.hasData) ? LoginPage() : MyInfoPage());
   }
 
   void requestPermission() async{

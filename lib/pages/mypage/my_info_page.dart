@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
+import '../project_regist_page.dart';
 import 'In_app_purchase_connec.dart';
 
 class MyInfoPage extends StatefulWidget {
@@ -37,7 +38,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                   Icons.arrow_back,
                   color: Color(0xff5f66f2),
                 ),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => FirebaseAuth.instance.signOut(),
               ),
               title: Text(
                 '마이페이지',
@@ -45,429 +46,136 @@ class _MyInfoPageState extends State<MyInfoPage> {
               ),
               centerTitle: true,
             ),
-            body: Padding(
-              padding: const EdgeInsets.only(top: 20),
+            body: SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                              height: 55,
-                              width: 55,
-                              margin: EdgeInsets.only(
-                                left: 18,
-                                right: 18,
-                              ),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xffafafaf),
-                              ),
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  child: Image.network(
-                                    snapshot.data['user']['profile_image_url'],
-                                    fit: BoxFit.cover,
-                                  ))),
-                          Container(
-                            width: 150,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${snapshot.data['user']['name']} 님',
-                                  style: TextStyle(
-                                    color: Color(0xff333333),
-                                    fontSize: 17,
-                                    fontFamily: 'S-CoreDream-6Bold',
-                                    fontWeight: FontWeight.w200,
-                                  ),
-                                ),
-                                Text(
-                                  '사용자 평점: ${snapshot.data['user']['rate']} / 5.0',
-                                  style: TextStyle(
-                                    color: Color(0xff333333),
-                                    fontSize: 12,
-                                    fontFamily: 'S-CoreDream-6Bold',
-                                    fontWeight: FontWeight.w200,
-                                  ),
-                                ),
-                                Text(
-                                  '지인 평점:  ${snapshot.data['user']['networkRate']} / 5.0',
-                                  style: TextStyle(
-                                    color: Color(0xff333333),
-                                    fontSize: 12,
-                                    fontFamily: 'S-CoreDream-6Bold',
-                                    fontWeight: FontWeight.w200,
-                                  ),
-                                ),
-                                // Text(
-                                //   snapshot.data['email'] != null
-                                //       ? '${snapshot.data['email']}'
-                                //       : 'email이 등록되지 않았습니다.',
-                                //   style: TextStyle(
-                                //     color: Color(0xffbdbdbd),
-                                //     fontSize: 16,
-                                //     fontFamily: 'S-CoreDream-4Regular',
-                                //     fontWeight: FontWeight.w700,
-                                //   ),
-                                // ),
-                              ],
-                            ),
-                          ),
-                        ],
+                  Container(
+                    height: 200,
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          left: 110, right: 110, top: 35, bottom: 45),
+                      child: Image.network(""),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xffafafaf),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AccountSettingPaqe(),
-                              )).then((value) => setState(() {}));
-                        },
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(8, 5, 8, 5),
-                          margin: EdgeInsets.only(right: 10),
-                          height: 26,
-                          decoration: BoxDecoration(
-                            color: Color(0xff5f66f2),
-                            borderRadius: BorderRadius.circular(13),
-                          ),
-                          child: Text(
-                            '계정설정',
-                            style: TextStyle(
-                              color: Color(0xfffafafa),
-                              fontSize: 12,
-                              fontFamily: 'S-CoreDream-5',
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                  SizedBox(
-                    height: 20,
+                  Container(
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: Center(
+                        child: Text(
+                          "이름",
+                        ),
+                      )),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: Center(
+                      child: Text("직업"),
+                    ),
                   ),
-                  Divider(
-                    height: 1,
-                    thickness: 1,
+                  Container(
+                    margin: const EdgeInsets.only(
+                        top: 10, left: 10.0, right: 10, bottom: 10),
+                    child: Divider(
+                      color: Colors.grey,
+                      thickness: 1.0,
+                    ),
                   ),
-                  SingleChildScrollView(
-                      child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => IAPHistory()))
-                              .then((value) => setState(
-                                    () {},
-                                  ));
-                        },
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Color(0xffeeeeee),
-                                width: 1,
+                  Container(
+                    margin: EdgeInsets.only(left: 20),
+                    child: Text(
+                      "프로젝트 키워드",
+                      style: TextStyle(
+                        color: Color(0xff333333),
+                        fontSize: 17,
+                        fontFamily: 'EchoDream',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 20),
+                    child: Text(
+                      "#AI #머신러닝 #HR테크 #자연어처리\n#블록체인 #앱서비스 #백엔드",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 17,
+                        fontFamily: 'EchoDream',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(
+                        top: 10, left: 10.0, right: 10, bottom: 10),
+                    child: Divider(
+                      color: Colors.grey,
+                      thickness: 1.0,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 20),
+                    child: Text(
+                      "개인정보",
+                      style: TextStyle(
+                        color: Color(0xff333333),
+                        fontSize: 17,
+                        fontFamily: 'EchoDream',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 20),
+                    child: Text(
+                      "  나 이 :\n  성 별 : \n전화번호 :\n활동지역 :\n",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 17,
+                        fontFamily: 'EchoDream',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(
+                        top: 10, left: 10.0, right: 10, bottom: 10),
+                    child: Divider(
+                      color: Colors.grey,
+                      thickness: 1.0,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "프로젝트\t",
+                              style: TextStyle(
+                                color: Color(0xff333333),
+                                fontSize: 17,
+                                fontFamily: 'EchoDream',
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.card_travel_rounded,
-                                    size: 30.0,
-                                    color: Colors.blue,
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    '쿠폰함',
-                                    style: TextStyle(
-                                      color: Color(0xff333333),
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    '보유 쿠폰',
-                                    style: TextStyle(
-                                      color: Color(0xffafafaf),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w200,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    snapshot.data['couponCnt'].toString(),
-                                    style: TextStyle(
-                                      color: Color(0xff5f66f2),
-                                      fontSize: 13,
-                                      fontFamily: 'S-CoreDream-5',
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                            Text("※ 최대 10개",style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14,
+                              fontFamily: 'EchoDream',
+                              fontWeight: FontWeight.w600,
+                            ),)
+                          ],
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => IAPConnec(),
-                              )).then((value) => setState(
-                                () {},
-                              ));
-                        },
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Color(0xffeeeeee),
-                                width: 1,
-                              ),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.payment_outlined,
-                                size: 30.0,
-                                color: Colors.blue,
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                '결제',
-                                style: TextStyle(
-                                  color: Color(0xff333333),
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     Navigator.push(
-                      //         context,
-                      //         MaterialPageRoute(
-                      //           builder: (context) => NoticeListPage(),
-                      //         ));
-                      //   },
-                      //   child: Container(
-                      //     padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
-                      //     decoration: BoxDecoration(
-                      //       border: Border(
-                      //         bottom: BorderSide(
-                      //           color: Color(0xffeeeeee),
-                      //           width: 1,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //     child: Row(
-                      //       children: [
-                      //         Icon(
-                      //           Icons.message_outlined,
-                      //           size: 30.0,
-                      //           color: Colors.blue,
-                      //         ),
-                      //         SizedBox(
-                      //           width: 20,
-                      //         ),
-                      //         Text(
-                      //           '연락 현황',
-                      //           style: TextStyle(
-                      //             color: Color(0xff333333),
-                      //             fontSize: 17,
-                      //             fontWeight: FontWeight.w500,
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
-                      GestureDetector(
-                        onTap: () {
-                          print("test");
-                        },
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Color(0xffeeeeee),
-                                width: 1,
-                              ),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.notifications_none_outlined,
-                                size: 30.0,
-                                color: Colors.blue,
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                '알림 설정',
-                                style: TextStyle(
-                                  color: Color(0xff333333),
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          print("test");
-                        },
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Color(0xffeeeeee),
-                                width: 1,
-                              ),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.add,
-                                size: 30.0,
-                                color: Colors.blue,
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                '공지사항',
-                                style: TextStyle(
-                                  color: Color(0xff333333),
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          print("test");
-                        },
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Color(0xffeeeeee),
-                                width: 1,
-                              ),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.summarize_outlined,
-                                size: 30.0,
-                                color: Colors.blue,
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                '컨넥 안내',
-                                style: TextStyle(
-                                  color: Color(0xff333333),
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Color(0xffeeeeee),
-                                width: 1,
-                              ),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.info_outlined,
-                                    size: 30.0,
-                                    color: Colors.blue,
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    '앱 버전',
-                                    style: TextStyle(
-                                      color: Color(0xff333333),
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                '1.0.0',
-                                style: TextStyle(
-                                  color: Color(0xffafafaf),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w200,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ))
+                        IconButton(onPressed: (){
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => ProjectRegistPage(),));}, icon: Icon(Icons.add_circle, color: Colors.blue,))
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
