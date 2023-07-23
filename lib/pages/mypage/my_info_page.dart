@@ -46,7 +46,6 @@ class _MyInfoPageState extends State<MyInfoPage> {
                 style: featureTitle,
               ),
               centerTitle: true,
-
             ),
             endDrawer: Drawer(child:ListView(
               padding: EdgeInsets.zero,
@@ -57,7 +56,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                 ListTile(
                   title: Text('수정하기'),
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => EditMyInfoPage(snapshot.data["location"], snapshot.data["work"]),));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => EditMyInfoPage(snapshot.data["location"], snapshot.data["work"]),)).then((value) => setState((){}) );
                   },
                 ),
                 ListTile(

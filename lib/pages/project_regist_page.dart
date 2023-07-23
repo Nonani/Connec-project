@@ -308,6 +308,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                         // 업로드 요청
                         final response = await dio.post('https://foggy-boundless-avenue.glitch.me/project/upload', data: formData);
                         logger.w(response);
+                        Navigator.pop(context);
                       }catch(e){
                         logger.w(e);
                       }

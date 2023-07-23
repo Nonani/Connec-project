@@ -37,11 +37,8 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
   String _gender = genderList.first;
   String _age = ageList.first;
   String? _phoneNum;
-  String? _introduction;
   bool _checkboxValue1 = false;
   bool _checkboxValue2 = false;
-  String _personality = personalityList.first;
-  List<String> _personalityItems = [];
   final _formKey = GlobalKey<FormState>();
   bool _needUpdate = false;
   @override
@@ -265,21 +262,21 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
             alignment: Alignment.centerLeft,
             child: localProvider.local.local == null
                 ? Text(
-                    '선택',
-                    style: TextStyle(
-                      color: Color(0xffbdbdbd),
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
-                    ),
-                  )
+              '선택',
+              style: TextStyle(
+                color: Color(0xffbdbdbd),
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+              ),
+            )
                 : Text(
-                    '${localProvider.local.local} > ${localProvider.local.sub_local}',
-                    style: TextStyle(
-                      color: Color(0xff333333),
-                      fontSize: 16,
-                      fontFamily: 'S-CoreDream-4',
-                    ),
-                  ),
+              '${localProvider.local.local} > ${localProvider.local.sub_local}',
+              style: TextStyle(
+                color: Color(0xff333333),
+                fontSize: 16,
+                fontFamily: 'S-CoreDream-4',
+              ),
+            ),
           ),
         ),
       ]),
