@@ -11,6 +11,7 @@ class SignUpBody {
   String? gender;
   String? age;
   double? rate;
+  String? phoneNum;
   String? profile_image_url;
 
   SignUpBody(
@@ -24,6 +25,7 @@ class SignUpBody {
       this.location,
       this.gender,
       this.age,
+      this.phoneNum,
       this.profile_image_url,
       this.rate});
 
@@ -35,9 +37,9 @@ class SignUpBody {
     password = json['password'];
     name = json['name'];
     work = json['work'];
-    career = json['career'];
     location = json['location'];
     gender = json['gender'];
+    phoneNum = json['phoneNum'];
     age = json['age'];
     profile_image_url = json['profile_image_url'];
     rate = json['rate'];
@@ -52,8 +54,8 @@ class SignUpBody {
     data['password'] = this.password;
     data['name'] = this.name;
     data['work'] = this.work;
-    data['career'] = this.career;
     data['location'] = this.location;
+    data['phoneNum'] = this.phoneNum;
     data['gender'] = this.gender;
     data['age'] = this.age;
     data['profile_image_url'] = this.profile_image_url;

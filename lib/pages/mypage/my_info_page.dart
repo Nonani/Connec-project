@@ -1,4 +1,5 @@
 import 'package:connec/components/custom_dialog.dart';
+import 'package:connec/pages/mypage/edit_myinfo_page.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
@@ -56,7 +57,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                 ListTile(
                   title: Text('수정하기'),
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => EditMyInfoPage(snapshot.data["location"], snapshot.data["work"]),));
                   },
                 ),
                 ListTile(

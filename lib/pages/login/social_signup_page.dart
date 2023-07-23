@@ -197,6 +197,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                       age: _age,
                       work: _work,
                       rate: 0,
+                      phoneNum: _phoneNum,
                       gender: _gender,
                       location: localProvider.local.sub_local_code,
                       serviceName: widget.serviceName.toString(),
