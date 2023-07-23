@@ -231,16 +231,12 @@ class _SignUpPageState extends State<SignUpPage> {
                         uuid: uuid.v4(),
                         name: _name,
                         age: _age,
-                        personality: _personalityItems,
-                        career: _careerItems,
                         email: _email,
                         gender: _gender,
-                        introduction: _introduction,
                         location: _location,
                         password: _password,
                         rate: _rate,
                         work: _work,
-                        workArea: _workAreaCodes,
                         serviceName: "None",
                       ));
 

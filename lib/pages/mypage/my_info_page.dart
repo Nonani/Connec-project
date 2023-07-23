@@ -26,6 +26,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
         } else {
           return Scaffold(
             appBar: AppBar(
+              iconTheme: IconThemeData(color: Colors.blue),
               elevation: 0,
               toolbarHeight: 80,
               backgroundColor: const Color(0xfffafafa),
@@ -38,12 +39,35 @@ class _MyInfoPageState extends State<MyInfoPage> {
                 ),
                 onPressed: () => FirebaseAuth.instance.signOut(),
               ),
+
               title: Text(
                 '마이페이지',
                 style: featureTitle,
               ),
               centerTitle: true,
+
             ),
+            endDrawer: Drawer(child:ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                DrawerHeader(
+                  child: Image.asset("assets/images/connec_logo2.png", color: Colors.blue,),
+                ),
+                ListTile(
+                  title: Text('수정하기'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: Text('공유하기'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+
+              ],
+            ),),
             body: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -6,13 +6,10 @@ class SignUpBody {
   String? password;
   String? name;
   String? work;
-  List<String>? workArea;
-  List<String>? personality;
   List<String>? career;
   String? location;
   String? gender;
   String? age;
-  String? introduction;
   double? rate;
   String? profile_image_url;
 
@@ -24,13 +21,9 @@ class SignUpBody {
       this.password,
       this.name,
       this.work,
-      this.workArea,
-      this.personality,
-      this.career,
       this.location,
       this.gender,
       this.age,
-      this.introduction,
       this.profile_image_url,
       this.rate});
 
@@ -42,13 +35,10 @@ class SignUpBody {
     password = json['password'];
     name = json['name'];
     work = json['work'];
-    workArea = json['workArea'];
-    personality = json['personality'];
     career = json['career'];
     location = json['location'];
     gender = json['gender'];
     age = json['age'];
-    introduction = json['introduction'];
     profile_image_url = json['profile_image_url'];
     rate = json['rate'];
   }
@@ -62,13 +52,10 @@ class SignUpBody {
     data['password'] = this.password;
     data['name'] = this.name;
     data['work'] = this.work;
-    data['workArea'] = this.workArea;
-    data['personality'] = this.personality;
     data['career'] = this.career;
     data['location'] = this.location;
     data['gender'] = this.gender;
     data['age'] = this.age;
-    data['introduction'] = this.introduction;
     data['profile_image_url'] = this.profile_image_url;
     data['rate'] = this.rate;
     return data;

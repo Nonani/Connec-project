@@ -36,6 +36,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
   String _work = workList.first;
   String _gender = genderList.first;
   String _age = ageList.first;
+  String? _phoneNum;
   String? _introduction;
   bool _checkboxValue1 = false;
   bool _checkboxValue2 = false;
@@ -85,9 +86,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                             );
                           },
                           selectedItem: _work),
-                      buildWorkContainer(snapshot),
-                      buildPersonalityContainer(snapshot),
-                      buildLocalContainer(snapshot),
+
                       CustomDropdownButton(
                         label: "성별",
                         itemList: genderList,
@@ -112,6 +111,13 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                           );
                         },
                       ),
+                      SignUpEditTextForm(
+                        label: "전화번호",
+                        onSaved: (newValue) => _phoneNum = newValue,
+                        hint: "전화번호를 입력해주세요",
+
+                      ),
+                      buildLocalContainer(snapshot),
                       // SignUpEditTextForm(
                       //   label: "소개",
                       //   hint: "소개를 입력해주세요",
@@ -174,15 +180,11 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 child: Text("회원가입", style: buttonText),
                 onPressed: () async {
                   Logger logger = Logger();
-                  final jobProvider =
-                      Provider.of<JobProvider>(context, listen: false);
                   final localProvider =
                   Provider.of<LocalProvider>(context, listen: false);
                   if (_formKey.currentState!.validate() &&
                       _checkboxValue1 &&
                       _checkboxValue2 &&
-                      // _workAreaCodes.isNotEmpty &&
-                      _personalityItems.length >= 2 &&
                       localProvider.local.sub_local != null) {
                     _formKey.currentState!.save();
                     showCustomDialog(context);
@@ -195,22 +197,14 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                       age: _age,
                       work: _work,
                       rate: 0,
-                      personality: _personalityItems,
-                      career: jobProvider.getCareerList(),
                       gender: _gender,
-                      introduction: _introduction,
                       location: localProvider.local.sub_local_code,
-                      workArea: jobProvider.getSubType(),
                       serviceName: widget.serviceName.toString(),
                     ));
                     if (provider.isComplete) {
                       Navigator.pop(context);
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
                     }
-                  } else if (jobProvider.jobList.isEmpty) {
-                    showDialog(
-                        context: context,
-                        builder: (context) => workValidationDialog());
                   } else if (localProvider.local.sub_local == null) {
                     showDialog(
                         context: context,
@@ -241,118 +235,6 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
     return {"workData": workResult.docs, "localData": localResult.docs};
   }
 
-  Container buildWorkContainer(AsyncSnapshot snapshot) {
-    final jobProvider = Provider.of<JobProvider>(context, listen: false);
-    return Container(
-      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-      width: double.infinity,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Text("전문분야",
-                    style: TextStyle(
-                      fontFamily: "EchoDream",
-                      fontWeight: FontWeight.w600,
-                      fontSize: 17,
-                    )),
-                SizedBox(
-                  width: 15,
-                ),
-                Text(
-                  '최소 1개, 최대 5개까지 등록 가능',
-                  style: TextStyle(
-                      color: Color(0xffbdbdbd),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400),
-                ),
-              ],
-            ),
-            (jobProvider.jobList.length < 5)
-                ? IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          DialogRoute(
-                            context: context,
-                            builder: (context) => JobTypePage( onClose: (){setState((){});},),
-                          )).then((value) => setState(
-                            () {},
-                          ));
-
-                      // showWorkListDialog(snapshot, "전문분야");
-                    },
-                    icon: Icon(
-                      Icons.add_circle,
-                      color: Colors.blue,
-                    ))
-                : IconButton(
-                    onPressed: null,
-                    icon: Icon(
-                      Icons.add_circle,
-                      color: Colors.grey,
-                    ))
-          ],
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        ListView.separated(
-          primary: false,
-          shrinkWrap: true,
-          itemCount: jobProvider.jobList.length,
-          separatorBuilder: (_, __) => const Divider(),
-          itemBuilder: (BuildContext context, int index) {
-            Logger logger = Logger();
-            logger.w(jobProvider.jobList[index].subType);
-            return ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Container(
-                padding:
-                    EdgeInsets.only(left: 10, right: 5, top: 5, bottom: 10),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Color(0xffeeeeee),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                            child: Text(
-                          jobProvider.jobList[index].subType!.name,
-                          overflow: TextOverflow.ellipsis,
-                        )),
-                        IconButton(
-                            onPressed: () {
-                              jobProvider.jobList.removeAt(index);
-                              setState(() {});
-                            },
-                            icon: Icon(Icons.cancel_outlined))
-                      ],
-                    ),
-                    Text(
-                      '경력  ${jobProvider.jobList[index].career!.year}년 ${jobProvider.jobList[index].career!.month}개월',
-                      style: TextStyle(
-                        color: Color(0xff999999),
-                        fontSize: 12,
-                        fontFamily: 'S-CoreDream-5',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      ]),
-    );
-  }
 
   Container buildLocalContainer(AsyncSnapshot snapshot) {
     final localProvider = Provider.of<LocalProvider>(context, listen: false);
@@ -402,127 +284,5 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
       ]),
     );
   }
-  //
-  // void showLocalListDialog(AsyncSnapshot snapshot, String title) {
-  //   List dialogList = [];
-  //   List<Widget> dialogWidgetList = [];
-  //
-  //   snapshot.data["localData"].forEach((element) {
-  //     if (element.data()["tier"] == _curLocalTier &&
-  //         element.data()["parent"] == _curLocalParent) {
-  //       dialogList.add(element.data());
-  //       dialogWidgetList.add(SimpleDialogOption(
-  //         child: Text(element.data()["title"]),
-  //         onPressed: () {
-  //           switch (_curLocalTier) {
-  //             case 1:
-  //               title = element.data()["title"];
-  //               break;
-  //             case 2:
-  //               title = title + ' > ${element.data()["title"]}';
-  //               _location = element.data()["code"];
-  //               _locaion_label = title;
-  //               Navigator.pop(context);
-  //               return;
-  //           }
-  //           _curLocalTier += 1;
-  //           _curLocalParent = element.data()["code"];
-  //           showLocalListDialog(snapshot, title);
-  //         },
-  //       ));
-  //     }
-  //   });
-  //   switch (_curLocalTier) {
-  //     case 1:
-  //       SimpleDialog dialog =
-  //           SimpleDialog( title: Text('${title}'), children: dialogWidgetList);
-  //       showDialog(
-  //           context: context,
-  //           builder: (context) {
-  //             return ConstrainedBox( constraints: BoxConstraints(
-  //               minHeight: 10,
-  //               maxHeight: 20,
-  //               maxWidth: 350,
-  //             ),
-  //             child: dialog,);
-  //
-  //           }).then((value) => setState(() {
-  //             _curLocalTier = 1;
-  //             _curLocalParent = "";
-  //           }));
-  //       break;
-  //     case 2:
-  //       SimpleDialog dialog =
-  //           SimpleDialog(title: Text('${title}'), children: dialogWidgetList);
-  //       showDialog(
-  //           context: context,
-  //           builder: (context) {
-  //             return ConstrainedBox( constraints: BoxConstraints(
-  //               minHeight: 10,
-  //               maxHeight: 20,
-  //               maxWidth: 350,
-  //             ),
-  //               child: dialog,);
-  //           }).then((value) {
-  //         Navigator.pop(context);
-  //         setState(() {});
-  //       });
-  //       break;
-  //   }
-  // }
 
-  Container buildPersonalityContainer(AsyncSnapshot snapshot) {
-    return Container(
-      width: double.infinity,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        CustomDropdownButton(
-            itemList: personalityList,
-            label: "성격",
-            hint: '최소 3개, 최대 5개까지 등록 가능',
-            validator: (value) {
-              if (_personalityItems.length < 3) {
-                return "3개 이상 선택해주세요";
-              } else
-                return null;
-            },
-            onChanged: (value) {
-              if (value != "선택" && _personalityItems.length < 5) {
-                _personalityItems.remove(value);
-                _personalityItems.add(value);
-                setState(() {});
-              }
-            },
-            selectedItem: _personality),
-        Padding(
-          padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
-          child: ListView.separated(
-            shrinkWrap: true,
-            primary: false,
-            itemCount: _personalityItems.length,
-            separatorBuilder: (_, __) => const Divider(),
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                        child: Text(
-                      _personalityItems[index],
-                      overflow: TextOverflow.ellipsis,
-                    )),
-                    IconButton(
-                        onPressed: () {
-                          _personalityItems.removeAt(index);
-                          setState(() {});
-                        },
-                        icon: Icon(Icons.cancel_outlined))
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ]),
-    );
-  }
 }

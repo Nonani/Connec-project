@@ -30,6 +30,7 @@ class ServiceClass extends ChangeNotifier {
       case 'kakao':
         //백엔드 요청보내고 계정 생성 성공 응답을 받으면
         // firestore에 signupbody를 넣어
+      logger.w("test");
         final url =
             Uri.parse('https://foggy-boundless-avenue.glitch.me/signup');
         try {
@@ -48,18 +49,6 @@ class ServiceClass extends ChangeNotifier {
           logger.w(e);
           return false;
         }
-        // try {
-        //   db.collection("users").doc("${data.uid}").set(data.toJson());
-        //   db.collection('networks').doc(data.uid).set({'list': []});
-        //   db.collection('coupons').doc(data.uid).set({'num': 0});
-        //   db.collection('notification').doc(data.uid).set({'list': []});
-        //   db.collection('couponLog')
-        //       .doc(data.uid)
-        //       .set({'purchase': [], 'consume': []});
-        // } catch (e) {
-        //   logger.w(e);
-        //   return false;
-        // }
         return true;
       case 'naver':
         return true;
