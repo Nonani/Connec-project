@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,6 +35,7 @@ class ServiceClass extends ChangeNotifier {
         final url =
             Uri.parse('https://foggy-boundless-avenue.glitch.me/signup');
         try {
+          logger.w(data.toJson());
           http.Response response = await http.post(
             url,
             headers: <String, String>{
@@ -41,7 +43,7 @@ class ServiceClass extends ChangeNotifier {
             },
             body: <String, String>{
               'uid': '${data.uid}',
-              'data': data.toJson().toString()
+              'data': json.encode(data.toJson())
             },
           );
           logger.w(response.body);
