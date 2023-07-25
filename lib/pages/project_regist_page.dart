@@ -289,26 +289,25 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                       "period": _career,
                       "keywords": _keywordItems,
                       "participants": _personItems,
+                      'fileExtensions': List.generate(
+                          _selectedFiles.length,
+                              (index) => p.extension(_selectedFiles[index].path.toString()))
                     };
-                    if (result != null) {
+                    if (_selectedFiles.length != 0) {
                       try{
-                        final filePaths = result!.paths;
-
                         // 파일 경로를 통해 formData 생성
                         var dio = Dio();
                         var formData = FormData.fromMap({
                           'data' : jsonData,
-                          'files' : List.generate(result!.count,
-                                  (index) => MultipartFile.fromFileSync(filePaths[index]!)),
-                          'fileExtensions': List.generate(
-                              result!.count,
-                                  (index) => p.extension(filePaths[index]!)), // 파일 확장자를 추출합니다.
+                          'files' : List.generate(_selectedFiles.length,
+                                  (index) => MultipartFile.fromFileSync(_selectedFiles[index].path.toString())),
+                          // 파일 확장자를 추출합니다.
                         });
 
                         // 업로드 요청
                         final response = await dio.post('https://foggy-boundless-avenue.glitch.me/project/upload', data: formData);
                         logger.w(response);
-                        Navigator.pop(context);
+                        //Navigator.pop(context);
                       }catch(e){
                         logger.w(e);
                       }
@@ -330,7 +329,6 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
     result = await FilePicker.platform.pickFiles(allowMultiple: true);
 
     if (result != null) {
-      PlatformFile file = result!.files.first;
       setState(() {
         _selectedFiles.addAll(result!.files);
       });
