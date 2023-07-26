@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
+import '../network/expand_network_page.dart';
 import '../project_regist_page.dart';
 
 class MyInfoPage extends StatefulWidget {
@@ -71,9 +72,13 @@ class _MyInfoPageState extends State<MyInfoPage> {
                     },
                   ),
                   ListTile(
-                    title: Text('공유하기'),
+                    title: Text('코드 입력하기'),
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                      ExpandNetworkPage()));
                     },
                   ),
                 ],

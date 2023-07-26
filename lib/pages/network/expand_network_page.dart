@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/pages/project_confirm_page.dart';
 import 'package:connec/style/buttonstyle.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,10 +21,9 @@ class ExpandNetworkPage extends StatefulWidget {
 }
 
 class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
-  String? _userCode;
+  String? _projectCode;
   final _formKey = GlobalKey<FormState>();
   final logger = Logger();
-  FirebaseFirestore db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -47,20 +47,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
           style: featureTitle,
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-              icon: const Icon(Icons.link_sharp),
-              color: const Color(0xff5f66f2),
-              onPressed: () async {
-                final db = FirebaseFirestore.instance;
-                final result = await db
-                    .collection("users")
-                    .doc("${FirebaseAuth.instance.currentUser!.uid}")
-                    .get();
-                logger.w(FirebaseAuth.instance.currentUser!.uid);
-                Clipboard.setData(ClipboardData(text: result["uuid"]));
-              }),
-        ],
+
       ),
       body: Consumer<ServiceClass>(
         builder: (context, data, child) {
@@ -89,7 +76,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
                             }
                           },
                           isSecret: false,
-                          onSaved: (newValue) => _userCode = newValue,
+                          onSaved: (newValue) => _projectCode = newValue,
                         ),
                       ),
                       const Padding(
@@ -109,24 +96,13 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
       ),
       bottomNavigationBar: ElevatedButton(
         onPressed: () async {
-          QuerySnapshot<Map<String, dynamic>> memberData = await db
-              .collection('member')
-              .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-              .get();
+
           if (_formKey.currentState!.validate()) {
             _formKey.currentState!.save();
-            if (!await isAlreadyNetwork()) {
-              // 이미 네트워크 추가가 된 경우
-              print("이미 네트워크 추가가 된 유저입니다.");
-              return;
-            }
-            var info = await FirebaseFirestore.instance
-                .collection('users')
-                .doc(FirebaseAuth.instance.currentUser!.uid)
-                .get();
-            var data = info.data();
+
+
             final url =
-                Uri.parse('https://foggy-boundless-avenue.glitch.me/sendReq');
+                Uri.parse('https://foggy-boundless-avenue.glitch.me/project/share');
             try {
               http.Response response = await http.post(
                 url,
@@ -134,15 +110,16 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
                   'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: <String, String>{
-                  'case': 'network',
-                  'to': '$_userCode',
-                  'from': "${data!['uuid']}",
+                  'uid' : FirebaseAuth.instance.currentUser!.uid,
+                  'docId': "${_projectCode}",
                 },
               );
-              Navigator.pop(context);
               logger.w(response.body);
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ProjectConfirmPage(_projectCode!,response.body),));
+
             } catch (e) {
-              logger.w(info.data());
+              logger.w(e);
             }
           }
         },
@@ -155,28 +132,4 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
     );
   }
 
-  Future<bool> isAlreadyNetwork() async {
-    var info = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-    var data = info.data();
-    final url =
-        Uri.parse('https://foggy-boundless-avenue.glitch.me/member/check');
-    try {
-      http.Response response = await http.post(url, headers: <String, String>{
-        'Content-Type': 'application/x-www-form-urlencoded',
-      }, body: <String, String>{
-        'uid': FirebaseAuth.instance.currentUser!.uid,
-        'uuid': data!['uuid']
-      });
-      logger.w(response.body);
-      if (jsonDecode(response.body)['code'] != 0) {
-        return true;
-      }
-    } catch (e) {
-      logger.w(e);
-    }
-    return false;
-  }
 }

@@ -1,4 +1,5 @@
 import 'package:connec/components/custom_dialog.dart';
+import 'package:connec/pages/project_modify_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
@@ -6,9 +7,15 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../style/titlestyle.dart';
 
-class ProjectDetailPage extends StatelessWidget {
+class ProjectDetailPage extends StatefulWidget {
   ProjectDetailPage(this.dID, {Key? key}) : super(key: key);
   final dID;
+
+  @override
+  State<ProjectDetailPage> createState() => _ProjectDetailPageState();
+}
+
+class _ProjectDetailPageState extends State<ProjectDetailPage> {
   Logger logger = Logger();
 
   @override
@@ -27,21 +34,18 @@ class ProjectDetailPage extends StatelessWidget {
             ListTile(
               title: Text('수정하기'),
               onTap: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) =>
-                //           EditMyInfoPage(
-                //               snapshot.data["location"],
-                //               snapshot.data["work"]),
-                //     )).then((value) => setState(() {}));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ProjectModifyPage(widget.dID)))
+                            .then((value) => setState(() {}));
               },
             ),
             ListTile(
               title: Text('공유하기'),
               onTap: () {
                 Navigator.pop(context);
-                Clipboard.setData(ClipboardData(text: dID));
+                Clipboard.setData(ClipboardData(text: widget.dID));
                 showDialog(
                     context: context,
                     builder: (context) {
@@ -59,11 +63,8 @@ class ProjectDetailPage extends StatelessWidget {
                             children: [
                               Container(
                                   margin: EdgeInsets.only(bottom: 20),
-                                  child:Icon(
-                                      Icons.check_circle,
-                                      size: 100,
-                                      color: Color(0xff5f66f2))
-                              ),
+                                  child: Icon(Icons.check_circle,
+                                      size: 100, color: Color(0xff5f66f2))),
                               Text(
                                 '프로젝트 참여자에게 전화번호 등록을 요청해보세요. \n공유코드가 클립보드에\n  복사되었습니다.',
                                 style: TextStyle(
@@ -76,9 +77,7 @@ class ProjectDetailPage extends StatelessWidget {
                           ),
                         ),
                       );
-                    }
-                );
-
+                    });
               },
             ),
           ],
@@ -206,7 +205,8 @@ class ProjectDetailPage extends StatelessWidget {
                           shrinkWrap: true,
                           itemCount: snapshot.data["participants"].length,
                           itemBuilder: (context, index) {
-                            Map<String,dynamic> item = snapshot.data['participants'][index];
+                            Map<String, dynamic> item =
+                                snapshot.data['participants'][index];
 
                             return Text(
                                 "${item["name"]}\t ${item["phone_number"] != '' ? item["phone_number"] : "미등록"}");
@@ -240,7 +240,7 @@ class ProjectDetailPage extends StatelessWidget {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: <String, String>{
-          'docId': dID,
+          'docId': widget.dID,
         },
       );
       logger.w(response.body);
