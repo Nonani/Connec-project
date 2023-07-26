@@ -1,5 +1,6 @@
 import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/mypage/edit_myinfo_page.dart';
+import 'package:connec/pages/project_detail_page.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
@@ -245,12 +246,13 @@ class _MyInfoPageState extends State<MyInfoPage> {
                               ),
                               IconButton(
                                   onPressed: () {
+
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               ProjectRegistPage(),
-                                        ));
+                                        )).then((value) => setState((){}));
                                   },
                                   icon: Icon(
                                     Icons.add_circle,
@@ -273,8 +275,8 @@ class _MyInfoPageState extends State<MyInfoPage> {
                                         ),)
                                       ),
                                       Container(
-                                          child: TextButton( onPressed: () {
-
+                                          child: TextButton( onPressed: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProjectDetailPage(item["docId"]),));
                                           },
                                           child: Text(item['introduction'])) ),
                                   ]

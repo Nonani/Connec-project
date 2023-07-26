@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import '../components/custom_dialog.dart';
 import '../components/custom_dropdown_button.dart';
 import '../const/data.dart';
 import 'package:path/path.dart' as p;
@@ -168,7 +169,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                     label: "참여 기간",
                     itemList: careerList,
                     selectedItem: _career,
-                    onChanged: (value) {}),
+                    onChanged: (value) {_career = value;}),
                 Container(
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: Column(
@@ -279,6 +280,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                   _formKey.currentState!.save();
                   if (_formKey.currentState!.validate()) {
                     Logger logger = Logger();
+                    showCustomDialog(context);
                     Map<String, dynamic> jsonData = {
                       "uid": FirebaseAuth.instance.currentUser!.uid,
                       "name": _projectName,
@@ -307,7 +309,9 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                         // 업로드 요청
                         final response = await dio.post('https://foggy-boundless-avenue.glitch.me/project/upload', data: formData);
                         logger.w(response);
-                        //Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.of(context, rootNavigator: true).pop(context);
+
                       }catch(e){
                         logger.w(e);
                       }
