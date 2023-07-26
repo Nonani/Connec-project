@@ -1,5 +1,6 @@
 import 'package:connec/components/custom_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -40,6 +41,44 @@ class ProjectDetailPage extends StatelessWidget {
               title: Text('공유하기'),
               onTap: () {
                 Navigator.pop(context);
+                Clipboard.setData(ClipboardData(text: dID));
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      Future.delayed(Duration(seconds: 3), () {
+                        Navigator.of(context).pop(true);
+                      });
+                      return Dialog(
+                        // The background color
+                        backgroundColor: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                  margin: EdgeInsets.only(bottom: 20),
+                                  child:Icon(
+                                      Icons.check_circle,
+                                      size: 100,
+                                      color: Color(0xff5f66f2))
+                              ),
+                              Text(
+                                '프로젝트 참여자에게 전화번호 등록을 요청해보세요. \n공유코드가 클립보드에\n  복사되었습니다.',
+                                style: TextStyle(
+                                  color: Color(0xff333333),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                );
+
               },
             ),
           ],
