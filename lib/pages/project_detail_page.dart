@@ -8,8 +8,9 @@ import 'dart:convert';
 import '../style/titlestyle.dart';
 
 class ProjectDetailPage extends StatefulWidget {
-  ProjectDetailPage(this.dID, {Key? key}) : super(key: key);
+  ProjectDetailPage(this.dID, this.my_name, {Key? key}) : super(key: key);
   final dID;
+  final my_name;
 
   @override
   State<ProjectDetailPage> createState() => _ProjectDetailPageState();
@@ -35,10 +36,11 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
               title: Text('수정하기'),
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ProjectModifyPage(widget.dID)))
-                            .then((value) => setState(() {}));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ProjectModifyPage(widget.dID)))
+                    .then((value) => setState(() {}));
               },
             ),
             ListTile(
@@ -208,8 +210,60 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                             Map<String, dynamic> item =
                                 snapshot.data['participants'][index];
 
-                            return Text(
-                                "${item["name"]}\t ${item["phone_number"] != '' ? item["phone_number"] : "미등록"}");
+                            return Container(
+
+                              child: Row(
+                                children: [
+                                  Text(item['name']),
+                              item["phone_number"] != '' ? Text(item["phone_number"]) : TextButton(
+                                  onPressed: () {
+
+                                    String combinedString = "${widget.dID},${item['name']},${widget.my_name}";
+                                    String encodedString = base64Encode(utf8.encode(combinedString));
+                                    print(combinedString);
+                                    print(encodedString);
+                                    String url = "https://connec-project.web.app/#/"+encodedString;
+                                    Clipboard.setData(ClipboardData(text: url));
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          // Future.delayed(Duration(seconds: 3), () {
+                                          //   Navigator.of(context).pop(true);
+                                          // });
+                                          return Dialog(
+                                            // The background color
+                                            backgroundColor: Colors.white,
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 20),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                      margin: EdgeInsets.only(bottom: 20),
+                                                      child: Icon(Icons.check_circle,
+                                                          size: 100, color: Color(0xff5f66f2))),
+                                                  Text(
+                                                    '프로젝트 참여자에게 전화번호 등록을 요청해보세요. \n공유코드가 클립보드에\n  복사되었습니다.',
+                                                    style: TextStyle(
+                                                      color: Color(0xff333333),
+                                                      fontSize: 17,
+                                                      fontWeight: FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  },
+                                child:Text(
+                                  "미등록"
+                                )
+                            ),
+                                ]
+                              ),
+                            );
                           },
                         ),
                         Divider(

@@ -281,7 +281,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                                       ),
                                       Container(
                                           child: TextButton( onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProjectDetailPage(item["docId"]),));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProjectDetailPage(item["docId"],snapshot.data['name']) ));
                                           },
                                           child: Text(item['introduction'])) ),
                                   ]
