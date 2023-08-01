@@ -47,7 +47,9 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
               title: Text('공유하기'),
               onTap: () {
                 Navigator.pop(context);
-                Clipboard.setData(ClipboardData(text: widget.dID));
+                String link = "https://connec-project.web.app/#/share/${base64Encode(utf8.encode(widget.dID))}";
+
+                Clipboard.setData(ClipboardData(text: link));
                 showDialog(
                     context: context,
                     builder: (context) {
