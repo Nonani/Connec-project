@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
             Container(
               margin: EdgeInsets.only(top: size.height * 0.1),
               child: Text(
-                '사람과 사람을 연결하는',
+                '개발자 평판조회 서비스',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xff5f66f2),
