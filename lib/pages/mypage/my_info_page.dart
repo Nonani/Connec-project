@@ -35,13 +35,6 @@ class _MyInfoPageState extends State<MyInfoPage> {
               backgroundColor: const Color(0xfffafafa),
               shape: const Border(
                   bottom: BorderSide(color: Color(0xffdbdbdb), width: 2)),
-              leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: Color(0xff5f66f2),
-                ),
-                onPressed: () => FirebaseAuth.instance.signOut(),
-              ),
               title: Text(
                 '마이페이지',
                 style: featureTitle,
@@ -52,33 +45,106 @@ class _MyInfoPageState extends State<MyInfoPage> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
-                  DrawerHeader(
-                    child: Image.asset(
-                      "assets/images/connec_logo2.png",
-                      color: Colors.blue,
-                    ),
-                  ),
+                  Container(
+                      margin: EdgeInsets.only(right: 230),
+                      width: 100,
+                      height: 100,
+                      child: DrawerHeader(
+                        child: Image.asset(
+                          "assets/images/connec_logo2.png",
+                          color: Colors.blue,
+                        ),
+                        margin: EdgeInsets.all(0.0),
+                        padding: EdgeInsets.all(0.0),
+                      )),
                   ListTile(
                     title: Text('수정하기'),
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                EditMyInfoPage(
-                                    snapshot.data["location"],
-                                    snapshot.data["work"]),
+                            builder: (context) => EditMyInfoPage(
+                                snapshot.data["location"],
+                                snapshot.data["work"]),
                           )).then((value) => setState(() {}));
                     },
                   ),
+                  ListTile(
+                      title: Text('공유하기'),
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              Future.delayed(Duration(seconds: 3), () {
+                                Navigator.of(context).pop(true);
+                              });
+                              return Dialog(
+                                // The background color
+                                backgroundColor: Colors.white,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                          margin: EdgeInsets.only(bottom: 20),
+                                          child: Icon(Icons.check_circle,
+                                              size: 100,
+                                              color: Color(0xff5f66f2))),
+                                      Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              '프로젝트 참여 동의서 작성\n   링크가 복사되었습니다',
+                                              style: TextStyle(
+                                                color: Color(0xff333333),
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            Container(
+                                                margin:
+                                                    EdgeInsets.only(top: 10),
+                                                child: Text(
+                                                  "프로젝트의 경험을 공유해보세요",
+                                                  style: TextStyle(
+                                                    color: Color(0xff333333),
+                                                    fontSize: 11,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ))
+                                          ]),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                      }),
                   ListTile(
                     title: Text('코드 입력하기'),
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                      ExpandNetworkPage()));
+                              builder: (context) => ExpandNetworkPage()));
+                    },
+                  ),
+                  ListTile(
+                    title: Text('로그아웃'),
+                    onTap: () {
+                      FirebaseAuth.instance.signOut();
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    title: Text('회원탈퇴'),
+                    onTap: () {
+                      FirebaseAuth.instance.signOut();
+                      Navigator.pop(context);
                     },
                   ),
                 ],
@@ -95,7 +161,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                         margin: EdgeInsets.only(
                             left: 110, right: 110, top: 35, bottom: 45),
                         child:
-                        Image.network(snapshot.data["profile_image_url"]),
+                            Image.network(snapshot.data["profile_image_url"]),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Color(0xffafafaf),
@@ -222,73 +288,91 @@ class _MyInfoPageState extends State<MyInfoPage> {
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 20, right: 20),
-                    child: Column(
+                    child: Column(children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    "프로젝트\t",
-                                    style: TextStyle(
-                                      color: Color(0xff333333),
-                                      fontSize: 17,
-                                      fontFamily: 'EchoDream',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  Text(
-                                    "※ 최대 10개",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 14,
-                                      fontFamily: 'EchoDream',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  )
-                                ],
+                              Text(
+                                "프로젝트\t",
+                                style: TextStyle(
+                                  color: Color(0xff333333),
+                                  fontSize: 17,
+                                  fontFamily: 'EchoDream',
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                              IconButton(
-                                  onPressed: () {
-
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProjectRegistPage(),
-                                        )).then((value) => setState((){}));
-                                  },
-                                  icon: Icon(
-                                    Icons.add_circle,
-                                    color: Colors.blue,
-                                  ))
+                              Text(
+                                "※ 최대 10개",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                  fontFamily: 'EchoDream',
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )
                             ],
                           ),
-                          ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data['projects'].length <= 10 ? snapshot.data['projects'].length : 10,
-                              itemBuilder: (BuildContext context, int idx) {
-                                Map<String,dynamic> item = snapshot.data['projects'][idx];
-                                return Column(
-                                  children: [
-                                      Container(
-                                        margin: EdgeInsets.only(top: 10),
-                                        child: Text(item['name'], style:  TextStyle(
-                                          fontFamily: 'EchoDream',
-                                          fontSize: 17
-                                        ),)
-                                      ),
-                                      Container(
-                                          child: TextButton( onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProjectDetailPage(item["docId"],snapshot.data['name']) ));
-                                          },
-                                          child: Text(item['introduction'])) ),
-                                  ]
-                                );
-                              })
-                        ]
-                    ),
+                          IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProjectRegistPage(),
+                                    )).then((value) => setState(() {}));
+                              },
+                              icon: Icon(
+                                Icons.add_circle,
+                                color: Colors.blue,
+                              ))
+                        ],
+                      ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data['projects'].length <= 10
+                              ? snapshot.data['projects'].length
+                              : 10,
+                          itemBuilder: (BuildContext context, int idx) {
+                            Map<String, dynamic> item =
+                                snapshot.data['projects'][idx];
+                            return Column(children: [
+                              Container(
+                                  margin: EdgeInsets.only(top: 10),
+                                  child: Text(
+                                    item['name'],
+                                    style: TextStyle(
+                                        fontFamily: 'EchoDream', fontSize: 17),
+                                  )),
+                              Container(
+                                  child: TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProjectDetailPage(
+                                                        item["docId"],
+                                                        snapshot
+                                                            .data['name'])));
+                                      },
+                                      child: Text(
+                                        item['introduction'],
+                                        style: TextStyle(
+                                            decoration:
+                                                TextDecoration.underline),
+                                      ))),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                    left: 10.0, right: 10),
+                                child: Divider(
+                                  color: Colors.grey,
+                                  thickness: 1.0,
+                                ),
+                              ),
+                            ]);
+                          })
+                    ]),
                   ),
                 ],
               ),
@@ -303,7 +387,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
     Logger logger = Logger();
 
     final url =
-    Uri.parse('https://foggy-boundless-avenue.glitch.me/mypage/info');
+        Uri.parse('https://foggy-boundless-avenue.glitch.me/mypage/info');
     try {
       http.Response response = await http.post(
         url,

@@ -87,7 +87,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                     children: [
                       FloatingActionButton.extended(
                         onPressed: _pickFile,
-                        label: Text('파일 선택'),
+                        label: Text('Choose Files'),
                       ),
                       Column(
                         children: _selectedFiles
@@ -112,10 +112,6 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                                 ))
                             .toList(),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 10),
-                        child: Text("※ 최대 10개")
-                      )
                     ],
                   ),
                 )),
@@ -296,7 +292,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                       "keywords": _keywordItems,
                       "participants": _personItems,
                       'fileExtensions': List.generate(
-                           _selectedFiles.length > 10 ? 10 : _selectedFiles.length,
+                          _selectedFiles.length,
                               (index) => p.extension(_selectedFiles[index].path.toString()))
                     };
                     if (_selectedFiles.length != 0) {
@@ -336,7 +332,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
   Future<void> _pickFile() async {
     result = await FilePicker.platform.pickFiles(allowMultiple: true);
 
-    if (result != null && _selectedFiles.length >= 10) {
+    if (result != null) {
       setState(() {
         _selectedFiles.addAll(result!.files);
       });
