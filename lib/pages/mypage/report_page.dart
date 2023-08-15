@@ -96,6 +96,7 @@ class _ReportPageState extends State<ReportPage> {
             SignUpEditTextForm(
               label: "신고 내용",
               hint: "해당 내용에 대해 자세히 서술해 주세요",
+              type: TextInputType.text,
               onSaved: (newValue) => reportDetail = newValue,
             ),
             //TODO Implement Image Upload

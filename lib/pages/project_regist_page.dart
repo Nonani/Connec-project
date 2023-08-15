@@ -29,7 +29,8 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
   String _accomplishment = '';
   String _person = '';
   String _keyword = personalityList.first;
-  String _career = careerList.first;
+  DateTime _startDate = DateTime.now();
+  DateTime _endDate = DateTime.now();
   List<String> _personItems = [];
   List<String> _keywordItems = [];
   List<String> _fileNames = [];
@@ -68,14 +69,17 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                 SignUpEditTextForm(
                     label: "프로젝트 이름",
                     hint: "프로젝트 이름을 작성해주세요",
+                    type: TextInputType.text,
                     onSaved: (newValue) => _projectName = newValue),
                 SignUpEditTextForm(
                     label: "한줄 소개",
                     hint: "프로젝트를 한 줄로 요약해주세요",
+                    type: TextInputType.text,
                     onSaved: (newValue) => _introduction = newValue),
                 SignUpEditTextForm(
                     label: "내용",
                     lineNum: 10,
+                    type: TextInputType.text,
                     hint: "프로젝트의 내용에 대해 500자 내로 설명해주세요",
                     onSaved: (newValue) => _content = newValue),
                 SingleChildScrollView(
@@ -159,17 +163,71 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                     label: "본인의 역할",
                     hint: "본인의 역할에 대해 500자 내로 설명해주세요",
                     lineNum: 10,
+                    type: TextInputType.text,
                     onSaved: (newValue) => _role = newValue),
                 SignUpEditTextForm(
                     label: "본인의 성과",
                     hint: "본인의 성과에 대해 500자 내로 설명해주세요",
                     lineNum: 10,
+                    type: TextInputType.text,
                     onSaved: (newValue) => _accomplishment = newValue),
-                CustomDropdownButton(
-                    label: "참여 기간",
-                    itemList: careerList,
-                    selectedItem: _career,
-                    onChanged: (value) {_career = value;}),
+                Container(
+                  padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("진행 기간",
+                            style: TextStyle(
+                              fontFamily: "EchoDream",
+                              fontWeight: FontWeight.w600,
+                              fontSize: 17,
+                            )),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                                "시작: ${_startDate.year} - ${_startDate.month} - ${_startDate.day}"),
+                            IconButton(
+                                onPressed: () async {
+                                  final selectedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: _startDate,
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime.now(),
+                                  );
+                                  if (selectedDate != null) {
+                                    setState(() {
+                                      _startDate = selectedDate;
+                                    });
+                                  }
+                                },
+                                icon: const Icon(Icons.calendar_month))
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                                "종료: ${_endDate.year} - ${_endDate.month} - ${_endDate.day}"),
+                            IconButton(
+                                onPressed: () async {
+                                  final selectedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: _endDate,
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime.now(),
+                                  );
+                                  if (selectedDate != null) {
+                                    setState(() {
+                                      _endDate = selectedDate;
+                                    });
+                                  }
+                                },
+                                icon: const Icon(Icons.calendar_month))
+                          ],
+                        ),
+                      ]),
+                ),
                 Container(
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: Column(
@@ -278,9 +336,46 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                 ),
                 onPressed: () async {
                   _formKey.currentState!.save();
+                  if(_startDate.compareTo(_endDate) != -1){
+                    showDialog(context: context, builder: (context){
+                      return Dialog(
+                        // The background color
+                        backgroundColor: Colors.white,
+                        child: Padding(
+                          padding:
+                          const EdgeInsets.symmetric(vertical: 20),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                  margin: EdgeInsets.only(bottom: 20),
+                                  child: Icon(Icons.remove_circle_outline_rounded,
+                                      size: 100,
+                                      color: Color(0xff5f66f2))),
+                              Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '프로젝트 시작일은 죵료일보다 앞서야 합니다.',
+                                      style: TextStyle(
+                                        color: Color(0xff333333),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ]),
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+                  }
                   if (_formKey.currentState!.validate()) {
                     Logger logger = Logger();
-                    showCustomDialog(context);
+
                     Map<String, dynamic> jsonData = {
                       "uid": FirebaseAuth.instance.currentUser!.uid,
                       "name": _projectName,
@@ -288,7 +383,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                       "context": _content,
                       "role": _role,
                       "accomplishment": _accomplishment,
-                      "period": _career,
+                      "period": [_startDate.toString(), _endDate.toString()],
                       "keywords": _keywordItems,
                       "participants": _personItems,
                       'fileExtensions': List.generate(
@@ -296,6 +391,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                               (index) => p.extension(_selectedFiles[index].path.toString()))
                     };
                     if (_selectedFiles.length != 0) {
+                      showCustomDialog(context);
                       try{
                         // 파일 경로를 통해 formData 생성
                         var dio = Dio();

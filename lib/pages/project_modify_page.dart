@@ -68,14 +68,17 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                 SignUpEditTextForm(
                     label: "프로젝트 이름",
                     hint: "프로젝트 이름을 작성해주세요",
+                    type: TextInputType.text,
                     onSaved: (newValue) => _projectName = newValue),
                 SignUpEditTextForm(
                     label: "한줄 소개",
                     hint: "프로젝트를 한 줄로 요약해주세요",
+                    type: TextInputType.text,
                     onSaved: (newValue) => _introduction = newValue),
                 SignUpEditTextForm(
                     label: "내용",
                     lineNum: 10,
+                    type: TextInputType.text,
                     hint: "프로젝트의 내용에 대해 500자 내로 설명해주세요",
                     onSaved: (newValue) => _content = newValue),
                 SingleChildScrollView(
@@ -159,11 +162,13 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                     label: "본인의 역할",
                     hint: "본인의 역할에 대해 500자 내로 설명해주세요",
                     lineNum: 10,
+                    type: TextInputType.text,
                     onSaved: (newValue) => _role = newValue),
                 SignUpEditTextForm(
                     label: "본인의 성과",
                     hint: "본인의 성과에 대해 500자 내로 설명해주세요",
                     lineNum: 10,
+                    type: TextInputType.text,
                     onSaved: (newValue) => _accomplishment = newValue),
                 CustomDropdownButton(
                     label: "참여 기간",

@@ -9,7 +9,7 @@ class SignUpBody {
   List<String>? career;
   String? location;
   String? gender;
-  String? age;
+  String? birth;
   double? rate;
   String? phoneNum;
   String? profile_image_url;
@@ -24,7 +24,7 @@ class SignUpBody {
       this.work,
       this.location,
       this.gender,
-      this.age,
+      this.birth,
       this.phoneNum,
       this.profile_image_url,
       this.rate});
@@ -40,7 +40,7 @@ class SignUpBody {
     location = json['location'];
     gender = json['gender'];
     phoneNum = json['phoneNum'];
-    age = json['age'];
+    birth = json['age'];
     profile_image_url = json['profile_image_url'];
     rate = json['rate'];
   }
@@ -57,7 +57,7 @@ class SignUpBody {
     data['location'] = this.location;
     data['phoneNum'] = this.phoneNum;
     data['gender'] = this.gender;
-    data['age'] = this.age;
+    data['age'] = this.birth;
     data['profile_image_url'] = this.profile_image_url;
     data['rate'] = this.rate;
     return data;

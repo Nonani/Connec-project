@@ -142,7 +142,23 @@ class _MyInfoPageState extends State<MyInfoPage> {
                   ),
                   ListTile(
                     title: Text('회원탈퇴'),
-                    onTap: () {
+                    onTap: () async{
+                      Logger logger = Logger();
+                      final url =
+                      Uri.parse('https://foggy-boundless-avenue.glitch.me/unregister');
+                      try {
+                        http.Response response = await http.post(
+                          url,
+                          headers: <String, String>{
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                          },
+                          body: <String, String>{
+                            'uid': FirebaseAuth.instance.currentUser!.uid.toString(),
+                          },
+                        );
+                      } catch (e) {
+                        logger.w(e);
+                      }
                       FirebaseAuth.instance.signOut();
                       Navigator.pop(context);
                     },
@@ -240,7 +256,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "나 이 : ${snapshot.data["age"]}",
+                          "생년월일 : ${snapshot.data["age"].substring(0,10)}",
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 17,
@@ -249,7 +265,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                           ),
                         ),
                         Text(
-                          "성 별 : ${snapshot.data["gender"]}",
+                          "성 별  : ${snapshot.data["gender"]}",
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 17,
@@ -352,6 +368,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     ProjectDetailPage(
+                                                      idx,
                                                         item["docId"],
                                                         snapshot
                                                             .data['name'])));

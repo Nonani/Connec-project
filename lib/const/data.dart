@@ -13,17 +13,19 @@ const List<String> ageList = <String>[
 ];
 const List<String> workList = <String>[
   '선택',
-  "대표",
-  "임원",
-  "인사 담당자",
-  "팀장",
   "사원",
-  "프리랜서",
-  "교수",
-  "박사",
-  "대학원생",
+  "대리",
+  "과장",
+  "차장",
+  "부장",
+  "임원",
+  "대표",
+  "고등학생",
   "대학생",
-  "투자자"
+  "대학원생",
+  "박사",
+  "교수",
+  "프리랜서"
 ];
 const List<String> careerList = <String>[
   '선택',

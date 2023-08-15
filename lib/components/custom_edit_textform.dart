@@ -60,6 +60,7 @@ Widget SignUpEditTextForm({required String label,
   bool isSecret = false,
   required String hint,
   required FormFieldSetter onSaved,
+  required TextInputType type,
   FormFieldValidator? validate}) {
   return Container(
     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -74,6 +75,7 @@ Widget SignUpEditTextForm({required String label,
             )),
         SizedBox(height: 10),
         TextFormField(
+          keyboardType: type,
           maxLines: lineNum,
           obscureText: isSecret,
           decoration: InputDecoration(

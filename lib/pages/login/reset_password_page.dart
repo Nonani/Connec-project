@@ -63,6 +63,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>{
                       label: "가입한 이메일 주소를 입력해 주세요.",
                       hint: "example@connec.co.kr",
                       isSecret: false,
+                      type: TextInputType.emailAddress,
                       onSaved: (newValue) => email = newValue,
                     ),
                   ),

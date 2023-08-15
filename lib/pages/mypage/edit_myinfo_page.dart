@@ -19,8 +19,9 @@ import '../login/local_dialog.dart';
 class EditMyInfoPage extends StatefulWidget {
   final before_location;
   final before_work;
+  DateTime birthDate = DateTime.now();
 
-  const EditMyInfoPage(this.before_location, this.before_work, {Key? key}) : super(key: key);
+  EditMyInfoPage(this.before_location, this.before_work, {Key? key}) : super(key: key);
 
 
   @override
@@ -29,6 +30,9 @@ class EditMyInfoPage extends StatefulWidget {
 
 class _EditMyInfoPageState extends State<EditMyInfoPage> {
   String _location= '';
+  String _name = "";
+  String _gender = "";
+  String _phoneNum = "";
   String _work = workList.first;
   final _formKey = GlobalKey<FormState>();
   @override
@@ -63,6 +67,13 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
               key: _formKey,
               child: Column(
                 children: [
+                  SignUpEditTextForm(
+                    label: "이름",
+                    hint: "이름(실명)을 입력해주세요",
+                    isSecret: false,
+                    type: TextInputType.text,
+                    onSaved: (newValue) => _name = newValue,
+                  ),
                   CustomDropdownButton(
                       itemList: workList,
                       label: "직업",
@@ -75,6 +86,59 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
                       },
                       selectedItem: _work),
 
+                  CustomDropdownButton(
+                    label: "성별",
+                    itemList: genderList,
+                    selectedItem: _gender,
+                    onChanged: (value) {
+                      setState(
+                            () {
+                          _gender = value;
+                        },
+                      );
+                    },
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("생년월일",
+                              style: TextStyle(
+                                fontFamily: "EchoDream",
+                                fontWeight: FontWeight.w600,
+                                fontSize: 17,
+                              )),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                  "${widget.birthDate.year} - ${widget.birthDate.month} - ${widget.birthDate.day}"),
+                              IconButton(
+                                  onPressed: () async {
+                                    final selectedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: widget.birthDate,
+                                      firstDate: DateTime(2000),
+                                      lastDate: DateTime.now(),
+                                    );
+                                    if (selectedDate != null) {
+                                      setState(() {
+                                        widget.birthDate = selectedDate;
+                                      });
+                                    }
+                                  },
+                                  icon: const Icon(Icons.calendar_month))
+                            ],
+                          ),
+                        ]),
+                  ),
+                  SignUpEditTextForm(
+                    label: "전화번호",
+                    type: TextInputType.phone,
+                    onSaved: (newValue) => _phoneNum = newValue,
+                    hint: "전화번호를 입력해주세요",
+                  ),
                   buildLocalContainer(snapshot),
                 ],
               ),

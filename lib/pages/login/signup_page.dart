@@ -86,18 +86,21 @@ class _SignUpPageState extends State<SignUpPage> {
                               label: "이메일",
                               hint: "example@connec.co.kr",
                               isSecret: false,
+                              type: TextInputType.emailAddress,
                               onSaved: (newValue) => _email = newValue,
                             ),
                             SignUpEditTextForm(
                               label: "비밀번호",
                               hint: "기호/영문/숫자 포함 8자 이상",
                               isSecret: true,
+                              type: TextInputType.visiblePassword,
                               onSaved: (newValue) => _password = newValue,
                             ),
                             SignUpEditTextForm(
                               label: "비밀번호 확인",
                               hint: "비밀번호를 입력해주세요",
                               isSecret: true,
+                              type: TextInputType.visiblePassword,
                               validate: (value) {
                                 if (value!.isEmpty) {
                                   return '빈 칸입니다.';
@@ -113,6 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               label: "이름",
                               hint: "이름(실명)을 입력해주세요",
                               isSecret: false,
+                              type: TextInputType.text,
                               onSaved: (newValue) => _name = newValue,
                             ),
                             CustomDropdownButton(
@@ -157,6 +161,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               label: "소개",
                               hint: "소개를 입력해주세요",
                               isSecret: false,
+                              type: TextInputType.text,
                               onSaved: (newValue) => _introduction = newValue,
                             ),
                             Container(
@@ -230,7 +235,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       await provider.postSignUpBody(SignUpBody(
                         uuid: uuid.v4(),
                         name: _name,
-                        age: _age,
+                        birth: _age,
                         email: _email,
                         gender: _gender,
                         location: _location,

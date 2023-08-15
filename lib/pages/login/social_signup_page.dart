@@ -19,12 +19,12 @@ import 'job_dialog.dart';
 import 'local_dialog.dart';
 
 class SocialSignUpPage extends StatefulWidget {
-  const SocialSignUpPage(
-      {Key? key, this.uid, this.serviceName, this.profileImageUrl})
+  SocialSignUpPage({Key? key, this.uid, this.serviceName, this.profileImageUrl})
       : super(key: key);
   final uid;
   final serviceName;
   final profileImageUrl;
+  DateTime birthDate = DateTime.now();
 
   @override
   State<SocialSignUpPage> createState() => _SocialSignUpPageState();
@@ -35,12 +35,12 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
   String? _name;
   String _work = workList.first;
   String _gender = genderList.first;
-  String _age = ageList.first;
   String? _phoneNum;
   bool _checkboxValue1 = false;
   bool _checkboxValue2 = false;
   final _formKey = GlobalKey<FormState>();
   bool _needUpdate = false;
+
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ServiceClass>(context, listen: false);
@@ -70,6 +70,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                         label: "이름",
                         hint: "이름(실명)을 입력해주세요",
                         isSecret: false,
+                        type: TextInputType.text,
                         onSaved: (newValue) => _name = newValue,
                       ),
                       CustomDropdownButton(
@@ -96,23 +97,46 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                           );
                         },
                       ),
-                      CustomDropdownButton(
-                        label: "나이",
-                        itemList: ageList,
-                        selectedItem: _age,
-                        onChanged: (value) {
-                          setState(
-                            () {
-                              _age = value;
-                            },
-                          );
-                        },
+                      Container(
+                        padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                          Text("생년월일",
+                              style: TextStyle(
+                                fontFamily: "EchoDream",
+                                fontWeight: FontWeight.w600,
+                                fontSize: 17,
+                              )),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                  "${widget.birthDate.year} - ${widget.birthDate.month} - ${widget.birthDate.day}"),
+                              IconButton(
+                                  onPressed: () async {
+                                    final selectedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: widget.birthDate,
+                                      firstDate: DateTime(2000),
+                                      lastDate: DateTime.now(),
+                                    );
+                                    if (selectedDate != null) {
+                                      setState(() {
+                                        widget.birthDate = selectedDate;
+                                      });
+                                    }
+                                  },
+                                  icon: const Icon(Icons.calendar_month))
+                            ],
+                          ),
+                        ]),
                       ),
                       SignUpEditTextForm(
                         label: "전화번호",
+                        type: TextInputType.phone,
                         onSaved: (newValue) => _phoneNum = newValue,
                         hint: "전화번호를 입력해주세요",
-
                       ),
                       buildLocalContainer(snapshot),
                       // SignUpEditTextForm(
@@ -178,7 +202,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 onPressed: () async {
                   Logger logger = Logger();
                   final localProvider =
-                  Provider.of<LocalProvider>(context, listen: false);
+                      Provider.of<LocalProvider>(context, listen: false);
                   if (_formKey.currentState!.validate() &&
                       _checkboxValue1 &&
                       _checkboxValue2 &&
@@ -191,7 +215,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                       profile_image_url: widget.profileImageUrl,
                       uuid: uuid.v4(),
                       name: _name,
-                      age: _age,
+                      birth: widget.birthDate.toString(),
                       work: _work,
                       rate: 0,
                       phoneNum: _phoneNum,
@@ -233,7 +257,6 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
     return {"workData": workResult.docs, "localData": localResult.docs};
   }
 
-
   Container buildLocalContainer(AsyncSnapshot snapshot) {
     final localProvider = Provider.of<LocalProvider>(context, listen: false);
     return Container(
@@ -249,7 +272,14 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
         SizedBox(height: 10),
         GestureDetector(
           onTap: () {
-            Navigator.push(context, DialogRoute(context: context, builder: (context) => LocalDataScreen( onClose: (){setState((){});}),));
+            Navigator.push(
+                context,
+                DialogRoute(
+                  context: context,
+                  builder: (context) => LocalDataScreen(onClose: () {
+                    setState(() {});
+                  }),
+                ));
           },
           child: Container(
             width: double.infinity,
@@ -262,25 +292,24 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
             alignment: Alignment.centerLeft,
             child: localProvider.local.local == null
                 ? Text(
-              '선택',
-              style: TextStyle(
-                color: Color(0xffbdbdbd),
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-              ),
-            )
+                    '선택',
+                    style: TextStyle(
+                      color: Color(0xffbdbdbd),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                    ),
+                  )
                 : Text(
-              '${localProvider.local.local} > ${localProvider.local.sub_local}',
-              style: TextStyle(
-                color: Color(0xff333333),
-                fontSize: 16,
-                fontFamily: 'S-CoreDream-4',
-              ),
-            ),
+                    '${localProvider.local.local} > ${localProvider.local.sub_local}',
+                    style: TextStyle(
+                      color: Color(0xff333333),
+                      fontSize: 16,
+                      fontFamily: 'S-CoreDream-4',
+                    ),
+                  ),
           ),
         ),
       ]),
     );
   }
-
 }

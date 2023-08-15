@@ -8,9 +8,10 @@ import 'dart:convert';
 import '../style/titlestyle.dart';
 
 class ProjectDetailPage extends StatefulWidget {
-  ProjectDetailPage(this.dID, this.my_name, {Key? key}) : super(key: key);
-  final dID;
-  final my_name;
+  ProjectDetailPage(this.idx, this.dID, this.my_name, {Key? key}) : super(key: key);
+  final int idx;
+  final String dID;
+  final String my_name;
 
   @override
   State<ProjectDetailPage> createState() => _ProjectDetailPageState();
@@ -123,7 +124,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          '프로젝트 상세',
+          '프로젝트 ${widget.idx + 1}',
           style: featureTitle,
         ),
         centerTitle: true,
@@ -212,7 +213,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("참여 기간"),
-                        Text(snapshot.data["period"]),
+                        Text("${snapshot.data["period"][0].substring(0, 10)} ~ ${snapshot.data["period"][1].substring(0, 10)}"),
                         Divider(
                           thickness: 1,
                           color: Colors.grey,
