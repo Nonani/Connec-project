@@ -61,7 +61,7 @@ class _ExpandNetworkPageState extends State<ExpandNetworkPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 47.1),
-                        child: LoginEditTextForm(
+                        child: loginEditTextForm(
                           label: "등록할 지인 코드",
                           hint: "지인의 코드를 입력해 주세요",
                           validate: (value) {

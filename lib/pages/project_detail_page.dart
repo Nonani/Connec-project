@@ -13,6 +13,7 @@ class ProjectDetailPage extends StatefulWidget {
   final String dID;
   final String my_name;
 
+
   @override
   State<ProjectDetailPage> createState() => _ProjectDetailPageState();
 }
@@ -236,7 +237,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
 
                             return Container(
                               child: Row(children: [
-                                Text(item['name']),
+                                Text("   ${item['name']} :"),
                                 item["phone_number"] != ''
                                     ? Text(item["phone_number"])
                                     : TextButton(

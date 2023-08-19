@@ -5,13 +5,13 @@ import 'package:provider/provider.dart';
 
 import '../../services/LocalService.dart';
 
-class lacalData {
+class LocalData {
   final String code;
   final int tier;
   final String parent;
   final String title;
 
-  lacalData(this.code, this.tier, this.parent, this.title);
+  LocalData(this.code, this.tier, this.parent, this.title);
 }
 
 class LocalDataScreen extends StatelessWidget {
@@ -58,7 +58,7 @@ class LocalDataScreen extends StatelessWidget {
             print(snapshot.data!.size);
             return ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                lacalData localData = lacalData(document['code'],
+                LocalData localData = LocalData(document['code'],
                     document['tier'], document['parent'], document['title']);
                 return ListTile(
                   title: Text(localData.title),
@@ -140,7 +140,7 @@ class SubLocalDataScreen extends StatelessWidget {
             }
             return ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                lacalData localData = lacalData(document['code'],
+                LocalData localData = LocalData(document['code'],
                     document['tier'], document['parent'], document['title']);
                 return ListTile(
                   title: Text(localData.title),

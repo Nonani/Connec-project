@@ -47,7 +47,7 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
           children: [
             Padding(
               padding: EdgeInsets.only(top: 47.1),
-              child: LoginEditTextForm(
+              child: loginEditTextForm(
                 label: "이름",
                 hint: "김컨넥",
                 isSecret: false,

@@ -49,7 +49,7 @@ class _ProjectConfirmPageState extends State<ProjectConfirmPage> {
             key: _formKey,
             child: Column(
               children: [
-                SignUpEditTextForm(
+                signUpEditTextForm(
                   label: "전화번호",
                   hint: "010-1234-1234",
                   type: TextInputType.phone,

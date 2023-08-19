@@ -82,21 +82,21 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            SignUpEditTextForm(
+                            signUpEditTextForm(
                               label: "이메일",
                               hint: "example@connec.co.kr",
                               isSecret: false,
                               type: TextInputType.emailAddress,
                               onSaved: (newValue) => _email = newValue,
                             ),
-                            SignUpEditTextForm(
+                            signUpEditTextForm(
                               label: "비밀번호",
                               hint: "기호/영문/숫자 포함 8자 이상",
                               isSecret: true,
                               type: TextInputType.visiblePassword,
                               onSaved: (newValue) => _password = newValue,
                             ),
-                            SignUpEditTextForm(
+                            signUpEditTextForm(
                               label: "비밀번호 확인",
                               hint: "비밀번호를 입력해주세요",
                               isSecret: true,
@@ -112,7 +112,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               },
                               onSaved: (newValue) => _password = newValue,
                             ),
-                            SignUpEditTextForm(
+                            signUpEditTextForm(
                               label: "이름",
                               hint: "이름(실명)을 입력해주세요",
                               isSecret: false,
@@ -157,7 +157,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 );
                               },
                             ),
-                            SignUpEditTextForm(
+                            signUpEditTextForm(
                               label: "소개",
                               hint: "소개를 입력해주세요",
                               isSecret: false,

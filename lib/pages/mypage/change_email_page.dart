@@ -47,7 +47,7 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
           children: [
             Padding(
               padding: EdgeInsets.only(top: 47.1),
-              child: LoginEditTextForm(
+              child: loginEditTextForm(
                 label: "이메일",
                 hint: "example@connec.co.kr",
                 isSecret: false,

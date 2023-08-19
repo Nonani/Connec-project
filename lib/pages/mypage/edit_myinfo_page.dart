@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/components/custom_edit_textform.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,7 +18,6 @@ import '../login/local_dialog.dart';
 class EditMyInfoPage extends StatefulWidget {
   final before_location;
   final before_work;
-  DateTime birthDate = DateTime.now();
 
   EditMyInfoPage(this.before_location, this.before_work, {Key? key}) : super(key: key);
 
@@ -29,11 +27,18 @@ class EditMyInfoPage extends StatefulWidget {
 }
 
 class _EditMyInfoPageState extends State<EditMyInfoPage> {
-  String _location= '';
+
   String _name = "";
+  String _work = "";
   String _gender = "";
   String _phoneNum = "";
-  String _work = workList.first;
+  DateTime _birthDate = DateTime.now();
+  String _location = "";
+  String _localCode = "";
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneNumController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -63,13 +68,26 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
         future: _future(),
         builder: (context, snapshot) {
           if(snapshot.hasData){
+            if(_name == '') {
+              _name = snapshot.data['originalData']['name'];
+              _gender = snapshot.data['originalData']['gender'];
+              _phoneNum = snapshot.data['originalData']['phone_number'];
+              _birthDate = DateTime.parse(snapshot.data['originalData']['age']);
+              _work = snapshot.data['originalData']['work'];
+              _location = snapshot.data['originalData']['location'];
+              _localCode = snapshot.data['originalData']['local_code'];
+
+              nameController.text = _name;
+              phoneNumController.text = _phoneNum;
+            }
             return Form(
               key: _formKey,
               child: Column(
                 children: [
-                  SignUpEditTextForm(
+                  signUpEditTextForm(
                     label: "이름",
-                    hint: "이름(실명)을 입력해주세요",
+                    hint: _name,
+                    controller: nameController,
                     isSecret: false,
                     type: TextInputType.text,
                     onSaved: (newValue) => _name = newValue,
@@ -113,18 +131,18 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                  "${widget.birthDate.year} - ${widget.birthDate.month} - ${widget.birthDate.day}"),
+                                  "${_birthDate.year} - ${_birthDate.month} - ${_birthDate.day}"),
                               IconButton(
                                   onPressed: () async {
                                     final selectedDate = await showDatePicker(
                                       context: context,
-                                      initialDate: widget.birthDate,
+                                      initialDate: _birthDate,
                                       firstDate: DateTime(2000),
                                       lastDate: DateTime.now(),
                                     );
                                     if (selectedDate != null) {
                                       setState(() {
-                                        widget.birthDate = selectedDate;
+                                        _birthDate = selectedDate;
                                       });
                                     }
                                   },
@@ -133,11 +151,12 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
                           ),
                         ]),
                   ),
-                  SignUpEditTextForm(
+                  signUpEditTextForm(
                     label: "전화번호",
+                    controller: phoneNumController,
                     type: TextInputType.phone,
                     onSaved: (newValue) => _phoneNum = newValue,
-                    hint: "전화번호를 입력해주세요",
+                    hint: _phoneNum,
                   ),
                   buildLocalContainer(snapshot),
                 ],
@@ -158,7 +177,7 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
             Logger logger = Logger();
             final localProvider =
             Provider.of<LocalProvider>(context, listen: false);
-            if (_formKey.currentState!.validate() && localProvider.local.sub_local != null) {
+            if (_formKey.currentState!.validate() && localProvider.local.sub_local_code != null) {
               _formKey.currentState!.save();
               final url =
               Uri.parse('https://foggy-boundless-avenue.glitch.me/mypage/update');
@@ -170,7 +189,11 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
                   },
                   body: <String, String>{
                     'uid': FirebaseAuth.instance.currentUser!.uid.toString(),
+                    'name': _name,
                     'work': _work,
+                    'gender': _gender,
+                    'birthDate': _birthDate.toString(),
+                    'phoneNum': _phoneNum,
                     'location' : localProvider.local.sub_local_code!,
                   },
                 );
@@ -188,21 +211,29 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
   }
   Future _future() async {
     Logger logger = Logger();
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    // final workResult = await db.collection("workData").get();
-    final localResult = await db.collection("localData").get();
-    // print(result.size);
-    //
-    // result.docs.forEach((element) {
-    //   print(element.data);
-    // });
-
-    // return {"workData": workResult.docs, "localData": localResult.docs};
-    return {"localData": localResult.docs};
-
+    Map<String, dynamic> result = {};
+    final url =
+    Uri.parse('https://foggy-boundless-avenue.glitch.me/mypage/info');
+    try {
+      http.Response response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: <String, String>{
+          'uid': FirebaseAuth.instance.currentUser!.uid.toString(),
+        },
+      );
+      result["originalData"] = JsonDecoder().convert(response.body);
+    }catch(e){
+      logger.w(e);
+    }
+    logger.w(result);
+    return result;
   }
   Container buildLocalContainer(AsyncSnapshot snapshot) {
     final localProvider = Provider.of<LocalProvider>(context, listen: false);
+    localProvider.setSubLocalCode(_localCode);
     return Container(
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
       width: double.infinity,
@@ -229,7 +260,7 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
             alignment: Alignment.centerLeft,
             child: localProvider.local.local == null
                 ? Text(
-              '선택',
+              _location,
               style: TextStyle(
                 color: Color(0xffbdbdbd),
                 fontWeight: FontWeight.w400,

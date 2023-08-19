@@ -1,4 +1,3 @@
-
 import 'package:connec/components/custom_edit_textform.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -22,6 +21,7 @@ class ProjectRegistPage extends StatefulWidget {
 class _ProjectRegistPageState extends State<ProjectRegistPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController personController = TextEditingController();
+  TextEditingController keywordController = TextEditingController();
   String _projectName = '';
   String _introduction = '';
   String _content = '';
@@ -66,17 +66,17 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SignUpEditTextForm(
+                signUpEditTextForm(
                     label: "프로젝트 이름",
                     hint: "프로젝트 이름을 작성해주세요",
                     type: TextInputType.text,
                     onSaved: (newValue) => _projectName = newValue),
-                SignUpEditTextForm(
+                signUpEditTextForm(
                     label: "한줄 소개",
                     hint: "프로젝트를 한 줄로 요약해주세요",
                     type: TextInputType.text,
                     onSaved: (newValue) => _introduction = newValue),
-                SignUpEditTextForm(
+                signUpEditTextForm(
                     label: "내용",
                     lineNum: 10,
                     type: TextInputType.text,
@@ -91,7 +91,8 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                     children: [
                       FloatingActionButton.extended(
                         onPressed: _pickFile,
-                        label: Text('Choose Files'),
+                        label: Text('파일 선택'),
+                        backgroundColor: Color(0xff5f66f2),
                       ),
                       Column(
                         children: _selectedFiles
@@ -119,17 +120,23 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                     ],
                   ),
                 )),
-                CustomDropdownButton(
+                customKeywordTextForm(
                     label: "키워드",
-                    itemList: personalityList,
-                    onChanged: (value) {
-                      if (value != "선택" && _keywordItems.length < 5) {
-                        _keywordItems.remove(value);
-                        _keywordItems.add(value);
-                        setState(() {});
+                    hint: "띄어쓰기로 구분해주세요",
+                    onChanged: (String value) {
+                      Logger logger = Logger();
+                      if (value.endsWith(' ') && _keywordItems.length < 5) {
+                        String keyword = value.substring(0, value.length - 1);
+                        if (!_keywordItems.contains(keyword)) {
+                          setState(() {
+                            _keywordItems.add(keyword);
+                          });
+                        }
+                        keywordController.clear();
                       }
                     },
-                    selectedItem: _keyword),
+                    textController: keywordController,
+                    type: TextInputType.text),
                 Padding(
                   padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
                   child: ListView.separated(
@@ -144,7 +151,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                           children: [
                             Expanded(
                                 child: Text(
-                              _keywordItems[index],
+                              "#${_keywordItems[index]}",
                               overflow: TextOverflow.ellipsis,
                             )),
                             IconButton(
@@ -159,13 +166,13 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                     },
                   ),
                 ),
-                SignUpEditTextForm(
+                signUpEditTextForm(
                     label: "본인의 역할",
                     hint: "본인의 역할에 대해 500자 내로 설명해주세요",
                     lineNum: 10,
                     type: TextInputType.text,
                     onSaved: (newValue) => _role = newValue),
-                SignUpEditTextForm(
+                signUpEditTextForm(
                     label: "본인의 성과",
                     hint: "본인의 성과에 대해 500자 내로 설명해주세요",
                     lineNum: 10,
@@ -336,42 +343,43 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                 ),
                 onPressed: () async {
                   _formKey.currentState!.save();
-                  if(_startDate.compareTo(_endDate) != -1){
-                    showDialog(context: context, builder: (context){
-                      return Dialog(
-                        // The background color
-                        backgroundColor: Colors.white,
-                        child: Padding(
-                          padding:
-                          const EdgeInsets.symmetric(vertical: 20),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment:
-                            CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only(bottom: 20),
-                                  child: Icon(Icons.remove_circle_outline_rounded,
-                                      size: 100,
-                                      color: Color(0xff5f66f2))),
-                              Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '프로젝트 시작일은 죵료일보다 앞서야 합니다.',
-                                      style: TextStyle(
-                                        color: Color(0xff333333),
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ]),
-                            ],
-                          ),
-                        ),
-                      );
-                    });
+                  if (_startDate.compareTo(_endDate) != -1) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            // The background color
+                            backgroundColor: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      margin: EdgeInsets.only(bottom: 20),
+                                      child: Icon(
+                                          Icons.remove_circle_outline_rounded,
+                                          size: 100,
+                                          color: Color(0xff5f66f2))),
+                                  Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          '프로젝트 시작일은 죵료일보다 앞서야 합니다.',
+                                          style: TextStyle(
+                                            color: Color(0xff333333),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ]),
+                                ],
+                              ),
+                            ),
+                          );
+                        });
                   }
                   if (_formKey.currentState!.validate()) {
                     Logger logger = Logger();
@@ -388,30 +396,35 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                       "participants": _personItems,
                       'fileExtensions': List.generate(
                           _selectedFiles.length,
-                              (index) => p.extension(_selectedFiles[index].path.toString()))
+                          (index){
+                            logger.w(p.extension(_selectedFiles[index].path.toString()));
+                            return p.extension(_selectedFiles[index].path.toString());
+                          })
                     };
                     if (_selectedFiles.length != 0) {
                       showCustomDialog(context);
-                      try{
+                      try {
                         // 파일 경로를 통해 formData 생성
                         var dio = Dio();
                         var formData = FormData.fromMap({
-                          'data' : jsonData,
-                          'files' : List.generate(_selectedFiles.length,
-                                  (index) => MultipartFile.fromFileSync(_selectedFiles[index].path.toString())),
+                          'data': jsonData,
+                          'files': List.generate(
+                              _selectedFiles.length,
+                              (index) => MultipartFile.fromFileSync(
+                                  _selectedFiles[index].path.toString())),
                           // 파일 확장자를 추출합니다.
                         });
 
                         // 업로드 요청
-                        final response = await dio.post('https://foggy-boundless-avenue.glitch.me/project/upload', data: formData);
+                        final response = await dio.post(
+                            'https://foggy-boundless-avenue.glitch.me/project/upload',
+                            data: formData);
                         logger.w(response);
                         Navigator.pop(context);
                         Navigator.of(context, rootNavigator: true).pop(context);
-
-                      }catch(e){
+                      } catch (e) {
                         logger.w(e);
                       }
-
                     } else {
                       // 아무런 파일도 선택되지 않음.
                     }

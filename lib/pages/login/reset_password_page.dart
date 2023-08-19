@@ -59,7 +59,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [ Padding(
                     padding: EdgeInsets.only(top: 47.1),
-                    child: SignUpEditTextForm(
+                    child: signUpEditTextForm(
                       label: "가입한 이메일 주소를 입력해 주세요.",
                       hint: "example@connec.co.kr",
                       isSecret: false,

@@ -66,7 +66,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      SignUpEditTextForm(
+                      signUpEditTextForm(
                         label: "이름",
                         hint: "이름(실명)을 입력해주세요",
                         isSecret: false,
@@ -132,7 +132,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                           ),
                         ]),
                       ),
-                      SignUpEditTextForm(
+                      signUpEditTextForm(
                         label: "전화번호",
                         type: TextInputType.phone,
                         onSaved: (newValue) => _phoneNum = newValue,

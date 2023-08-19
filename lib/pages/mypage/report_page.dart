@@ -93,7 +93,7 @@ class _ReportPageState extends State<ReportPage> {
                   setState(() {});
                 },
                 selectedItem: category),
-            SignUpEditTextForm(
+            signUpEditTextForm(
               label: "신고 내용",
               hint: "해당 내용에 대해 자세히 서술해 주세요",
               type: TextInputType.text,
