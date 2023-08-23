@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_item_widget.dart';
-import 'package:connec/pages/network/network_reduction_page.dart';
+
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 import 'expand_network_page.dart';
+import 'network_reduction_page.dart';
 
 class NetworkListPage extends StatefulWidget {
   const NetworkListPage({Key? key}) : super(key: key);

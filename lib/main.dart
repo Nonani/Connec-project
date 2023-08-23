@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connec/pages/login/login_page.dart';
 import 'package:connec/models/JobModel.dart';
-import 'package:connec/pages/mypage/my_info_page.dart';
+import 'package:connec/pages/pivoting/auth/login_page.dart';
+import 'package:connec/pages/pivoting/mypage/my_info_page.dart';
 import 'package:connec/services/LocalService.dart';
 import 'package:connec/services/service_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -49,7 +49,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
@@ -79,44 +78,55 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final database = FirebaseFirestore.instance;
   final messaging = FirebaseMessaging.instance;
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
     requestPermission();
     initInfo();
   }
-  initInfo() {
-    var androidInitialize = const AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iOSInitialize = const DarwinInitializationSettings();
-    var initializationSettings = InitializationSettings(android:  androidInitialize, iOS: iOSInitialize);
-    FlutterLocalNotificationsPlugin().initialize(initializationSettings, onDidReceiveNotificationResponse: (NotificationResponse response) async{
-      try {
-        if (response.payload != null && (response.payload!).isNotEmpty){
-          logger.w("payload exist");
-        } else{
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) =>MyInfoPage(),),(route) => false);
-        }
-      }catch(e) {
 
-      }
+  initInfo() {
+    var androidInitialize =
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var iOSInitialize = const DarwinInitializationSettings();
+    var initializationSettings =
+        InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
+    FlutterLocalNotificationsPlugin().initialize(initializationSettings,
+        onDidReceiveNotificationResponse:
+            (NotificationResponse response) async {
+      try {
+        if (response.payload != null && (response.payload!).isNotEmpty) {
+          logger.w("payload exist");
+        } else {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyInfoPage(),
+              ),
+              (route) => false);
+        }
+      } catch (e) {}
       return;
     });
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
-      AndroidNotificationDetails androidChannelSpecifics = AndroidNotificationDetails(
-          'request',
-          'request arrived',
-          importance: Importance.high,
-          priority: Priority.high,
-          playSound: true
-      );
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      AndroidNotificationDetails androidChannelSpecifics =
+          AndroidNotificationDetails('request', 'request arrived',
+              importance: Importance.high,
+              priority: Priority.high,
+              playSound: true);
       NotificationDetails channelSpecifics = NotificationDetails(
-          android: androidChannelSpecifics,
+        android: androidChannelSpecifics,
       );
-      await FlutterLocalNotificationsPlugin().show(0, message.notification?.title, message.notification?.body,
-      channelSpecifics);
+      await FlutterLocalNotificationsPlugin().show(
+          0,
+          message.notification?.title,
+          message.notification?.body,
+          channelSpecifics);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
@@ -126,25 +136,24 @@ class _MyHomePageState extends State<MyHomePage> {
             (!snapshot.hasData) ? LoginPage() : MyInfoPage());
   }
 
-  void requestPermission() async{
+  void requestPermission() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
     NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true
-    );
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true);
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       logger.w("user granted permission");
-    } else if(settings.authorizationStatus == AuthorizationStatus.provisional) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
       logger.w('user granted provisional permissions');
     } else {
       logger.w('user declined permission grant');
     }
   }
-
 }

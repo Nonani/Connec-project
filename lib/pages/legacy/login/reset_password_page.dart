@@ -4,8 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import '../../components/custom_edit_textform.dart';
-import '../../services/service_class.dart';
+import '../../../components/custom_edit_textform.dart';
+import '../../../services/service_class.dart';
+
 
 class ResetPasswordPage extends StatefulWidget {
 
@@ -59,7 +60,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage>{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [ Padding(
                     padding: EdgeInsets.only(top: 47.1),
-                    child: signUpEditTextForm(
+                    child: inputEditTextForm(
                       label: "가입한 이메일 주소를 입력해 주세요.",
                       hint: "example@connec.co.kr",
                       isSecret: false,

@@ -7,16 +7,17 @@ import 'package:connec/style/buttonstyle.dart';
 import 'package:logger/logger.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../const/data.dart';
-import '../../models/SignUpBody.dart';
+import '../../../components/custom_dropdown_button.dart';
+import '../../../components/custom_edit_textform.dart';
+import '../../../const/data.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../components/custom_dropdown_button.dart';
-import '../../components/custom_edit_textform.dart';
-import '../../models/JobModel.dart';
-import '../../services/service_class.dart';
-import 'job_dialog.dart';
-import 'local_dialog.dart';
+
+import '../../../models/SignUpBody.dart';
+import '../../../services/service_class.dart';
+import '../../legacy/login/job_dialog.dart';
+import '../../legacy/login/local_dialog.dart';
 
 class SocialSignUpPage extends StatefulWidget {
   SocialSignUpPage({Key? key, this.uid, this.serviceName, this.profileImageUrl})
@@ -66,7 +67,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      signUpEditTextForm(
+                      inputEditTextForm(
                         label: "이름",
                         hint: "이름(실명)을 입력해주세요",
                         isSecret: false,
@@ -132,7 +133,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                           ),
                         ]),
                       ),
-                      signUpEditTextForm(
+                      inputEditTextForm(
                         label: "전화번호",
                         type: TextInputType.phone,
                         onSaved: (newValue) => _phoneNum = newValue,

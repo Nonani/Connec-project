@@ -3,9 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/JobSubType.dart';
-import '../../models/JobType.dart';
-import '../../models/JobModel.dart';
+import '../../../models/JobModel.dart';
+import '../../../models/JobSubType.dart';
+import '../../../models/JobType.dart';
+
+
 
 class JobTypePage extends StatelessWidget {
   final VoidCallback? onClose;

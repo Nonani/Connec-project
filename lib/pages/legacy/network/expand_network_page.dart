@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connec/pages/project_confirm_page.dart';
+import 'package:connec/pages/legacy/project_confirm_page.dart';
 import 'package:connec/style/buttonstyle.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,9 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import '../../components/custom_edit_textform.dart';
+
 import 'package:http/http.dart' as http;
-import '../../services/service_class.dart';
+
+import '../../../components/custom_edit_textform.dart';
+import '../../../services/service_class.dart';
+
 
 class ExpandNetworkPage extends StatefulWidget {
   const ExpandNetworkPage({Key? key}) : super(key: key);

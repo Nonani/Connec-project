@@ -1,6 +1,4 @@
 import 'package:connec/components/custom_dialog.dart';
-import 'package:connec/pages/mypage/edit_myinfo_page.dart';
-import 'package:connec/pages/project_detail_page.dart';
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
@@ -8,8 +6,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-import '../network/expand_network_page.dart';
-import '../project_regist_page.dart';
+import '../../legacy/network/expand_network_page.dart';
+
+import '../project/project_detail_page.dart';
+import '../project/project_regist_page.dart';
+import 'edit_myinfo_page.dart';
 
 class MyInfoPage extends StatefulWidget {
   const MyInfoPage({Key? key}) : super(key: key);

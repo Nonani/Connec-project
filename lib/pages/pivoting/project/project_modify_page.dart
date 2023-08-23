@@ -1,18 +1,19 @@
 import 'dart:convert';
 
 import 'package:connec/components/custom_edit_textform.dart';
+import 'package:connec/style/text_style.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import '../components/custom_dialog.dart';
-import '../components/custom_dropdown_button.dart';
-import '../const/data.dart';
+import '../../../components/custom_dialog.dart';
+import '../../../const/data.dart';
+import '../../../style/buttonstyle.dart';
+import '../../../style/titlestyle.dart';
+
 import 'package:path/path.dart' as p;
 import 'package:http/http.dart' as http;
-import '../style/buttonstyle.dart';
-import '../style/titlestyle.dart';
 
 class ProjectModifyPage extends StatefulWidget {
   const ProjectModifyPage(this.projectID, {Key? key}) : super(key: key);
@@ -33,18 +34,29 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
   DateTime _startDate = DateTime.now();
   DateTime _endDate = DateTime.now();
 
-  String _career = careerList.first;
-  List<dynamic> _personItems = [];
-  List<String> _keywordItems = [];
-  List<PlatformFile> _selectedFiles = [];
+  final List<dynamic> _personItems = [];
+  final List<String> _keywordItems = [];
+  final List<PlatformFile> _selectedFiles = [];
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController introductionController = TextEditingController();
-  TextEditingController contextController = TextEditingController();
-  TextEditingController roleController = TextEditingController();
-  TextEditingController accomplishmentController = TextEditingController();
-  TextEditingController keywordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _introductionController = TextEditingController();
+  final TextEditingController _contextController = TextEditingController();
+  final TextEditingController _roleController = TextEditingController();
+  final TextEditingController _accomplishmentController =
+      TextEditingController();
+  final TextEditingController _keywordController = TextEditingController();
   FilePickerResult? result;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _introductionController.dispose();
+    _contextController.dispose();
+    _roleController.dispose();
+    _accomplishmentController.dispose();
+    _keywordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,12 +87,12 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
             future: _future(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
-                if (nameController.text == '') {
-                  nameController.text = snapshot.data['name'];
-                  introductionController.text = snapshot.data['introduction'];
-                  contextController.text = snapshot.data['context'];
-                  roleController.text = snapshot.data['role'];
-                  accomplishmentController.text =
+                if (_nameController.text.isEmpty) {
+                  _nameController.text = snapshot.data['name'];
+                  _introductionController.text = snapshot.data['introduction'];
+                  _contextController.text = snapshot.data['context'];
+                  _roleController.text = snapshot.data['role'];
+                  _accomplishmentController.text =
                       snapshot.data['accomplishment'];
                   _personItems.addAll(snapshot.data['participants']
                       .map((participant) => participant['name'])
@@ -98,23 +110,23 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    signUpEditTextForm(
+                    inputEditTextForm(
                         label: "프로젝트 이름",
                         hint: "프로젝트 이름을 작성해주세요",
                         type: TextInputType.text,
-                        controller: nameController,
+                        controller: _nameController,
                         onSaved: (newValue) => _projectName = newValue),
-                    signUpEditTextForm(
+                    inputEditTextForm(
                         label: "한줄 소개",
                         hint: "프로젝트를 한 줄로 요약해주세요",
                         type: TextInputType.text,
-                        controller: introductionController,
+                        controller: _introductionController,
                         onSaved: (newValue) => _introduction = newValue),
-                    signUpEditTextForm(
+                    inputEditTextForm(
                         label: "내용",
                         lineNum: 10,
                         type: TextInputType.text,
-                        controller: contextController,
+                        controller: _contextController,
                         hint: "프로젝트의 내용에 대해 500자 내로 설명해주세요",
                         onSaved: (newValue) => _content = newValue),
                     SingleChildScrollView(
@@ -156,7 +168,7 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                     )),
                     customKeywordTextForm(
                       label: "키워드",
-                      textController: keywordController,
+                      textController: _keywordController,
                       type: TextInputType.text,
                       hint: '띄어쓰기로 구분해주세요',
                       onChanged: (value) {
@@ -168,7 +180,7 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                               _keywordItems.add(keyword);
                             });
                           }
-                          keywordController.clear();
+                          _keywordController.clear();
                         }
                       },
                     ),
@@ -201,31 +213,26 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                         },
                       ),
                     ),
-                    signUpEditTextForm(
+                    inputEditTextForm(
                         label: "본인의 역할",
                         hint: "본인의 역할에 대해 500자 내로 설명해주세요",
                         lineNum: 10,
                         type: TextInputType.text,
-                        controller: roleController,
+                        controller: _roleController,
                         onSaved: (newValue) => _role = newValue),
-                    signUpEditTextForm(
+                    inputEditTextForm(
                         label: "본인의 성과",
                         hint: "본인의 성과에 대해 500자 내로 설명해주세요",
                         lineNum: 10,
                         type: TextInputType.text,
-                        controller: accomplishmentController,
+                        controller: _accomplishmentController,
                         onSaved: (newValue) => _accomplishment = newValue),
                     Container(
                       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("진행 기간",
-                                style: TextStyle(
-                                  fontFamily: "EchoDream",
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 17,
-                                )),
+                            Text("진행 기간", style: inputLabelStyle),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -283,24 +290,10 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text(
-                                          "참여자 명단\t",
-                                          style: TextStyle(
-                                            color: Color(0xff333333),
-                                            fontSize: 17,
-                                            fontFamily: 'EchoDream',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        Text(
-                                          " ※ 최대 5명",
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 14,
-                                            fontFamily: 'EchoDream',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        )
+                                        Text("참여자 명단\t",
+                                            style: inputLabelStyle),
+                                        Text(" ※ 최대 5명",
+                                            style: inputConstraintStyle)
                                       ],
                                     ),
                                     IconButton(
@@ -325,12 +318,7 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                                 controller: personController,
                                 decoration: InputDecoration(
                                     hintText: "참여자의 이름을 작성해주세요",
-                                    hintStyle: TextStyle(
-                                      color: Color(0xffbdbdbd),
-                                      fontSize: 16,
-                                      fontFamily: 'EchoDream',
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                                    hintStyle: inputHintStyle,
                                     filled: true,
                                     fillColor: Color(0xffeeeeee),
                                     enabledBorder: UnderlineInputBorder(
@@ -405,7 +393,7 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                           (index) => p
                               .extension(_selectedFiles[index].path.toString()))
                     };
-                    if (_selectedFiles.length != 0) {
+                    if (_selectedFiles.isNotEmpty) {
                       try {
                         // 파일 경로를 통해 formData 생성
                         var dio = Dio();
@@ -429,18 +417,14 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                         logger.w(e);
                       }
                     } else {
-                      showDialog(context: context, builder: (context){
-                        return Dialog(child: Text("파일을 입력해주세요"));
-                      });
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(child: Text("파일을 입력해주세요"));
+                          });
                     }
                   }
                 })));
-  }
-
-  void _removeFile(PlatformFile file) {
-    setState(() {
-      _selectedFiles.remove(file);
-    });
   }
 
   Future<dynamic> _future() async {
@@ -457,12 +441,28 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
           'docId': widget.projectID,
         },
       );
-      logger.w(response.body);
-      return jsonDecode(response.body);
-    } catch (e) {
-      logger.w(e);
+      if (_nameController.text.isEmpty) {
+        Map<String, dynamic> data = const JsonDecoder().convert(response.body);
+        _nameController.text = data['name'];
+        _introductionController.text = data['introduction'];
+        _contextController.text = data['context'];
+        _roleController.text = data['role'];
+        _accomplishmentController.text = data['accomplishment'];
+        _startDate = DateTime.parse(data['period'][0]);
+        _endDate = DateTime.parse(data['period'][1]);
+        _personItems.addAll(data['participants']
+            .map((participant) => participant['name'])
+            .toList());
+        if (data['keywords'].runtimeType == "".runtimeType) {
+          _keywordItems.add(data['keywords']);
+        } else {
+          _keywordItems.addAll(data['keywords']);
+        }
+        return data;
+      }
+    } catch (error) {
+      logger.w(error);
     }
-    return null;
   }
 
   Future<void> _pickFile() async {
@@ -475,5 +475,11 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
     } else {
       print("User canceled the file picker");
     }
+  }
+
+  void _removeFile(PlatformFile file) {
+    setState(() {
+      _selectedFiles.remove(file);
+    });
   }
 }

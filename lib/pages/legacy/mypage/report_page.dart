@@ -3,10 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../components/custom_dropdown_button.dart';
-import '../../components/custom_edit_textform.dart';
-import '../../style/buttonstyle.dart';
-import '../../style/titlestyle.dart';
+import '../../../components/custom_dropdown_button.dart';
+import '../../../components/custom_edit_textform.dart';
+import '../../../style/buttonstyle.dart';
+import '../../../style/titlestyle.dart';
+
 
 class ReportPage extends StatefulWidget {
   final String to;
@@ -93,7 +94,7 @@ class _ReportPageState extends State<ReportPage> {
                   setState(() {});
                 },
                 selectedItem: category),
-            signUpEditTextForm(
+            inputEditTextForm(
               label: "신고 내용",
               hint: "해당 내용에 대해 자세히 서술해 주세요",
               type: TextInputType.text,

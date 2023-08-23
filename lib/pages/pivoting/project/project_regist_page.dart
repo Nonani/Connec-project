@@ -1,15 +1,15 @@
 import 'package:connec/components/custom_edit_textform.dart';
+import 'package:connec/style/text_style.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import '../components/custom_dialog.dart';
-import '../components/custom_dropdown_button.dart';
-import '../const/data.dart';
+import '../../../components/custom_dialog.dart';
+import '../../../style/buttonstyle.dart';
+import '../../../style/titlestyle.dart';
+
 import 'package:path/path.dart' as p;
-import '../style/buttonstyle.dart';
-import '../style/titlestyle.dart';
 
 class ProjectRegistPage extends StatefulWidget {
   const ProjectRegistPage({Key? key}) : super(key: key);
@@ -27,14 +27,11 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
   String _content = '';
   String _role = '';
   String _accomplishment = '';
-  String _person = '';
-  String _keyword = personalityList.first;
   DateTime _startDate = DateTime.now();
   DateTime _endDate = DateTime.now();
-  List<String> _personItems = [];
-  List<String> _keywordItems = [];
-  List<String> _fileNames = [];
-  List<PlatformFile> _selectedFiles = [];
+  final List<String> _personItems = [];
+  final List<String> _keywordItems = [];
+  final List<PlatformFile> _selectedFiles = [];
 
   FilePickerResult? result;
 
@@ -66,17 +63,17 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                signUpEditTextForm(
+                inputEditTextForm(
                     label: "프로젝트 이름",
                     hint: "프로젝트 이름을 작성해주세요",
                     type: TextInputType.text,
                     onSaved: (newValue) => _projectName = newValue),
-                signUpEditTextForm(
+                inputEditTextForm(
                     label: "한줄 소개",
                     hint: "프로젝트를 한 줄로 요약해주세요",
                     type: TextInputType.text,
                     onSaved: (newValue) => _introduction = newValue),
-                signUpEditTextForm(
+                inputEditTextForm(
                     label: "내용",
                     lineNum: 10,
                     type: TextInputType.text,
@@ -91,7 +88,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                     children: [
                       FloatingActionButton.extended(
                         onPressed: _pickFile,
-                        label: Text('파일 선택'),
+                        label: const Text('파일 선택'),
                         backgroundColor: Color(0xff5f66f2),
                       ),
                       Column(
@@ -166,13 +163,13 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                     },
                   ),
                 ),
-                signUpEditTextForm(
+                inputEditTextForm(
                     label: "본인의 역할",
                     hint: "본인의 역할에 대해 500자 내로 설명해주세요",
                     lineNum: 10,
                     type: TextInputType.text,
                     onSaved: (newValue) => _role = newValue),
-                signUpEditTextForm(
+                inputEditTextForm(
                     label: "본인의 성과",
                     hint: "본인의 성과에 대해 500자 내로 설명해주세요",
                     lineNum: 10,
@@ -184,11 +181,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("진행 기간",
-                            style: TextStyle(
-                              fontFamily: "EchoDream",
-                              fontWeight: FontWeight.w600,
-                              fontSize: 17,
-                            )),
+                            style: inputLabelStyle),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -247,12 +240,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                                   children: [
                                     Text(
                                       "참여자 명단\t",
-                                      style: TextStyle(
-                                        color: Color(0xff333333),
-                                        fontSize: 17,
-                                        fontFamily: 'EchoDream',
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                      style: inputLabelStyle
                                     ),
                                     Text(
                                       " ※ 최대 5명",
@@ -394,12 +382,13 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                       "period": [_startDate.toString(), _endDate.toString()],
                       "keywords": _keywordItems,
                       "participants": _personItems,
-                      'fileExtensions': List.generate(
-                          _selectedFiles.length,
-                          (index){
-                            logger.w(p.extension(_selectedFiles[index].path.toString()));
-                            return p.extension(_selectedFiles[index].path.toString());
-                          })
+                      'fileExtensions':
+                          List.generate(_selectedFiles.length, (index) {
+                        logger.w(
+                            p.extension(_selectedFiles[index].path.toString()));
+                        return p
+                            .extension(_selectedFiles[index].path.toString());
+                      })
                     };
                     if (_selectedFiles.length != 0) {
                       showCustomDialog(context);

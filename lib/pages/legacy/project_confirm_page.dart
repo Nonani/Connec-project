@@ -4,9 +4,9 @@ import 'package:connec/components/custom_edit_textform.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
-import '../components/custom_dialog.dart';
-import '../style/buttonstyle.dart';
-import '../style/titlestyle.dart';
+import '../../components/custom_dialog.dart';
+import '../../style/buttonstyle.dart';
+import '../../style/titlestyle.dart';
 
 class ProjectConfirmPage extends StatefulWidget {
   const ProjectConfirmPage(this.docID, this.res, {Key? key}) : super(key: key);
@@ -49,7 +49,7 @@ class _ProjectConfirmPageState extends State<ProjectConfirmPage> {
             key: _formKey,
             child: Column(
               children: [
-                signUpEditTextForm(
+                inputEditTextForm(
                   label: "전화번호",
                   hint: "010-1234-1234",
                   type: TextInputType.phone,

@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 
-import '../../style/Member/contextstyle.dart';
+import '../../../style/Member/contextstyle.dart';
+
+
 
 class NetworkReductionPage extends StatefulWidget {
   String uid;

@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connec/pages/mypage/change_email_page.dart';
-import 'package:connec/pages/mypage/change_name_page.dart';
+
 import 'package:connec/style/titlestyle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+
+import 'change_email_page.dart';
+import 'change_name_page.dart';
 
 class AccountSettingPaqe extends StatefulWidget {
   const AccountSettingPaqe({Key? key}) : super(key: key);

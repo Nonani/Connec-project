@@ -1,11 +1,12 @@
 import 'package:connec/components/custom_dialog.dart';
-import 'package:connec/pages/project_modify_page.dart';
+import 'package:connec/pages/pivoting/project/project_modify_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../style/titlestyle.dart';
+
+import '../../../style/titlestyle.dart';
 
 class ProjectDetailPage extends StatefulWidget {
   ProjectDetailPage(this.idx, this.dID, this.my_name, {Key? key}) : super(key: key);

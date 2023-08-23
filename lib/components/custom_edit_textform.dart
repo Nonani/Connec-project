@@ -1,3 +1,4 @@
+import 'package:connec/style/text_style.dart';
 import 'package:flutter/material.dart';
 
 Widget loginEditTextForm(
@@ -11,19 +12,11 @@ Widget loginEditTextForm(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("${label}",
-            style: TextStyle(
-              fontFamily: "EchoDream",
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-            )),
+        Text(label,
+            style: inputLabelStyle),
         SizedBox(height: 10),
         TextFormField(
-          validator: validate != null
-              ? validate
-              : (value) {
-                  return null;
-                },
+          validator: validate ?? (value) => null,
           obscureText: isSecret,
           decoration: InputDecoration(
             focusedErrorBorder: OutlineInputBorder(
@@ -42,12 +35,8 @@ Widget loginEditTextForm(
               borderSide: BorderSide(color: Color(0xff5f66f2), width: 2),
               borderRadius: BorderRadius.circular(25),
             ),
-            hintText: "${hint}",
-            hintStyle: TextStyle(
-                color: Color(0xffbdbdbd),
-                fontSize: 15,
-                fontFamily: "EchoDream",
-                fontWeight: FontWeight.w400),
+            hintText: hint,
+            hintStyle: inputHintStyle,
           ),
           onSaved: onSaved,
         ),
@@ -56,7 +45,7 @@ Widget loginEditTextForm(
   );
 }
 
-Widget signUpEditTextForm(
+Widget inputEditTextForm(
     {required String label,
     int lineNum = 1,
     bool isSecret = false,
@@ -70,12 +59,7 @@ Widget signUpEditTextForm(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: TextStyle(
-              fontFamily: "EchoDream",
-              fontWeight: FontWeight.w600,
-              fontSize: 17,
-            )),
+        Text(label, style: inputLabelStyle),
         SizedBox(height: 10),
         TextFormField(
           controller: controller,
@@ -84,12 +68,7 @@ Widget signUpEditTextForm(
           obscureText: isSecret,
           decoration: InputDecoration(
               hintText: hint,
-              hintStyle: TextStyle(
-                color: Color(0xffbdbdbd),
-                fontSize: 16,
-                fontFamily: 'EchoDream',
-                fontWeight: FontWeight.w400,
-              ),
+              hintStyle: inputHintStyle,
               filled: true,
               fillColor: Color(0xffeeeeee),
               enabledBorder: UnderlineInputBorder(
@@ -111,12 +90,12 @@ Widget signUpEditTextForm(
 
 Widget customKeywordTextForm(
     {required String label,
-    int lineNum = 1,
-    bool isSecret = false,
     required String hint,
     required onChanged,
     required TextInputType type,
     required TextEditingController textController,
+    int lineNum = 1,
+    bool isSecret = false,
     FormFieldValidator? validate}) {
   return Container(
     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -125,20 +104,10 @@ Widget customKeywordTextForm(
       children: [
         Row(
           children: [
-            Text(label,
-                style: TextStyle(
-                  fontFamily: "EchoDream",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 17,
-                )),
-            const Text(
+            Text(label, style: inputLabelStyle),
+            Text(
               "   ※ 최대 5개",
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 14,
-                fontFamily: 'EchoDream',
-                fontWeight: FontWeight.w600,
-              ),
+              style: inputConstraintStyle,
             )
           ],
         ),
@@ -150,12 +119,7 @@ Widget customKeywordTextForm(
           obscureText: isSecret,
           decoration: InputDecoration(
               hintText: hint,
-              hintStyle: TextStyle(
-                color: Color(0xffbdbdbd),
-                fontSize: 16,
-                fontFamily: 'EchoDream',
-                fontWeight: FontWeight.w400,
-              ),
+              hintStyle: inputHintStyle,
               filled: true,
               fillColor: Color(0xffeeeeee),
               enabledBorder: UnderlineInputBorder(

@@ -7,14 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import '../../components/custom_dropdown_button.dart';
-import '../../const/data.dart';
-import '../../services/LocalService.dart';
-import '../../style/buttonstyle.dart';
-import '../../style/titlestyle.dart';
+
 import 'package:http/http.dart' as http;
 
-import '../login/local_dialog.dart';
+import '../../../components/custom_dropdown_button.dart';
+import '../../../const/data.dart';
+import '../../../services/LocalService.dart';
+import '../../../style/buttonstyle.dart';
+import '../../../style/titlestyle.dart';
+import '../../legacy/login/local_dialog.dart';
+
+
 class EditMyInfoPage extends StatefulWidget {
   final before_location;
   final before_work;
@@ -84,7 +87,7 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  signUpEditTextForm(
+                  inputEditTextForm(
                     label: "이름",
                     hint: _name,
                     controller: nameController,
@@ -151,7 +154,7 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
                           ),
                         ]),
                   ),
-                  signUpEditTextForm(
+                  inputEditTextForm(
                     label: "전화번호",
                     controller: phoneNumController,
                     type: TextInputType.phone,
