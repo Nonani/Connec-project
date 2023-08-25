@@ -275,12 +275,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                             controller: personController,
                             decoration: InputDecoration(
                                 hintText: "참여자의 이름을 작성해주세요",
-                                hintStyle: TextStyle(
-                                  color: Color(0xffbdbdbd),
-                                  fontSize: 16,
-                                  fontFamily: 'EchoDream',
-                                  fontWeight: FontWeight.w400,
-                                ),
+                                hintStyle: inputHintStyle,
                                 filled: true,
                                 fillColor: Color(0xffeeeeee),
                                 enabledBorder: UnderlineInputBorder(

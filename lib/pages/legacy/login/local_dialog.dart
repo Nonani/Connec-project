@@ -55,7 +55,7 @@ class LocalDataScreen extends StatelessWidget {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
-              return CustomLoadingDialog();
+              return customLoadingDialog();
             }
             print(snapshot.data!.size);
             return ListView(
@@ -138,7 +138,7 @@ class SubLocalDataScreen extends StatelessWidget {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
-              return CustomLoadingDialog();
+              return customLoadingDialog();
             }
             return ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot document) {

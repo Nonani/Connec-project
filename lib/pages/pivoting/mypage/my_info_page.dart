@@ -26,7 +26,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
       future: _future(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return CustomLoadingDialog();
+          return customLoadingDialog();
         } else {
           return Scaffold(
             appBar: AppBar(

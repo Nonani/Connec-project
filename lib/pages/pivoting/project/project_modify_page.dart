@@ -8,7 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import '../../../components/custom_dialog.dart';
-import '../../../const/data.dart';
 import '../../../style/buttonstyle.dart';
 import '../../../style/titlestyle.dart';
 
@@ -42,8 +41,7 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
   final TextEditingController _introductionController = TextEditingController();
   final TextEditingController _contextController = TextEditingController();
   final TextEditingController _roleController = TextEditingController();
-  final TextEditingController _accomplishmentController =
-      TextEditingController();
+  final TextEditingController _accomplishmentController = TextEditingController();
   final TextEditingController _keywordController = TextEditingController();
   FilePickerResult? result;
 

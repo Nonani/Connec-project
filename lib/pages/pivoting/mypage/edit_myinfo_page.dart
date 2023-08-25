@@ -167,7 +167,7 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
             );
           }
           else{
-            return CustomLoadingDialog();
+            return customLoadingDialog();
           }
         },
       ),
@@ -180,7 +180,7 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
             Logger logger = Logger();
             final localProvider =
             Provider.of<LocalProvider>(context, listen: false);
-            if (_formKey.currentState!.validate() && localProvider.local.sub_local_code != null) {
+            if (_formKey.currentState!.validate() && localProvider.local.subLocalCode != null) {
               _formKey.currentState!.save();
               final url =
               Uri.parse('https://foggy-boundless-avenue.glitch.me/mypage/update');
@@ -197,7 +197,7 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
                     'gender': _gender,
                     'birthDate': _birthDate.toString(),
                     'phoneNum': _phoneNum,
-                    'location' : localProvider.local.sub_local_code!,
+                    'location' : localProvider.local.subLocalCode!,
                   },
                 );
                 logger.w(response.body);
@@ -271,7 +271,7 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
               ),
             )
                 : Text(
-              '${localProvider.local.local} > ${localProvider.local.sub_local}',
+              '${localProvider.local.local} > ${localProvider.local.subLocal}',
               style: TextStyle(
                 color: Color(0xff333333),
                 fontSize: 16,

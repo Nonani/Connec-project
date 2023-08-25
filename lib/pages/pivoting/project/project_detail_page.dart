@@ -1,3 +1,4 @@
+import 'package:connec/components/custom_detail_element.dart';
 import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/pivoting/project/project_modify_page.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,11 @@ import 'dart:convert';
 import '../../../style/titlestyle.dart';
 
 class ProjectDetailPage extends StatefulWidget {
-  ProjectDetailPage(this.idx, this.dID, this.my_name, {Key? key}) : super(key: key);
+  const ProjectDetailPage(this.idx, this.dID, this.myName, {Key? key})
+      : super(key: key);
   final int idx;
   final String dID;
-  final String my_name;
-
+  final String myName;
 
   @override
   State<ProjectDetailPage> createState() => _ProjectDetailPageState();
@@ -30,16 +31,16 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
           padding: EdgeInsets.zero,
           children: [
             Container(
-              margin: EdgeInsets.only(right: 230),
+                margin: EdgeInsets.only(right: 230),
                 width: 100,
                 height: 100,
                 child: DrawerHeader(
+                  margin: EdgeInsets.all(0.0),
+                  padding: EdgeInsets.all(0.0),
                   child: Image.asset(
                     "assets/images/connec_logo2.png",
                     color: Colors.blue,
                   ),
-                  margin: EdgeInsets.all(0.0),
-                  padding: EdgeInsets.all(0.0),
                 )),
             ListTile(
               title: Text('수정하기'),
@@ -63,48 +64,9 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                 showDialog(
                     context: context,
                     builder: (context) {
-                      Future.delayed(Duration(seconds: 3), () {
-                        Navigator.of(context).pop(true);
-                      });
-                      return Dialog(
-                        // The background color
-                        backgroundColor: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only(bottom: 20),
-                                  child: Icon(Icons.check_circle,
-                                      size: 100, color: Color(0xff5f66f2))),
-                              Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '  프로젝트의 상세내용\n링크가 복사되었습니다',
-                                      style: TextStyle(
-                                        color: Color(0xff333333),
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Container(
-                                        margin: EdgeInsets.only(top: 10),
-                                        child: Text(
-                                          "프로젝트의 경험을 공유해보세요",
-                                          style: TextStyle(
-                                            color: Color(0xff333333),
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ))
-                                  ]),
-                            ],
-                          ),
-                        ),
-                      );
+                      Future.delayed(const Duration(seconds: 3),
+                          () => Navigator.of(context).pop(true));
+                      return projectShareDialog();
                     });
               },
             ),
@@ -139,173 +101,28 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
             return SingleChildScrollView(
               child: Column(
                 children: [
+                  projectDetailElement("프로젝트 이름", snapshot.data["name"]),
+                  projectDetailElement("한 줄 소개", snapshot.data["introduction"]),
+                  projectDetailElement("내용", snapshot.data["context"]),
+                  projectDetailElement("본인의 역할", snapshot.data["role"]),
+                  projectDetailElement(
+                      "본인의 성과", snapshot.data["accomplishment"]),
+                  projectDetailElement("참여 기간",
+                      "${snapshot.data["period"][0].substring(0, 10)} ~ ${snapshot.data["period"][1].substring(0, 10)}"),
                   Container(
                     margin: EdgeInsets.all(10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("프로젝트 이름"),
-                        Text(snapshot.data["name"]),
-                        Divider(
-                          thickness: 1,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("한 줄 소개"),
-                        Text(snapshot.data["introduction"]),
-                        Divider(
-                          thickness: 1,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("내용"),
-                        Text(snapshot.data["context"]),
-                        Divider(
-                          thickness: 1,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("본인의 역할"),
-                        Text(snapshot.data["role"]),
-                        Divider(
-                          thickness: 1,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("본인의 성과"),
-                        Text(snapshot.data["accomplishment"]),
-                        Divider(
-                          thickness: 1,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("참여 기간"),
-                        Text("${snapshot.data["period"][0].substring(0, 10)} ~ ${snapshot.data["period"][1].substring(0, 10)}"),
-                        Divider(
-                          thickness: 1,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("참여자 명단"),
+                        const Text("참여자 명단"),
                         ListView.builder(
                           shrinkWrap: true,
                           itemCount: snapshot.data["participants"].length,
                           itemBuilder: (context, index) {
-                            Map<String, dynamic> item =
-                                snapshot.data['participants'][index];
-
-                            return Container(
-                              child: Row(children: [
-                                Text("   ${item['name']} :"),
-                                item["phone_number"] != ''
-                                    ? Text(item["phone_number"])
-                                    : TextButton(
-                                        onPressed: () {
-                                          String combinedString =
-                                              "${widget.dID},${item['name']},${widget.my_name}";
-                                          String encodedString = base64Encode(
-                                              utf8.encode(combinedString));
-                                          print(combinedString);
-                                          print(encodedString);
-                                          String url =
-                                              "https://connec-project.web.app/#/confirm/" +
-                                                  encodedString;
-                                          Clipboard.setData(
-                                              ClipboardData(text: url));
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                // Future.delayed(Duration(seconds: 3), () {
-                                                //   Navigator.of(context).pop(true);
-                                                // });
-                                                return Dialog(
-                                                  // The background color
-                                                  backgroundColor: Colors.white,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 20),
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    bottom: 20),
-                                                            child: Icon(
-                                                                Icons
-                                                                    .check_circle,
-                                                                size: 100,
-                                                                color: Color(
-                                                                    0xff5f66f2))),
-                                                        Text(
-                                                          '프로젝트 참여자에게 전화번호 등록을 요청해보세요. \n공유코드가 클립보드에\n  복사되었습니다.',
-                                                          style: TextStyle(
-                                                            color: Color(
-                                                                0xff333333),
-                                                            fontSize: 17,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              });
-                                        },
-                                        child: Text("미등록")),
-                              ]),
-                            );
+                            return listItemBuilder(snapshot.data['participants'][index]);
                           },
                         ),
-                        Divider(
+                        const Divider(
                           thickness: 1,
                           color: Colors.grey,
                         )
@@ -316,7 +133,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
               ),
             );
           } else {
-            return CustomLoadingDialog();
+            return customLoadingDialog();
           }
         },
       ),
@@ -343,5 +160,35 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
     }
 
     return null;
+  }
+
+  String encodeLink(String name) {
+    String combinedString = "${widget.dID},$name,${widget.myName}";
+    String encodedString = base64Encode(utf8.encode(combinedString));
+    String url = "https://connec-project.web.app/#/confirm/$encodedString";
+    return url;
+  }
+
+  Widget listItemBuilder(Map<String, dynamic> item) {
+    Widget content;
+    if (item['phone_number'].isNotEmpty()) {
+      content = Text(item["phone_number"]);
+    } else {
+      content = TextButton(
+          onPressed: () {
+            Clipboard.setData(ClipboardData(
+                text: encodeLink(item['name'])));
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return projectConfirmDialog();
+                });
+          },
+          child: const Text("미등록"));
+    }
+    return Row(children: [
+      Text("   ${item['name']} :"),
+      content,
+    ]);
   }
 }

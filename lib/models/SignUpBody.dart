@@ -1,7 +1,5 @@
 class SignUpBody {
   String? uid;
-  String? uuid;
-  String? serviceName;
   String? email;
   String? password;
   String? name;
@@ -12,12 +10,10 @@ class SignUpBody {
   String? birth;
   double? rate;
   String? phoneNum;
-  String? profile_image_url;
+  String? profileImageUrl;
 
   SignUpBody(
       {this.uid,
-      this.uuid,
-      this.serviceName,
       this.email,
       this.password,
       this.name,
@@ -26,13 +22,11 @@ class SignUpBody {
       this.gender,
       this.birth,
       this.phoneNum,
-      this.profile_image_url,
+      this.profileImageUrl,
       this.rate});
 
   SignUpBody.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
-    uuid = json['uuid'];
-    serviceName = json['serviceName'];
     email = json['email'];
     password = json['password'];
     name = json['name'];
@@ -41,25 +35,23 @@ class SignUpBody {
     gender = json['gender'];
     phoneNum = json['phoneNum'];
     birth = json['age'];
-    profile_image_url = json['profile_image_url'];
+    profileImageUrl = json['profile_image_url'];
     rate = json['rate'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['uid'] = this.uid;
-    data['uuid'] = this.uuid;
-    data['serviceName'] = this.serviceName;
-    data['email'] = this.email;
-    data['password'] = this.password;
-    data['name'] = this.name;
-    data['work'] = this.work;
-    data['location'] = this.location;
-    data['phoneNum'] = this.phoneNum;
-    data['gender'] = this.gender;
-    data['age'] = this.birth;
-    data['profile_image_url'] = this.profile_image_url;
-    data['rate'] = this.rate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['uid'] = uid;
+    data['email'] = email;
+    data['password'] = password;
+    data['name'] = name;
+    data['work'] = work;
+    data['location'] = location;
+    data['phoneNum'] = phoneNum;
+    data['gender'] = gender;
+    data['age'] = birth;
+    data['profile_image_url'] = profileImageUrl;
+    data['rate'] = rate;
     return data;
   }
 }

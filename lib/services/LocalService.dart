@@ -5,29 +5,29 @@ import 'package:logger/logger.dart';
 
 class Local {
   String? local;
-  String? sub_local;
-  String? local_code;
-  String? sub_local_code;
+  String? subLocal;
+  String? localCode;
+  String? subLocalCode;
 
   Local({
     this.local,
-    this.sub_local,
-    this.local_code,
-    this.sub_local_code
+    this.subLocal,
+    this.localCode,
+    this.subLocalCode
   });
 }
 class LocalProvider with ChangeNotifier {
-  Local local = Local(local: null, sub_local: null);
+  Local local = Local(local: null, subLocal: null);
   void setLocal(String str){
     local.local = str;
   }
   void setSubLocal(String str){
-    local.sub_local = str;
+    local.subLocal = str;
   }
   void setLocalCode(String str){
-    local.local_code = str;
+    local.localCode = str;
   }
   void setSubLocalCode(String str){
-    local.sub_local_code = str;
+    local.subLocalCode = str;
   }
 }

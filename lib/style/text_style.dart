@@ -17,4 +17,15 @@ TextStyle inputConstraintStyle = const TextStyle(
   fontFamily: 'EchoDream',
   fontWeight: FontWeight.w600,
 );
+TextStyle checkTextStyle = const TextStyle(
+    color: Color(0xff333333),
+    fontSize: 16,
+    fontFamily: 'EchoDream',
+    fontWeight: FontWeight.w400
+);
+TextStyle dialogContextStyle = const TextStyle(
+  color: Color(0xff333333),
+  fontSize: 17,
+  fontWeight: FontWeight.w400,
+);
 

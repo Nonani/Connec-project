@@ -233,7 +233,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
                       showCustomDialog(context);
                       await provider.postSignUpBody(SignUpBody(
-                        uuid: uuid.v4(),
                         name: _name,
                         birth: _age,
                         email: _email,
@@ -242,7 +241,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         password: _password,
                         rate: _rate,
                         work: _work,
-                        serviceName: "None",
                       ));
 
                       if (provider.isComplete) {

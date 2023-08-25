@@ -1,9 +1,9 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connec/components/custom_checkbox.dart';
 import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/services/LocalService.dart';
 import 'package:connec/style/buttonstyle.dart';
+import 'package:connec/style/text_style.dart';
 import 'package:logger/logger.dart';
 import 'package:uuid/uuid.dart';
 
@@ -16,15 +16,13 @@ import 'package:provider/provider.dart';
 
 import '../../../models/SignUpBody.dart';
 import '../../../services/service_class.dart';
-import '../../legacy/login/job_dialog.dart';
 import '../../legacy/login/local_dialog.dart';
 
 class SocialSignUpPage extends StatefulWidget {
-  SocialSignUpPage({Key? key, this.uid, this.serviceName, this.profileImageUrl})
+  SocialSignUpPage({Key? key, required this.uid, required this.profileImageUrl})
       : super(key: key);
-  final uid;
-  final serviceName;
-  final profileImageUrl;
+  final String uid;
+  final String? profileImageUrl;
   DateTime birthDate = DateTime.now();
 
   @override
@@ -32,7 +30,7 @@ class SocialSignUpPage extends StatefulWidget {
 }
 
 class _SocialSignUpPageState extends State<SocialSignUpPage> {
-  var uuid = Uuid();
+  var uuid = const Uuid();
   String? _name;
   String _work = workList.first;
   String _gender = genderList.first;
@@ -40,222 +38,166 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
   bool _checkboxValue1 = false;
   bool _checkboxValue2 = false;
   final _formKey = GlobalKey<FormState>();
-  bool _needUpdate = false;
 
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ServiceClass>(context, listen: false);
-    return FutureBuilder(
-      future: _future(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return SafeArea(
-              child: Center(
-            child: CircularProgressIndicator(),
-          ));
-        } else {
-          return Scaffold(
-            appBar: AppBar(
-                shape: Border(
-                    bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
-                backgroundColor: Color(0xfffafafa),
-                elevation: 0,
-                leading: BackButton(color: Color(0xff5f66f2))),
-            body: SafeArea(
-              child: Form(
-                key: _formKey,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      inputEditTextForm(
-                        label: "이름",
-                        hint: "이름(실명)을 입력해주세요",
-                        isSecret: false,
-                        type: TextInputType.text,
-                        onSaved: (newValue) => _name = newValue,
-                      ),
-                      CustomDropdownButton(
-                          itemList: workList,
-                          label: "직업",
-                          onChanged: (value) {
-                            setState(
-                              () {
-                                _work = value;
-                              },
-                            );
-                          },
-                          selectedItem: _work),
-
-                      CustomDropdownButton(
-                        label: "성별",
-                        itemList: genderList,
-                        selectedItem: _gender,
-                        onChanged: (value) {
-                          setState(
-                            () {
-                              _gender = value;
-                            },
-                          );
-                        },
-                      ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                          Text("생년월일",
-                              style: TextStyle(
-                                fontFamily: "EchoDream",
-                                fontWeight: FontWeight.w600,
-                                fontSize: 17,
-                              )),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                  "${widget.birthDate.year} - ${widget.birthDate.month} - ${widget.birthDate.day}"),
-                              IconButton(
-                                  onPressed: () async {
-                                    final selectedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: widget.birthDate,
-                                      firstDate: DateTime(2000),
-                                      lastDate: DateTime.now(),
-                                    );
-                                    if (selectedDate != null) {
-                                      setState(() {
-                                        widget.birthDate = selectedDate;
-                                      });
-                                    }
-                                  },
-                                  icon: const Icon(Icons.calendar_month))
-                            ],
-                          ),
-                        ]),
-                      ),
-                      inputEditTextForm(
-                        label: "전화번호",
-                        type: TextInputType.phone,
-                        onSaved: (newValue) => _phoneNum = newValue,
-                        hint: "전화번호를 입력해주세요",
-                      ),
-                      buildLocalContainer(snapshot),
-                      // SignUpEditTextForm(
-                      //   label: "소개",
-                      //   hint: "소개를 입력해주세요",
-                      //   isSecret: false,
-                      //   onSaved: (newValue) => _introduction = newValue,
-                      // ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(13, 4, 13, 2),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Checkbox(
-                                value: _checkboxValue1,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _checkboxValue1 = value!;
-                                  });
-                                }),
-                            Text(
-                              '(필수) 이용약관, 개인정보 수집 및 이용 동의',
-                              style: TextStyle(
-                                  color: Color(0xff333333),
-                                  fontFamily: 'EchoDream',
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(13, 4, 13, 4),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Checkbox(
-                                value: _checkboxValue2,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _checkboxValue2 = value!;
-                                  });
-                                }),
-                            Text(
-                              '(필수) 만 14세 이상',
-                              style: TextStyle(
-                                  color: Color(0xff333333),
-                                  fontFamily: 'EchoDream',
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+    return Scaffold(
+      appBar: AppBar(
+          shape:
+              Border(bottom: BorderSide(color: Color(0xffdbdbdb), width: 2.5)),
+          backgroundColor: Color(0xfffafafa),
+          elevation: 0,
+          leading: const BackButton(color: Color(0xff5f66f2))),
+      body: SafeArea(
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                inputEditTextForm(
+                  label: "이름",
+                  hint: "이름(실명)을 입력해주세요",
+                  isSecret: false,
+                  type: TextInputType.text,
+                  onSaved: (newValue) => _name = newValue,
                 ),
-              ),
+                CustomDropdownButton(
+                    itemList: workList,
+                    label: "직업",
+                    onChanged: (value) {
+                      setState(
+                        () {
+                          _work = value;
+                        },
+                      );
+                    },
+                    selectedItem: _work),
+                CustomDropdownButton(
+                  label: "성별",
+                  itemList: genderList,
+                  selectedItem: _gender,
+                  onChanged: (value) {
+                    setState(
+                      () {
+                        _gender = value;
+                      },
+                    );
+                  },
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("생년월일", style: inputLabelStyle),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                                "${widget.birthDate.year} - ${widget.birthDate.month} - ${widget.birthDate.day}"),
+                            IconButton(
+                                onPressed: () async {
+                                  final selectedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: widget.birthDate,
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime.now(),
+                                  );
+                                  if (selectedDate != null) {
+                                    setState(() {
+                                      widget.birthDate = selectedDate;
+                                    });
+                                  }
+                                },
+                                icon: const Icon(Icons.calendar_month))
+                          ],
+                        ),
+                      ]),
+                ),
+                inputEditTextForm(
+                  label: "전화번호",
+                  type: TextInputType.phone,
+                  onSaved: (newValue) => _phoneNum = newValue,
+                  hint: "전화번호를 입력해주세요",
+                ),
+                FutureBuilder(
+                    future: _future(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return buildLocalContainer(snapshot);
+                      } else {
+                        return const SafeArea(
+                            child: Center(
+                          child: CircularProgressIndicator(),
+                        ));
+                      }
+                    }),
+                inputCheckBox('(필수) 이용약관, 개인정보 수집 및 이용 동의', _checkboxValue1,
+                    (value) {
+                  setState(() {
+                    _checkboxValue1 = value!;
+                  });
+                }),
+                inputCheckBox('(필수) 만 14세 이상', _checkboxValue2, (value) {
+                  setState(() {
+                    _checkboxValue2 = value!;
+                  });
+                }),
+              ],
             ),
-            bottomNavigationBar: Container(
-              height: 56,
-              child: ElevatedButton(
-                style: featureButton,
-                child: Text("회원가입", style: buttonText),
-                onPressed: () async {
-                  Logger logger = Logger();
-                  final localProvider =
-                      Provider.of<LocalProvider>(context, listen: false);
-                  if (_formKey.currentState!.validate() &&
-                      _checkboxValue1 &&
-                      _checkboxValue2 &&
-                      localProvider.local.sub_local != null) {
-                    _formKey.currentState!.save();
-                    showCustomDialog(context);
-                    logger.w(widget.profileImageUrl);
-                    await provider.postSignUpBody(SignUpBody(
-                      uid: widget.uid.toString(),
-                      profile_image_url: widget.profileImageUrl,
-                      uuid: uuid.v4(),
-                      name: _name,
-                      birth: widget.birthDate.toString(),
-                      work: _work,
-                      rate: 0,
-                      phoneNum: _phoneNum,
-                      gender: _gender,
-                      location: localProvider.local.sub_local_code,
-                      serviceName: widget.serviceName.toString(),
-                    ));
-                    if (provider.isComplete) {
-                      Navigator.pop(context);
-                      // Navigator.pop(context);
-                    }
-                  } else if (localProvider.local.sub_local == null) {
-                    showDialog(
-                        context: context,
-                        builder: (context) => areaValidationDialog());
-                  } else {
-                    print(_formKey.currentState!.validate());
-                  }
-                },
-              ),
-            ),
-          );
-        }
-      },
+          ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        height: 56,
+        child: ElevatedButton(
+          style: featureButton,
+          child: Text("회원가입", style: buttonText),
+          onPressed: () async {
+            Logger logger = Logger();
+            final localProvider =
+                Provider.of<LocalProvider>(context, listen: false);
+            if (_formKey.currentState!.validate() &&
+                _checkboxValue1 &&
+                _checkboxValue2 &&
+                localProvider.local.subLocal != null) {
+              _formKey.currentState!.save();
+              showCustomDialog(context);
+              logger.w(widget.profileImageUrl);
+              await provider.postSignUpBody(SignUpBody(
+                uid: widget.uid.toString(),
+                profileImageUrl: widget.profileImageUrl,
+                name: _name,
+                birth: widget.birthDate.toString(),
+                work: _work,
+                rate: 0,
+                phoneNum: _phoneNum,
+                gender: _gender,
+                location: localProvider.local.subLocalCode,
+              ));
+              if (provider.isComplete) {
+                Navigator.pop(context);
+                // Navigator.pop(context);
+              }
+            } else if (localProvider.local.subLocal == null) {
+              showDialog(
+                  context: context,
+                  builder: (context) => areaValidationDialog());
+            } else {
+              print(_formKey.currentState!.validate());
+            }
+          },
+        ),
+      ),
     );
   }
 
   Future _future() async {
-    Logger logger = Logger();
     FirebaseFirestore db = FirebaseFirestore.instance;
-    final workResult = await db.collection("workData").get();
     final localResult = await db.collection("localData").get();
-    // print(result.size);
-    //
-    // result.docs.forEach((element) {
-    //   print(element.data);
-    // });
 
-    return {"workData": workResult.docs, "localData": localResult.docs};
+    return {"localData": localResult.docs};
   }
 
   Container buildLocalContainer(AsyncSnapshot snapshot) {
@@ -264,12 +206,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
       width: double.infinity,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text("지역",
-            style: TextStyle(
-              fontFamily: "EchoDream",
-              fontWeight: FontWeight.w600,
-              fontSize: 17,
-            )),
+        Text("지역", style: inputLabelStyle),
         SizedBox(height: 10),
         GestureDetector(
           onTap: () {
@@ -292,22 +229,10 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                     bottom: BorderSide(color: Color(0xff5f66f2), width: 1))),
             alignment: Alignment.centerLeft,
             child: localProvider.local.local == null
-                ? Text(
-                    '선택',
-                    style: TextStyle(
-                      color: Color(0xffbdbdbd),
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
-                    ),
-                  )
+                ? Text('선택', style: checkTextStyle)
                 : Text(
-                    '${localProvider.local.local} > ${localProvider.local.sub_local}',
-                    style: TextStyle(
-                      color: Color(0xff333333),
-                      fontSize: 16,
-                      fontFamily: 'S-CoreDream-4',
-                    ),
-                  ),
+                    '${localProvider.local.local} > ${localProvider.local.subLocal}',
+                    style: checkTextStyle),
           ),
         ),
       ]),

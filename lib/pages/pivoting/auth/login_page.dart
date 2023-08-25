@@ -118,10 +118,8 @@ class _LoginPageState extends State<LoginPage> {
             context,
             MaterialPageRoute(
                 builder: ((context) => SocialSignUpPage(
-                      serviceName: "kakao",
                       uid: "kakao:${user!.id}",
-                      profileImageUrl:
-                          user!.kakaoAccount!.profile!.profileImageUrl,
+                      profileImageUrl: user!.kakaoAccount!.profile!.profileImageUrl,
                     ))));
       } else {
         //이전에 로그인을 하여 회원가입 정보를 넣은 경우
