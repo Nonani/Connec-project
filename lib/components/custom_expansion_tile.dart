@@ -9,6 +9,8 @@ import 'package:logger/logger.dart';
 class ExpansionTileSample extends StatelessWidget {
   Logger logger = Logger();
   List<Entry> data = [];
+
+  ExpansionTileSample({super.key});
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(

@@ -13,7 +13,7 @@ Widget loginEditTextForm(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label,
-            style: inputLabelStyle),
+            style: labelStyle),
         SizedBox(height: 10),
         TextFormField(
           validator: validate ?? (value) => null,
@@ -59,7 +59,7 @@ Widget inputEditTextForm(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: inputLabelStyle),
+        Text(label, style: labelStyle),
         SizedBox(height: 10),
         TextFormField(
           controller: controller,
@@ -104,10 +104,10 @@ Widget customKeywordTextForm(
       children: [
         Row(
           children: [
-            Text(label, style: inputLabelStyle),
+            Text(label, style: labelStyle),
             Text(
               "   ※ 최대 5개",
-              style: inputConstraintStyle,
+              style: constraintStyle,
             )
           ],
         ),

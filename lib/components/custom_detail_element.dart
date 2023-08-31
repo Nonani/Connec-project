@@ -1,3 +1,4 @@
+import 'package:connec/style/divider_style.dart';
 import 'package:flutter/material.dart';
 
 Widget projectDetailElement(String label, String data) {
@@ -9,10 +10,7 @@ Widget projectDetailElement(String label, String data) {
       children: [
         Text(label),
         Text(data),
-        const Divider(
-          thickness: 1,
-          color: Colors.grey,
-        )
+       greyDivider,
       ],
     ),
   );

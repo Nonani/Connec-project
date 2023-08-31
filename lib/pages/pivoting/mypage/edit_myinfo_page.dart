@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/components/custom_edit_textform.dart';
+import 'package:connec/style/padding_style.dart';
+import 'package:connec/style/text_style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -13,16 +15,16 @@ import 'package:http/http.dart' as http;
 import '../../../components/custom_dropdown_button.dart';
 import '../../../const/data.dart';
 import '../../../services/LocalService.dart';
-import '../../../style/buttonstyle.dart';
-import '../../../style/titlestyle.dart';
+import '../../../style/button_style.dart';
+import '../../../style/title_style.dart';
 import '../../legacy/login/local_dialog.dart';
 
 
 class EditMyInfoPage extends StatefulWidget {
-  final before_location;
-  final before_work;
+  final String beforeLocation;
+  final String beforeWork;
 
-  EditMyInfoPage(this.before_location, this.before_work, {Key? key}) : super(key: key);
+  const EditMyInfoPage(this.beforeLocation, this.beforeWork, {Key? key}) : super(key: key);
 
 
   @override
@@ -125,11 +127,7 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("생년월일",
-                              style: TextStyle(
-                                fontFamily: "EchoDream",
-                                fontWeight: FontWeight.w600,
-                                fontSize: 17,
-                              )),
+                              style: labelStyle),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -171,7 +169,7 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
           }
         },
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         height: 56,
         child: ElevatedButton(
           style: featureButton,
@@ -184,8 +182,7 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
               _formKey.currentState!.save();
               final url =
               Uri.parse('https://foggy-boundless-avenue.glitch.me/mypage/update');
-              try {
-                http.Response response = await http.post(
+              http.post(
                   url,
                   headers: <String, String>{
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -199,12 +196,12 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
                     'phoneNum': _phoneNum,
                     'location' : localProvider.local.subLocalCode!,
                   },
-                );
-                logger.w(response.body);
-                Navigator.pop(context);
-              } catch (e) {
-                logger.w(e);
-              }
+                ).then((response) {
+                  logger.w(response.body);
+                   Navigator.pop(context);
+                });
+
+
             }
 
           },
@@ -241,13 +238,8 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
       width: double.infinity,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text("지역",
-            style: TextStyle(
-              fontFamily: "EchoDream",
-              fontWeight: FontWeight.w600,
-              fontSize: 17,
-            )),
-        SizedBox(height: 10),
+        Text("지역", style: labelStyle),
+        const SizedBox(height:10),
         GestureDetector(
           onTap: () {
             Navigator.push(context, DialogRoute(context: context, builder: (context) => LocalDataScreen( onClose: (){setState((){});}),));
@@ -255,7 +247,7 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
           child: Container(
             width: double.infinity,
             height: 40,
-            padding: EdgeInsets.only(left: 10),
+            padding: leftPadding10,
             decoration: BoxDecoration(
                 color: Color(0xffeeeeee),
                 border: Border(
@@ -264,19 +256,11 @@ class _EditMyInfoPageState extends State<EditMyInfoPage> {
             child: localProvider.local.local == null
                 ? Text(
               _location,
-              style: TextStyle(
-                color: Color(0xffbdbdbd),
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-              ),
+              style: inputHintStyle
             )
                 : Text(
               '${localProvider.local.local} > ${localProvider.local.subLocal}',
-              style: TextStyle(
-                color: Color(0xff333333),
-                fontSize: 16,
-                fontFamily: 'S-CoreDream-4',
-              ),
+              style: inputHintStyle
             ),
           ),
         ),

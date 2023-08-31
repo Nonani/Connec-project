@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 import '../../components/custom_dialog.dart';
-import '../../style/buttonstyle.dart';
-import '../../style/titlestyle.dart';
+import '../../style/button_style.dart';
+import '../../style/title_style.dart';
 
 class ProjectConfirmPage extends StatefulWidget {
   const ProjectConfirmPage(this.docID, this.res, {Key? key}) : super(key: key);

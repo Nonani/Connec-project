@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/custom_checkbox.dart';
 import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/services/LocalService.dart';
-import 'package:connec/style/buttonstyle.dart';
+import 'package:connec/style/button_style.dart';
 import 'package:connec/style/text_style.dart';
 import 'package:logger/logger.dart';
 import 'package:uuid/uuid.dart';
@@ -90,7 +90,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("생년월일", style: inputLabelStyle),
+                        Text("생년월일", style: labelStyle),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -206,7 +206,7 @@ class _SocialSignUpPageState extends State<SocialSignUpPage> {
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
       width: double.infinity,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text("지역", style: inputLabelStyle),
+        Text("지역", style: labelStyle),
         SizedBox(height: 10),
         GestureDetector(
           onTap: () {

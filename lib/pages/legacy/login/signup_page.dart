@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connec/style/buttonstyle.dart';
-import 'package:connec/style/titlestyle.dart';
+import 'package:connec/style/button_style.dart';
+import 'package:connec/style/title_style.dart';
 import 'package:logger/logger.dart';
 
 import '../../../components/custom_dialog.dart';

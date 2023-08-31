@@ -1,6 +1,8 @@
 import 'package:connec/style/text_style.dart';
 import 'package:flutter/material.dart';
 
+import '../style/icon_style.dart';
+
 Widget customLoadingDialog() {
   return Dialog(
     // The background color
@@ -145,7 +147,8 @@ Widget customLoadingPage() {
         ),
       ));
 }
-Widget projectShareDialog(){
+
+Widget completeDialog(String main, String sub) {
   return Dialog(
     // The background color
     backgroundColor: Colors.white,
@@ -157,49 +160,14 @@ Widget projectShareDialog(){
         children: [
           Container(
               margin: EdgeInsets.only(bottom: 20),
-              child: Icon(Icons.check_circle,
-                  size: 100, color: Color(0xff5f66f2))),
-          Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  '  프로젝트의 상세내용\n링크가 복사되었습니다',
-                  style: dialogContextStyle
-                ),
-                Container(
-                    margin: EdgeInsets.only(top: 10),
-                    child: Text(
-                      "프로젝트의 경험을 공유해보세요",
-                      style: TextStyle(
-                        color: Color(0xff333333),
-                        fontSize: 11,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ))
-              ]),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget projectConfirmDialog() {
-  return Dialog(
-    backgroundColor: Colors.white,
-    child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-              margin: EdgeInsets.only(bottom: 20),
-              child: Icon(Icons.check_circle,
-                  size: 100, color: Color(0xff5f66f2))),
-          Text(
-            '프로젝트 참여자에게 전화번호 등록을 요청해보세요. \n공유코드가 클립보드에\n  복사되었습니다.',
-            style: dialogContextStyle
+              child: checkIcon
           ),
+          Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            Text(main, style: dialogContextStyle),
+            Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Text(sub, style: dialogAdditionalStyle))
+          ]),
         ],
       ),
     ),

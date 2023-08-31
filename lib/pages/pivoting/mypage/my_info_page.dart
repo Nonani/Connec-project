@@ -1,12 +1,14 @@
 import 'package:connec/components/custom_dialog.dart';
-import 'package:connec/style/titlestyle.dart';
+import 'package:connec/style/divider_style.dart';
+import 'package:connec/style/icon_style.dart';
+import 'package:connec/style/padding_style.dart';
+import 'package:connec/style/text_style.dart';
+import 'package:connec/style/title_style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-
-import '../../legacy/network/expand_network_page.dart';
 
 import '../project/project_detail_page.dart';
 import '../project/project_regist_page.dart';
@@ -30,7 +32,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
         } else {
           return Scaffold(
             appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.blue),
+              iconTheme: IconThemeData(color: Color(0xff5f66f2)),
               elevation: 0,
               toolbarHeight: 80,
               backgroundColor: const Color(0xfffafafa),
@@ -53,10 +55,8 @@ class _MyInfoPageState extends State<MyInfoPage> {
                       child: DrawerHeader(
                         child: Image.asset(
                           "assets/images/connec_logo2.png",
-                          color: Colors.blue,
+                          color: Color(0xff5f66f2),
                         ),
-                        margin: EdgeInsets.all(0.0),
-                        padding: EdgeInsets.all(0.0),
                       )),
                   ListTile(
                     title: Text('수정하기'),
@@ -79,61 +79,12 @@ class _MyInfoPageState extends State<MyInfoPage> {
                               Future.delayed(Duration(seconds: 3), () {
                                 Navigator.of(context).pop(true);
                               });
-                              return Dialog(
-                                // The background color
-                                backgroundColor: Colors.white,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 20),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                          margin: EdgeInsets.only(bottom: 20),
-                                          child: Icon(Icons.check_circle,
-                                              size: 100,
-                                              color: Color(0xff5f66f2))),
-                                      Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              '프로젝트 참여 동의서 작성\n   링크가 복사되었습니다',
-                                              style: TextStyle(
-                                                color: Color(0xff333333),
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                            Container(
-                                                margin:
-                                                    EdgeInsets.only(top: 10),
-                                                child: Text(
-                                                  "프로젝트의 경험을 공유해보세요",
-                                                  style: TextStyle(
-                                                    color: Color(0xff333333),
-                                                    fontSize: 11,
-                                                    fontWeight: FontWeight.w300,
-                                                  ),
-                                                ))
-                                          ]),
-                                    ],
-                                  ),
-                                ),
-                              );
+                               return completeDialog(
+                                   "마이페이지 링크가\n 복사되었습니다",
+                                   "프로젝트 경험을 공유해보세요"
+                               );
                             });
                       }),
-                  ListTile(
-                    title: Text('코드 입력하기'),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ExpandNetworkPage()));
-                    },
-                  ),
                   ListTile(
                     title: Text('로그아웃'),
                     onTap: () {
@@ -143,25 +94,22 @@ class _MyInfoPageState extends State<MyInfoPage> {
                   ),
                   ListTile(
                     title: Text('회원탈퇴'),
-                    onTap: () async{
-                      Logger logger = Logger();
-                      final url =
-                      Uri.parse('https://foggy-boundless-avenue.glitch.me/unregister');
-                      try {
-                        http.Response response = await http.post(
-                          url,
-                          headers: <String, String>{
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                          },
-                          body: <String, String>{
-                            'uid': FirebaseAuth.instance.currentUser!.uid.toString(),
-                          },
-                        );
-                      } catch (e) {
-                        logger.w(e);
-                      }
-                      FirebaseAuth.instance.signOut();
-                      Navigator.pop(context);
+                    onTap: () async {
+                      final url = Uri.parse(
+                          'https://foggy-boundless-avenue.glitch.me/unregister');
+                      await http.post(
+                        url,
+                        headers: <String, String>{
+                          'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: <String, String>{
+                          'uid':
+                              FirebaseAuth.instance.currentUser!.uid.toString(),
+                        },
+                      ).then((res) {
+                        FirebaseAuth.instance.signOut();
+                        Navigator.pop(context);
+                      });
                     },
                   ),
                 ],
@@ -177,120 +125,82 @@ class _MyInfoPageState extends State<MyInfoPage> {
                       child: Container(
                         margin: EdgeInsets.only(
                             left: 110, right: 110, top: 35, bottom: 45),
-                        child:
-                            Image.network(snapshot.data["profile_image_url"]),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Color(0xffafafaf),
                         ),
+                        child:
+                            Image.network(snapshot.data["profile_image_url"]),
                       ),
                     ),
                   ),
                   Container(
-                      margin: EdgeInsets.only(bottom: 10),
+                      margin: bottomPadding10,
                       child: Center(
                         child: Text(
                           "${snapshot.data["name"]}",
+                          style: labelStyle
                         ),
                       )),
                   Container(
-                    margin: EdgeInsets.only(bottom: 10),
+                    margin: bottomPadding10,
                     child: Center(
-                      child: Text("${snapshot.data["work"]}"),
+                      child: Text("${snapshot.data["work"]}",
+                        style: contextStyle
+                      ),
                     ),
                   ),
                   Container(
                     margin: const EdgeInsets.only(
                         top: 10, left: 10.0, right: 10, bottom: 10),
-                    child: Divider(
-                      color: Colors.grey,
-                      thickness: 1.0,
-                    ),
+                    child: greyDivider
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 20),
+                    margin: leftPadding20,
                     child: Text(
                       "프로젝트 키워드",
-                      style: TextStyle(
-                        color: Color(0xff333333),
-                        fontSize: 17,
-                        fontFamily: 'EchoDream',
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: labelStyle
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 20),
+                    margin: leftPadding30,
                     child: Text(
-                      "#AI #머신러닝 #HR테크 #자연어처리\n#블록체인 #앱서비스 #백엔드",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 17,
-                        fontFamily: 'EchoDream',
-                        fontWeight: FontWeight.w600,
-                      ),
+                      "#${snapshot.data['project_keyword']} ",
+                      style: contextStyle
                     ),
                   ),
                   Container(
                     margin: const EdgeInsets.only(
                         top: 10, left: 10.0, right: 10, bottom: 10),
-                    child: Divider(
-                      color: Colors.grey,
-                      thickness: 1.0,
-                    ),
+                    child: greyDivider
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 20),
+                    margin: leftPadding20,
                     child: Text(
                       "개인정보",
-                      style: TextStyle(
-                        color: Color(0xff333333),
-                        fontSize: 17,
-                        fontFamily: 'EchoDream',
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: labelStyle
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 20),
+                    margin: leftPadding30,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "생년월일 : ${snapshot.data["age"].substring(0,10)}",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 17,
-                            fontFamily: 'EchoDream',
-                            fontWeight: FontWeight.w600,
-                          ),
+                          "생년월일 : ${snapshot.data["age"].substring(0, 10)}",
+                          style: contextStyle
                         ),
                         Text(
                           "성 별  : ${snapshot.data["gender"]}",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 17,
-                            fontFamily: 'EchoDream',
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: contextStyle
                         ),
                         Text(
                           "전화번호 : ${snapshot.data["phone_number"]}",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 17,
-                            fontFamily: 'EchoDream',
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: contextStyle
                         ),
                         Text(
                           "활동지역 : ${snapshot.data["location"]}",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 17,
-                            fontFamily: 'EchoDream',
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: contextStyle
                         ),
                       ],
                     ),
@@ -298,10 +208,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                   Container(
                     margin: const EdgeInsets.only(
                         top: 10, left: 10.0, right: 10, bottom: 10),
-                    child: Divider(
-                      color: Colors.grey,
-                      thickness: 1.0,
-                    ),
+                    child: greyDivider
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 20, right: 20),
@@ -313,21 +220,11 @@ class _MyInfoPageState extends State<MyInfoPage> {
                             children: [
                               Text(
                                 "프로젝트\t",
-                                style: TextStyle(
-                                  color: Color(0xff333333),
-                                  fontSize: 17,
-                                  fontFamily: 'EchoDream',
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: labelStyle
                               ),
                               Text(
                                 "※ 최대 10개",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14,
-                                  fontFamily: 'EchoDream',
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: constraintStyle
                               )
                             ],
                           ),
@@ -336,13 +233,11 @@ class _MyInfoPageState extends State<MyInfoPage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ProjectRegistPage(),
+                                      builder: (context) => const ProjectRegistPage(),
                                     )).then((value) => setState(() {}));
                               },
-                              icon: Icon(
-                                Icons.add_circle,
-                                color: Colors.blue,
-                              ))
+                              icon: addIcon
+                          )
                         ],
                       ),
                       ListView.builder(
@@ -355,38 +250,31 @@ class _MyInfoPageState extends State<MyInfoPage> {
                                 snapshot.data['projects'][idx];
                             return Column(children: [
                               Container(
-                                  margin: EdgeInsets.only(top: 10),
+                                  margin: topPadding10,
                                   child: Text(
-                                    item['name'],
-                                    style: TextStyle(
-                                        fontFamily: 'EchoDream', fontSize: 17),
+                                    "프로젝트 ${idx + 1}",
+                                    style: indexStyle
                                   )),
-                              Container(
-                                  child: TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProjectDetailPage(
-                                                      idx,
-                                                        item["docId"],
-                                                        snapshot
-                                                            .data['name'])));
-                                      },
-                                      child: Text(
-                                        item['introduction'],
-                                        style: TextStyle(
-                                            decoration:
-                                                TextDecoration.underline),
-                                      ))),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProjectDetailPage(
+                                                    idx,
+                                                    item["docId"],
+                                                    snapshot
+                                                        .data['name'])));
+                                  },
+                                  child: Text(
+                                    item['introduction'],
+                                    style: linkStyle
+                                  )),
                               Container(
                                 margin: const EdgeInsets.only(
                                     left: 10.0, right: 10),
-                                child: Divider(
-                                  color: Colors.grey,
-                                  thickness: 1.0,
-                                ),
+                                child: greyDivider
                               ),
                             ]);
                           })
@@ -417,7 +305,13 @@ class _MyInfoPageState extends State<MyInfoPage> {
         },
       );
       logger.w(response.body);
-      return jsonDecode(response.body);
+      Map<String, dynamic> data = jsonDecode(response.body);
+      Map<String, dynamic> keywords = data['project_keyword'];
+      data['project_keyword'] = keywords.keys.toList(growable: false)
+        ..sort((k1, k2) => keywords[k2].compareTo(keywords[k1]));
+      data['project_keyword'] = data['project_keyword'].join(" #");
+      logger.w(data);
+      return data;
     } catch (e) {
       logger.w(e);
     }

@@ -8,9 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as kakao;
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
@@ -26,10 +24,11 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await FirebaseMessaging.instance.getInitialMessage();
+  // await FirebaseMessaging.instance.getInitialMessage();
   kakao.KakaoSdk.init(nativeAppKey: 'd148d9781b59a5bbd68bf9d38a8195c7');
 
   runApp(
+
     /// Providers are above [MyApp] instead of inside it, so that tests
     /// can use [MyApp] while mocking the providers
     MultiProvider(
@@ -82,78 +81,84 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    requestPermission();
-    initInfo();
+    // requestPermission();
+    // initInfo();
   }
 
-  initInfo() {
-    var androidInitialize =
-        const AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iOSInitialize = const DarwinInitializationSettings();
-    var initializationSettings =
-        InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
-    FlutterLocalNotificationsPlugin().initialize(initializationSettings,
-        onDidReceiveNotificationResponse:
-            (NotificationResponse response) async {
-      try {
-        if (response.payload != null && (response.payload!).isNotEmpty) {
-          logger.w("payload exist");
-        } else {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyInfoPage(),
-              ),
-              (route) => false);
-        }
-      } catch (e) {}
-      return;
-    });
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      AndroidNotificationDetails androidChannelSpecifics =
-          AndroidNotificationDetails('request', 'request arrived',
-              importance: Importance.high,
-              priority: Priority.high,
-              playSound: true);
-      NotificationDetails channelSpecifics = NotificationDetails(
-        android: androidChannelSpecifics,
-      );
-      await FlutterLocalNotificationsPlugin().show(
-          0,
-          message.notification?.title,
-          message.notification?.body,
-          channelSpecifics);
-    });
-  }
+// initInfo() {
+//   var androidInitialize =
+//       const AndroidInitializationSettings('@mipmap/ic_launcher');
+//   var iOSInitialize = const DarwinInitializationSettings();
+//   var initializationSettings =
+//       InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
+//   FlutterLocalNotificationsPlugin().initialize(initializationSettings,
+//       onDidReceiveNotificationResponse:
+//           (NotificationResponse response) async {
+//     try {
+//       if (response.payload != null && (response.payload!).isNotEmpty) {
+//         logger.w("payload exist");
+//       } else {
+//         Navigator.pushAndRemoveUntil(
+//             context,
+//             MaterialPageRoute(
+//               builder: (context) => MyInfoPage(),
+//             ),
+//             (route) => false);
+//       }
+//     } catch (e) {}
+//     return;
+//   });
+
+// FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+//   AndroidNotificationDetails androidChannelSpecifics =
+//       AndroidNotificationDetails('request', 'request arrived',
+//           importance: Importance.high,
+//           priority: Priority.high,
+//           playSound: true);
+//   NotificationDetails channelSpecifics = NotificationDetails(
+//     android: androidChannelSpecifics,
+//   );
+//   await FlutterLocalNotificationsPlugin().show(
+//       0,
+//       message.notification?.title,
+//       message.notification?.body,
+//       channelSpecifics);
+// });
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) =>
-            (!snapshot.hasData) ? LoginPage() : MyInfoPage());
+        builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const LoginPage();
+        }else{
+          return const MyInfoPage();
+        }
+    });
   }
 
-  void requestPermission() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-    NotificationSettings settings = await messaging.requestPermission(
-        alert: true,
-        announcement: false,
-        badge: true,
-        carPlay: false,
-        criticalAlert: false,
-        provisional: false,
-        sound: true);
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      logger.w("user granted permission");
-    } else if (settings.authorizationStatus ==
-        AuthorizationStatus.provisional) {
-      logger.w('user granted provisional permissions');
-    } else {
-      logger.w('user declined permission grant');
-    }
-  }
+  // void requestPermission() async {
+  //   Logger logger = Logger();
+  //   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  //
+  //   NotificationSettings settings = await messaging.requestPermission(
+  //       alert: true,
+  //       announcement: false,
+  //       badge: true,
+  //       carPlay: false,
+  //       criticalAlert: false,
+  //       provisional: false,
+  //       sound: true);
+  //   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+  //     logger.w("user granted permission");
+  //   } else
+  //   if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+  //     logger.w('user granted provisional permissions');
+  //   } else {
+  //     logger.w('user declined permission grant');
+  //   }
+  // }
 }

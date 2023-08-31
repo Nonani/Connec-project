@@ -1,4 +1,6 @@
 import 'package:connec/components/custom_edit_textform.dart';
+import 'package:connec/style/icon_style.dart';
+import 'package:connec/style/padding_style.dart';
 import 'package:connec/style/text_style.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -6,8 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import '../../../components/custom_dialog.dart';
-import '../../../style/buttonstyle.dart';
-import '../../../style/titlestyle.dart';
+import '../../../style/button_style.dart';
+import '../../../style/title_style.dart';
 
 import 'package:path/path.dart' as p;
 
@@ -31,7 +33,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
   DateTime _endDate = DateTime.now();
   final List<String> _personItems = [];
   final List<String> _keywordItems = [];
-  final List<PlatformFile> _selectedFiles = [];
+  final List<PlatformFile> _selectedFile = [];
 
   FilePickerResult? result;
 
@@ -92,9 +94,9 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                         backgroundColor: Color(0xff5f66f2),
                       ),
                       Column(
-                        children: _selectedFiles
+                        children: _selectedFile
                             .map((file) => Padding(
-                                  padding: EdgeInsets.only(top: 8),
+                                  padding: topPadding10,
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -104,7 +106,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                                         style: TextStyle(fontSize: 18),
                                       ),
                                       IconButton(
-                                        icon: Icon(Icons.delete),
+                                        icon: cancelIcon,
                                         onPressed: () {
                                           _removeFile(file);
                                         },
@@ -117,23 +119,52 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                     ],
                   ),
                 )),
-                customKeywordTextForm(
-                    label: "키워드",
-                    hint: "띄어쓰기로 구분해주세요",
-                    onChanged: (String value) {
-                      Logger logger = Logger();
-                      if (value.endsWith(' ') && _keywordItems.length < 5) {
-                        String keyword = value.substring(0, value.length - 1);
-                        if (!_keywordItems.contains(keyword)) {
-                          setState(() {
-                            _keywordItems.add(keyword);
-                          });
-                        }
-                        keywordController.clear();
-                      }
-                    },
-                    textController: keywordController,
-                    type: TextInputType.text),
+                Container(
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text("키워드 목록\t", style: labelStyle),
+                                    Text(" ※ 최대 5개",
+                                        style: constraintStyle)
+                                  ],
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    String name = keywordController.text;
+                                    if (name.isNotEmpty &&
+                                        !_keywordItems.contains(name) &&
+                                        _keywordItems.length < 5) {
+                                      _keywordItems.add(name);
+                                      setState(() {
+                                        keywordController.clear();
+                                      });
+                                    }
+                                  },
+                                  icon:addIcon
+                                )
+                              ]),
+                          TextFormField(
+                            controller: keywordController,
+                            decoration: InputDecoration(
+                                hintText: "키워드를 작성해주세요",
+                                hintStyle: inputHintStyle,
+                                filled: true,
+                                fillColor: Color(0xffeeeeee),
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1,
+                                        color: Color(0xff5f66f2)
+                                    )
+                                )
+                            ),
+                          ),
+                        ])),
                 Padding(
                   padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
                   child: ListView.separated(
@@ -156,7 +187,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                                   _keywordItems.removeAt(index);
                                   setState(() {});
                                 },
-                                icon: Icon(Icons.cancel_outlined))
+                                icon: cancelIcon)
                           ],
                         ),
                       );
@@ -176,12 +207,11 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                     type: TextInputType.text,
                     onSaved: (newValue) => _accomplishment = newValue),
                 Container(
-                  padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("진행 기간",
-                            style: inputLabelStyle),
+                        Text("진행 기간", style: labelStyle),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -229,7 +259,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                       ]),
                 ),
                 Container(
-                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -238,39 +268,26 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                               children: [
                                 Row(
                                   children: [
-                                    Text(
-                                      "참여자 명단\t",
-                                      style: inputLabelStyle
-                                    ),
-                                    Text(
-                                      " ※ 최대 5명",
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 14,
-                                        fontFamily: 'EchoDream',
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    )
+                                    Text("참여자 명단\t", style: labelStyle),
+                                    Text(" ※ 최대 5명",
+                                        style: constraintStyle)
                                   ],
                                 ),
                                 IconButton(
                                   onPressed: () {
                                     var name = personController.text;
-                                    print(name);
                                     if (name.isNotEmpty &&
                                         !_personItems.contains(name) &&
                                         _personItems.length < 5) {
                                       _personItems.add(name);
-                                      setState(() {});
+                                      setState(() {
+                                        personController.clear();
+                                      });
                                     }
                                   },
-                                  icon: Icon(
-                                    Icons.add_circle,
-                                    color: Colors.blue,
-                                  ),
+                                  icon: addIcon
                                 )
                               ]),
-                          SizedBox(height: 10),
                           TextFormField(
                             controller: personController,
                             decoration: InputDecoration(
@@ -305,7 +322,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                                   _personItems.removeAt(index);
                                   setState(() {});
                                 },
-                                icon: Icon(Icons.cancel_outlined))
+                                icon: cancelIcon)
                           ],
                         ),
                       );
@@ -316,7 +333,7 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
             ),
           ),
         ),
-        bottomNavigationBar: Container(
+        bottomNavigationBar: SizedBox(
             height: 56,
             child: ElevatedButton(
                 style: featureButton,
@@ -340,23 +357,14 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Container(
-                                      margin: EdgeInsets.only(bottom: 20),
-                                      child: Icon(
-                                          Icons.remove_circle_outline_rounded,
-                                          size: 100,
-                                          color: Color(0xff5f66f2))),
+                                      margin: bottomPadding10,
+                                      child: removeIcon),
                                   Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          '프로젝트 시작일은 죵료일보다 앞서야 합니다.',
-                                          style: TextStyle(
-                                            color: Color(0xff333333),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
+                                        Text('시작일은 종료일보다 앞서야 합니다.',
+                                            style: dialogContextStyle),
                                       ]),
                                 ],
                               ),
@@ -378,56 +386,47 @@ class _ProjectRegistPageState extends State<ProjectRegistPage> {
                       "keywords": _keywordItems,
                       "participants": _personItems,
                       'fileExtensions':
-                          List.generate(_selectedFiles.length, (index) {
+                          List.generate(_selectedFile.length, (index) {
                         logger.w(
-                            p.extension(_selectedFiles[index].path.toString()));
+                            p.extension(_selectedFile[index].path.toString()));
                         return p
-                            .extension(_selectedFiles[index].path.toString());
+                            .extension(_selectedFile[index].path.toString());
                       })
                     };
-                    if (_selectedFiles.length != 0) {
-                      showCustomDialog(context);
-                      try {
-                        // 파일 경로를 통해 formData 생성
-                        var dio = Dio();
-                        var formData = FormData.fromMap({
-                          'data': jsonData,
-                          'files': List.generate(
-                              _selectedFiles.length,
-                              (index) => MultipartFile.fromFileSync(
-                                  _selectedFiles[index].path.toString())),
-                          // 파일 확장자를 추출합니다.
-                        });
+                    showCustomDialog(context);
 
-                        // 업로드 요청
-                        final response = await dio.post(
-                            'https://foggy-boundless-avenue.glitch.me/project/upload',
-                            data: formData);
-                        logger.w(response);
-                        Navigator.pop(context);
-                        Navigator.of(context, rootNavigator: true).pop(context);
-                      } catch (e) {
-                        logger.w(e);
-                      }
-                    } else {
-                      // 아무런 파일도 선택되지 않음.
-                    }
+                    var dio = Dio();
+                    var formData = FormData.fromMap({
+                      'data': jsonData,
+                      'files': List.generate(
+                          _selectedFile.length,
+                          (index) => MultipartFile.fromFileSync(
+                              _selectedFile[index].path.toString())),
+                    });
+                    // 업로드 요청
+                    await dio.post(
+                            'https://foggy-boundless-avenue.glitch.me/project/upload', data: formData)
+                        .then((res) {
+                          logger.w(res);
+                          Navigator.pop(context);
+                          Navigator.of(context, rootNavigator: true).pop(context);
+                    });
                   }
                 })));
   }
 
   void _removeFile(PlatformFile file) {
     setState(() {
-      _selectedFiles.remove(file);
+      _selectedFile.remove(file);
     });
   }
 
   Future<void> _pickFile() async {
-    result = await FilePicker.platform.pickFiles(allowMultiple: true);
+    result = await FilePicker.platform.pickFiles(allowMultiple: false);
 
-    if (result != null) {
+    if (result != null && _selectedFile.isEmpty) {
       setState(() {
-        _selectedFiles.addAll(result!.files);
+        _selectedFile.add(result!.files[0]);
       });
     } else {
       print("User canceled the file picker");

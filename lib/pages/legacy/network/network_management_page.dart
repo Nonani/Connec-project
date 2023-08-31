@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connec/components/common_bottom_navigation_bar.dart';
-import 'package:connec/style/titlestyle.dart';
+import 'package:connec/style/title_style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

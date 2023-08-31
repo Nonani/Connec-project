@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 import '../../../components/custom_dropdown_button.dart';
 import '../../../components/custom_edit_textform.dart';
-import '../../../style/buttonstyle.dart';
-import '../../../style/titlestyle.dart';
+import '../../../style/button_style.dart';
+import '../../../style/title_style.dart';
 
 
 class ReportPage extends StatefulWidget {

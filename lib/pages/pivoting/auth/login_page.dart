@@ -4,13 +4,10 @@ import 'package:connec/components/custom_dialog.dart';
 import 'package:connec/pages/pivoting/auth/social_signup_page.dart';
 import 'package:connec/services/kakao_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as kakao;
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
-
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -20,11 +17,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _formKey = GlobalKey<FormState>();
   final logger = Logger();
   String email = "";
   String password = "";
-  String device_token = "";
 
   @override
   Widget build(BuildContext context) {
@@ -78,10 +73,8 @@ class _LoginPageState extends State<LoginPage> {
                   onTap: () async {
                     await loginWithKakao(context);
                   },
-                  child: Container(
-                    child: Image.asset(
-                        "assets/images/kakao_login_medium_wide.png"),
-                  ),
+                  child: Image.asset(
+                      "assets/images/kakao_login_medium_wide.png"),
                 ),
                 SizedBox(
                   height: size.height * 0.03,
@@ -107,72 +100,68 @@ class _LoginPageState extends State<LoginPage> {
     bool isLogined = await KakaoLogin().login();
     if (isLogined) {
       kakao.User user = await kakao.UserApi.instance.me();
-      logger.w(user!.kakaoAccount!.profile!.profileImageUrl);
-      final result = await FirebaseFirestore.instance
+      logger.w(user.kakaoAccount!.profile!.profileImageUrl);
+      FirebaseFirestore.instance
           .collection("users")
-          .doc("kakao:${user!.id}")
-          .get();
-      if (result.data() == null) {
-        //첫 카카오 로그인인 경우
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: ((context) => SocialSignUpPage(
-                      uid: "kakao:${user!.id}",
-                      profileImageUrl: user!.kakaoAccount!.profile!.profileImageUrl,
-                    ))));
-      } else {
-        //이전에 로그인을 하여 회원가입 정보를 넣은 경우
-        showCustomDialog(context);
-        final url =
-            Uri.parse('https://foggy-boundless-avenue.glitch.me/signin');
-        try {
-          http.Response response = await http.post(
-            url,
-            headers: <String, String>{
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: <String, String>{
-              'uid': "kakao:${user.id}",
-            },
-          );
-          logger.w(response.body);
-          if (response.statusCode == 200) {
-            Map<String, dynamic> jsonData = jsonDecode(response.body);
-            try {
-              await FirebaseAuth.instance
-                  .signInWithCustomToken(jsonData["token"]);
-              getToken();
-
-            } catch (e) {
-              logger.w(e);
-            }
-
-            try {
-
-            } catch (e) {
-              logger.w(e);
-              // error handling
-            }
+          .doc("kakao:${user.id}")
+          .get()
+          .then((result) {
+        if (result.data() == null) {
+          //첫 카카오 로그인인 경우
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: ((context) => SocialSignUpPage(
+                        uid: "kakao:${user.id}",
+                        profileImageUrl:
+                            user.kakaoAccount!.profile!.profileImageUrl,
+                      ))));
+        } else {
+          //이전에 로그인을 하여 회원가입 정보를 넣은 경우
+          showCustomDialog(context);
+          final url =
+              Uri.parse('https://foggy-boundless-avenue.glitch.me/signin');
+          try {
+            http.post(
+              url,
+              headers: <String, String>{
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: <String, String>{
+                'uid': "kakao:${user.id}",
+              },
+            ).then((response) async {
+              logger.w(response.body);
+              if (response.statusCode == 200) {
+                Map<String, dynamic> jsonData = jsonDecode(response.body);
+                try {
+                  await FirebaseAuth.instance
+                      .signInWithCustomToken(jsonData["token"]);
+                  // getToken();
+                } catch (e) {
+                  logger.w(e);
+                }
+                // error handling
+              }
+            });
+          } catch (e) {
+            logger.w(e);
           }
-        } catch (e) {
-          logger.w(e);
+          Navigator.pop(context);
         }
-        print("logined");
-        Navigator.pop(context);
-      }
+      });
     }
   }
 
-  void getToken() async {
-    await FirebaseMessaging.instance.getToken().then((token) => {
-          setState(() {
-            device_token = token!;
-            logger.w(device_token);
-          })
-        });
-    saveToken(device_token);
-  }
+  // void getToken() async {
+  //   await FirebaseMessaging.instance.getToken().then((token) => {
+  //         setState(() {
+  //           device_token = token!;
+  //           logger.w(device_token);
+  //         })
+  //       });
+  //   saveToken(device_token);
+  // }
 
   void saveToken(String token) async {
     var database = FirebaseFirestore.instance;

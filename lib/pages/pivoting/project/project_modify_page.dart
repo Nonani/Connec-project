@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:connec/components/custom_edit_textform.dart';
+import 'package:connec/style/icon_style.dart';
 import 'package:connec/style/text_style.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -8,8 +9,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import '../../../components/custom_dialog.dart';
-import '../../../style/buttonstyle.dart';
-import '../../../style/titlestyle.dart';
+import '../../../style/button_style.dart';
+import '../../../style/title_style.dart';
 
 import 'package:path/path.dart' as p;
 import 'package:http/http.dart' as http;
@@ -41,7 +42,8 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
   final TextEditingController _introductionController = TextEditingController();
   final TextEditingController _contextController = TextEditingController();
   final TextEditingController _roleController = TextEditingController();
-  final TextEditingController _accomplishmentController = TextEditingController();
+  final TextEditingController _accomplishmentController =
+      TextEditingController();
   final TextEditingController _keywordController = TextEditingController();
   FilePickerResult? result;
 
@@ -135,6 +137,7 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           FloatingActionButton.extended(
+                            backgroundColor: Color(0xff5f66f2),
                             onPressed: _pickFile,
                             label: Text('Choose Files'),
                           ),
@@ -151,7 +154,7 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                                             style: TextStyle(fontSize: 18),
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.delete),
+                                            icon: cancelIcon,
                                             onPressed: () {
                                               _removeFile(file);
                                             },
@@ -204,7 +207,7 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                                       _keywordItems.removeAt(index);
                                       setState(() {});
                                     },
-                                    icon: Icon(Icons.cancel_outlined))
+                                    icon: cancelIcon)
                               ],
                             ),
                           );
@@ -230,7 +233,7 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("진행 기간", style: inputLabelStyle),
+                            Text("진행 기간", style: labelStyle),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -288,16 +291,13 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text("참여자 명단\t",
-                                            style: inputLabelStyle),
-                                        Text(" ※ 최대 5명",
-                                            style: inputConstraintStyle)
+                                        Text("참여자 명단\t", style: labelStyle),
+                                        Text(" ※ 최대 5명", style: constraintStyle)
                                       ],
                                     ),
                                     IconButton(
                                       onPressed: () {
                                         var name = personController.text;
-                                        print(name);
                                         if (name.isNotEmpty &&
                                             !_personItems.contains(name) &&
                                             _personItems.length < 5) {
@@ -305,10 +305,7 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                                           setState(() {});
                                         }
                                       },
-                                      icon: Icon(
-                                        Icons.add_circle,
-                                        color: Colors.blue,
-                                      ),
+                                      icon: addIcon,
                                     )
                                   ]),
                               SizedBox(height: 10),
@@ -347,7 +344,7 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                                       _personItems.removeAt(index);
                                       setState(() {});
                                     },
-                                    icon: Icon(Icons.cancel_outlined))
+                                    icon: cancelIcon)
                               ],
                             ),
                           );
@@ -362,7 +359,7 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
             },
           )),
         ),
-        bottomNavigationBar: Container(
+        bottomNavigationBar: SizedBox(
             height: 56,
             child: ElevatedButton(
                 style: featureButton,
@@ -370,7 +367,7 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                   '완료',
                   style: buttonText,
                 ),
-                onPressed: () async {
+                onPressed: () {
                   Logger logger = Logger();
                   _formKey.currentState!.save();
                   if (_formKey.currentState!.validate()) {
@@ -391,36 +388,25 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                           (index) => p
                               .extension(_selectedFiles[index].path.toString()))
                     };
-                    if (_selectedFiles.isNotEmpty) {
-                      try {
-                        // 파일 경로를 통해 formData 생성
-                        var dio = Dio();
-                        var formData = FormData.fromMap({
-                          'data': jsonData,
-                          'files': List.generate(
-                              _selectedFiles.length,
-                              (index) => MultipartFile.fromFileSync(
-                                  _selectedFiles[index].path.toString())),
-                          // 파일 확장자를 추출합니다.
-                        });
+                    Dio dio = Dio();
+                    FormData formData = FormData.fromMap({
+                      'data': jsonData,
+                      'files': List.generate(
+                          _selectedFiles.length,
+                          (index) => MultipartFile.fromFileSync(
+                              _selectedFiles[index].path.toString())),
+                      // 파일 확장자를 추출합니다.
+                    });
 
-                        // 업로드 요청
-                        final response = await dio.post(
+                    // 업로드 요청
+                    dio.post(
                             'https://foggy-boundless-avenue.glitch.me/project/modify',
-                            data: formData);
-                        logger.w(response);
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                      } catch (e) {
-                        logger.w(e);
-                      }
-                    } else {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(child: Text("파일을 입력해주세요"));
-                          });
-                    }
+                            data: formData)
+                        .then((response) {
+                      logger.w(response);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    }).catchError((error) => logger.w(error));
                   }
                 })));
   }
@@ -439,25 +425,9 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
           'docId': widget.projectID,
         },
       );
-      if (_nameController.text.isEmpty) {
-        Map<String, dynamic> data = const JsonDecoder().convert(response.body);
-        _nameController.text = data['name'];
-        _introductionController.text = data['introduction'];
-        _contextController.text = data['context'];
-        _roleController.text = data['role'];
-        _accomplishmentController.text = data['accomplishment'];
-        _startDate = DateTime.parse(data['period'][0]);
-        _endDate = DateTime.parse(data['period'][1]);
-        _personItems.addAll(data['participants']
-            .map((participant) => participant['name'])
-            .toList());
-        if (data['keywords'].runtimeType == "".runtimeType) {
-          _keywordItems.add(data['keywords']);
-        } else {
-          _keywordItems.addAll(data['keywords']);
-        }
-        return data;
-      }
+      Map<String, dynamic> data = const JsonDecoder().convert(response.body);
+
+      return data;
     } catch (error) {
       logger.w(error);
     }
