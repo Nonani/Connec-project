@@ -167,23 +167,80 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                         ],
                       ),
                     )),
-                    customKeywordTextForm(
-                      label: "키워드",
-                      textController: _keywordController,
-                      type: TextInputType.text,
-                      hint: '띄어쓰기로 구분해주세요',
-                      onChanged: (value) {
-                        if (value.endsWith(' ') && _keywordItems.length < 5) {
-                          String keyword = value.substring(0, value.length - 1);
-                          if (keyword.isNotEmpty &&
-                              !_keywordItems.contains(keyword)) {
-                            setState(() {
-                              _keywordItems.add(keyword);
-                            });
-                          }
-                          _keywordController.clear();
-                        }
-                      },
+                    Container(
+                        padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text("키워드 목록\t", style: labelStyle),
+                                        Text(" ※ 최대 5개",
+                                            style: constraintStyle)
+                                      ],
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          String name = keywordController.text;
+                                          if (name.isNotEmpty &&
+                                              !_keywordItems.contains(name) &&
+                                              _keywordItems.length < 5) {
+                                            _keywordItems.add(name);
+                                            setState(() {
+                                              keywordController.clear();
+                                            });
+                                          }
+                                        },
+                                        icon:addIcon
+                                    )
+                                  ]),
+                              TextFormField(
+                                controller: keywordController,
+                                decoration: InputDecoration(
+                                    hintText: "키워드를 작성해주세요",
+                                    hintStyle: inputHintStyle,
+                                    filled: true,
+                                    fillColor: Color(0xffeeeeee),
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1,
+                                            color: Color(0xff5f66f2)
+                                        )
+                                    )
+                                ),
+                              ),
+                            ])),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: _keywordItems.length,
+                        separatorBuilder: (_, __) => const Divider(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                    child: Text(
+                                      "#${_keywordItems[index]}",
+                                      overflow: TextOverflow.ellipsis,
+                                    )),
+                                IconButton(
+                                    onPressed: () {
+                                      _keywordItems.removeAt(index);
+                                      setState(() {});
+                                    },
+                                    icon: cancelIcon)
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
