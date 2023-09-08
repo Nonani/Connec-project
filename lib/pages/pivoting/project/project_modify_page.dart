@@ -35,7 +35,7 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
   DateTime _endDate = DateTime.now();
 
   final List<dynamic> _personItems = [];
-  final List<String> _keywordItems = [];
+  final List<dynamic> _keywordItems = [];
   final List<PlatformFile> _selectedFiles = [];
 
   final TextEditingController _nameController = TextEditingController();
