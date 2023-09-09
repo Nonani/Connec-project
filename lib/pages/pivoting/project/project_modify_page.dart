@@ -184,13 +184,13 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                                     ),
                                     IconButton(
                                         onPressed: () {
-                                          String name = keywordController.text;
+                                          String name = _keywordController.text;
                                           if (name.isNotEmpty &&
                                               !_keywordItems.contains(name) &&
                                               _keywordItems.length < 5) {
                                             _keywordItems.add(name);
                                             setState(() {
-                                              keywordController.clear();
+                                              _keywordController.clear();
                                             });
                                           }
                                         },
@@ -198,7 +198,7 @@ class _ProjectModifyPageState extends State<ProjectModifyPage> {
                                     )
                                   ]),
                               TextFormField(
-                                controller: keywordController,
+                                controller: _keywordController,
                                 decoration: InputDecoration(
                                     hintText: "키워드를 작성해주세요",
                                     hintStyle: inputHintStyle,

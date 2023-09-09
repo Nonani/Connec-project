@@ -79,10 +79,8 @@ class _MyInfoPageState extends State<MyInfoPage> {
                               Future.delayed(Duration(seconds: 3), () {
                                 Navigator.of(context).pop(true);
                               });
-                               return completeDialog(
-                                   "마이페이지 링크가\n 복사되었습니다",
-                                   "프로젝트 경험을 공유해보세요"
-                               );
+                              return completeDialog(
+                                  "마이페이지 링크가\n 복사되었습니다", "프로젝트 경험을 공유해보세요");
                             });
                       }),
                   ListTile(
@@ -120,7 +118,7 @@ class _MyInfoPageState extends State<MyInfoPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                    child: Container(
+                    child: SizedBox(
                       height: 200,
                       child: Container(
                         margin: EdgeInsets.only(
@@ -137,79 +135,57 @@ class _MyInfoPageState extends State<MyInfoPage> {
                   Container(
                       margin: bottomPadding10,
                       child: Center(
-                        child: Text(
-                          "${snapshot.data["name"]}",
-                          style: labelStyle
-                        ),
+                        child:
+                            Text("${snapshot.data["name"]}", style: labelStyle),
                       )),
                   Container(
                     margin: bottomPadding10,
                     child: Center(
-                      child: Text("${snapshot.data["work"]}",
-                        style: contextStyle
-                      ),
+                      child:
+                          Text("${snapshot.data["work"]}", style: contextStyle),
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(
-                        top: 10, left: 10.0, right: 10, bottom: 10),
-                    child: greyDivider
-                  ),
+                      margin: const EdgeInsets.only(
+                          top: 10, left: 10.0, right: 10, bottom: 10),
+                      child: greyDivider),
                   Container(
                     margin: leftPadding20,
-                    child: Text(
-                      "프로젝트 키워드",
-                      style: labelStyle
-                    ),
+                    child: Text("프로젝트 키워드", style: labelStyle),
                   ),
                   Container(
                     margin: leftPadding30,
-                    child: Text(
-                      "#${snapshot.data['project_keyword']} ",
-                      style: contextStyle
-                    ),
+                    child: Text("#${snapshot.data['project_keyword']} ",
+                        style: contextStyle),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(
-                        top: 10, left: 10.0, right: 10, bottom: 10),
-                    child: greyDivider
-                  ),
+                      margin: const EdgeInsets.only(
+                          top: 10, left: 10.0, right: 10, bottom: 10),
+                      child: greyDivider),
                   Container(
                     margin: leftPadding20,
-                    child: Text(
-                      "개인정보",
-                      style: labelStyle
-                    ),
+                    child: Text("개인정보", style: labelStyle),
                   ),
                   Container(
                     margin: leftPadding30,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "생년월일 : ${snapshot.data["age"].substring(0, 10)}",
-                          style: contextStyle
-                        ),
-                        Text(
-                          "성 별  : ${snapshot.data["gender"]}",
-                          style: contextStyle
-                        ),
-                        Text(
-                          "전화번호 : ${snapshot.data["phone_number"]}",
-                          style: contextStyle
-                        ),
-                        Text(
-                          "활동지역 : ${snapshot.data["location"]}",
-                          style: contextStyle
-                        ),
+                        Text("생년월일 : ${snapshot.data["age"].substring(0, 10)}",
+                            style: contextStyle),
+                        Text("성 별  : ${snapshot.data["gender"]}",
+                            style: contextStyle),
+                        Text("전화번호 : ${snapshot.data["phone_number"]}",
+                            style: contextStyle),
+                        Text("활동지역 : ${snapshot.data["location"]}",
+                            style: contextStyle),
                       ],
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(
-                        top: 10, left: 10.0, right: 10, bottom: 10),
-                    child: greyDivider
-                  ),
+                      margin: const EdgeInsets.only(
+                          top: 10, left: 10.0, right: 10, bottom: 10),
+                      child: greyDivider),
                   Container(
                     margin: EdgeInsets.only(left: 20, right: 20),
                     child: Column(children: [
@@ -218,26 +194,27 @@ class _MyInfoPageState extends State<MyInfoPage> {
                         children: [
                           Row(
                             children: [
-                              Text(
-                                "프로젝트\t",
-                                style: labelStyle
-                              ),
-                              Text(
-                                "※ 최대 10개",
-                                style: constraintStyle
-                              )
+                              Text("프로젝트\t", style: labelStyle),
+                              Text("※ 최대 10개", style: constraintStyle)
                             ],
                           ),
                           IconButton(
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const ProjectRegistPage(),
-                                    )).then((value) => setState(() {}));
+                                if (snapshot.data['projects'].length < 10) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ProjectRegistPage(),
+                                      )).then((value) => setState(() {}));
+                                }
+                                else {
+                                  showDialog(context: context, builder: (BuildContext context){
+                                    return canceledDialog("프로젝트는 최대 10개\n 등록할 수 있습니다.", "");
+                                  });
+                                }
                               },
-                              icon: addIcon
-                          )
+                              icon: addIcon)
                         ],
                       ),
                       ListView.builder(
@@ -251,10 +228,8 @@ class _MyInfoPageState extends State<MyInfoPage> {
                             return Column(children: [
                               Container(
                                   margin: topPadding10,
-                                  child: Text(
-                                    "프로젝트 ${idx + 1}",
-                                    style: indexStyle
-                                  )),
+                                  child: Text("프로젝트 ${idx + 1}",
+                                      style: indexStyle)),
                               TextButton(
                                   onPressed: () {
                                     Navigator.push(
@@ -264,18 +239,14 @@ class _MyInfoPageState extends State<MyInfoPage> {
                                                 ProjectDetailPage(
                                                     idx,
                                                     item["docId"],
-                                                    snapshot
-                                                        .data['name'])));
+                                                    snapshot.data['name'])));
                                   },
-                                  child: Text(
-                                    item['introduction'],
-                                    style: linkStyle
-                                  )),
+                                  child: Text(item['introduction'],
+                                      style: linkStyle)),
                               Container(
-                                margin: const EdgeInsets.only(
-                                    left: 10.0, right: 10),
-                                child: greyDivider
-                              ),
+                                  margin: const EdgeInsets.only(
+                                      left: 10.0, right: 10),
+                                  child: greyDivider),
                             ]);
                           })
                     ]),
@@ -309,7 +280,15 @@ class _MyInfoPageState extends State<MyInfoPage> {
       Map<String, dynamic> keywords = data['project_keyword'];
       data['project_keyword'] = keywords.keys.toList(growable: false)
         ..sort((k1, k2) => keywords[k2].compareTo(keywords[k1]));
-      data['project_keyword'] = data['project_keyword'].join(" #");
+
+      List<String> tmpKeywords = [];
+      for (int idx = 0; idx < 10; idx++) {
+        if (tmpKeywords.length < 10 &&
+            tmpKeywords.length < data['project_keyword'].length) {
+          tmpKeywords.add(data['project_keyword'][idx]);
+        }
+      }
+      data['project_keyword'] = tmpKeywords.join(" #");
       logger.w(data);
       return data;
     } catch (e) {

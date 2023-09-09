@@ -174,6 +174,32 @@ Widget completeDialog(String main, String sub) {
   );
 }
 
+Widget canceledDialog(String main, String sub) {
+  return Dialog(
+    // The background color
+    backgroundColor: Colors.white,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+              margin: EdgeInsets.only(bottom: 20),
+              child: removeIcon
+          ),
+          Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            Text(main, style: dialogContextStyle),
+            Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Text(sub, style: dialogAdditionalStyle))
+          ]),
+        ],
+      ),
+    ),
+  );
+}
+
 void showCustomDialog(BuildContext context) {
   showDialog(
     context: context,

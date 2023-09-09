@@ -8,6 +8,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:433770550957:android:51c70baccdaa1ee8d25824",
+        "android_client_info": {
+          "package_name": "com.app.connec"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433770550957-jpjil1uj01ub8340gefs911o1eubfmpg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg4f3MwRx36gdk6lxAkzbfOXkmyMbDObA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433770550957-jpjil1uj01ub8340gefs911o1eubfmpg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "433770550957-0065r7vtmgisktspa7kucp8c5rgu05d9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.firebaseStudy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:433770550957:android:91851fa4926af058d25824",
         "android_client_info": {
           "package_name": "com.example.connec"

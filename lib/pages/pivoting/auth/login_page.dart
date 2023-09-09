@@ -101,11 +101,10 @@ class _LoginPageState extends State<LoginPage> {
     if (isLogined) {
       kakao.User user = await kakao.UserApi.instance.me();
       logger.w(user.kakaoAccount!.profile!.profileImageUrl);
-      FirebaseFirestore.instance
+      var result = await FirebaseFirestore.instance
           .collection("users")
           .doc("kakao:${user.id}")
-          .get()
-          .then((result) {
+          .get();
         if (result.data() == null) {
           //첫 카카오 로그인인 경우
           Navigator.push(
@@ -149,7 +148,6 @@ class _LoginPageState extends State<LoginPage> {
           }
           Navigator.pop(context);
         }
-      });
     }
   }
 

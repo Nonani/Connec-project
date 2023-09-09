@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAg4f3MwRx36gdk6lxAkzbfOXkmyMbDObA',
-    appId: '1:433770550957:android:91851fa4926af058d25824',
+    appId: '1:433770550957:android:51c70baccdaa1ee8d25824',
     messagingSenderId: '433770550957',
     projectId: 'connec-project',
     databaseURL: 'https://connec-project-default-rtdb.firebaseio.com',
