@@ -12,9 +12,10 @@
 
 
 ### 2. 목차
-1. [프로젝트 소개 참고 사진](#프로젝트-소개-이미지)
+1. [프로젝트 소개 참고 사진](#프로젝트-소개-이미지
 2. [구현 기능](#구현-기능)
 3. [앱 ui 일부 예시](#앱-ui-예시)
+4. 기술 스택
 
 ### 프로젝트 소개 이미지
 <img width="838" alt="1" src="https://github.com/Nonani/Connec-project/assets/30969164/1e3180f9-ba39-43d7-b715-fdf47a0277f1">
@@ -38,5 +39,10 @@
 <img src="https://github.com/Nonani/Connec-project/assets/30969164/882a2f17-66cb-4828-bbd3-2cffeba9df24" width="200" height="400"/>
 <img src="https://github.com/Nonani/Connec-project/assets/30969164/c873132a-0636-41e5-ac37-df9e92bc5eec" width="200" height="400"/>
 
-
+### 기술 스택
+* Flutter
+* Firebase
+* Node.js
+  백엔드 서버 url
+  https://glitch.com/edit/#!/foggy-boundless-avenue
 
