@@ -10,9 +10,11 @@
 
 
 
+
 ### 2. 목차
 1. [프로젝트 소개 참고 사진](#프로젝트-소개-이미지)
 2. [구현 기능](#구현-기능)
+3. [앱 ui 일부 예시](#앱-ui-예시)
 
 ### 프로젝트 소개 이미지
 <img width="838" alt="1" src="https://github.com/Nonani/Connec-project/assets/30969164/1e3180f9-ba39-43d7-b715-fdf47a0277f1">
@@ -22,5 +24,19 @@
 
 ### 구현 기능
 * 사용자 인증
+  Firebase Authentication를 사용하여 로그인 기능 구현
+  kakao SDK로 소셜 로그인 구현
 * 푸시 알림
+  FCM(firebase cloud message)를 사용하여 팝업 알림 기능 구현
 * 결제 기능
+* 파일 첨부 기능 구현
+  firebase storage를 사용하여 유저 신고 기능에서 캡처화면 첨부 기능을 구현
+
+### 앱 ui 예시
+<img src="https://github.com/Nonani/Connec-project/assets/30969164/dc23d25a-2149-4447-9423-3a2bd7e79726" width="200" height="400"/>
+<img src="https://github.com/Nonani/Connec-project/assets/30969164/d8120e81-bbb6-4c4f-b0b6-bcf7a124761d" width="200" height="400"/>
+<img src="https://github.com/Nonani/Connec-project/assets/30969164/882a2f17-66cb-4828-bbd3-2cffeba9df24" width="200" height="400"/>
+<img src="https://github.com/Nonani/Connec-project/assets/30969164/c873132a-0636-41e5-ac37-df9e92bc5eec" width="200" height="400"/>
+
+
+
