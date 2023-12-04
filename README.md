@@ -43,6 +43,8 @@
 * Flutter
 * Firebase
 * Node.js
+  
   백엔드 서버 url
+  
   https://glitch.com/edit/#!/foggy-boundless-avenue
 
